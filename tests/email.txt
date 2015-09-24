@@ -1,0 +1,4 @@
+I had to slightly change SACA-K (available at https://code.google.com/p/ge-nong/) to receive strings from integer alphabets.
+
+
+all LMS-substring starting with $ are removed from LMS-subs sorting, and are posteriorly inserted into the $ bucket (according to their positions in T)

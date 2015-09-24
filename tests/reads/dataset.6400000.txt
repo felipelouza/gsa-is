@@ -1,0 +1,33 @@
+Fri Sep 18 20:32:11 BRT 2015
+ 
+./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 6400000 1 0
+K = 6400000
+N = 609854387
+## SAIS ##
+CLOCK = 267.350000 TIME = 268.000000
+depth = 5
+malloc_count ### exiting, total: 7,093,245,095, peak: 5,079,477,194, current: 0
+ 
+./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 6400000 2 0
+K = 6400000
+N = 609854387
+## SACA_K ##
+CLOCK = 186.820000 TIME = 187.000000
+depth = 5
+malloc_count ### exiting, total: 6,491,640,813, peak: 4,904,436,120, current: 0
+ 
+./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 6400000 3 0
+K = 6400000
+N = 609854387
+## gSAIS ##
+CLOCK = 242.000000 TIME = 243.000000
+depth = 5
+malloc_count ### exiting, total: 5,212,481,934, peak: 3,249,914,033, current: 0
+ 
+./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 6400000 4 0
+K = 6400000
+N = 609854387
+## gSACA_K ##
+CLOCK = 161.750000 TIME = 162.000000
+depth = 5
+malloc_count ### exiting, total: 4,636,477,652, peak: 3,049,272,959, current: 0

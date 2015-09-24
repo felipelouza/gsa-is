@@ -1,0 +1,33 @@
+Fri Sep 18 18:50:14 BRT 2015
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 100000 1 0
+K = 100000
+N = 46702703
+## SAIS ##
+CLOCK = 14.150000 TIME = 14.000000
+depth = 6
+malloc_count ### exiting, total: 673,713,117, peak: 388,735,039, current: 0
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 100000 2 0
+K = 100000
+N = 46702703
+## SACA_K ##
+CLOCK = 12.020000 TIME = 12.000000
+depth = 6
+malloc_count ### exiting, total: 638,405,285, peak: 374,022,648, current: 0
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 100000 3 0
+K = 100000
+N = 46702703
+## gSAIS ##
+CLOCK = 12.790000 TIME = 13.000000
+depth = 6
+malloc_count ### exiting, total: 532,805,008, peak: 248,626,930, current: 0
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 100000 4 0
+K = 100000
+N = 46702703
+## gSACA_K ##
+CLOCK = 10.340000 TIME = 11.000000
+depth = 6
+malloc_count ### exiting, total: 497,897,176, peak: 233,514,539, current: 0

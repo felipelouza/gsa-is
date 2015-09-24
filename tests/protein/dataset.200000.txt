@@ -1,0 +1,33 @@
+Fri Sep 18 18:54:19 BRT 2015
+ 
+./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 200000 1 0
+K = 200000
+N = 53152396
+## SAIS ##
+CLOCK = 21.280000 TIME = 22.000000
+depth = 6
+malloc_count ### exiting, total: 761,167,779, peak: 451,599,058, current: 0
+ 
+./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 200000 2 0
+K = 200000
+N = 53152396
+## SACA_K ##
+CLOCK = 17.820000 TIME = 18.000000
+depth = 6
+malloc_count ### exiting, total: 684,610,224, peak: 426,020,192, current: 0
+ 
+./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 200000 3 0
+K = 200000
+N = 53152396
+## gSAIS ##
+CLOCK = 19.250000 TIME = 19.000000
+depth = 6
+malloc_count ### exiting, total: 600,110,591, peak: 292,141,870, current: 0
+ 
+./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 200000 4 0
+K = 200000
+N = 53152396
+## gSACA_K ##
+CLOCK = 15.160000 TIME = 15.000000
+depth = 6
+malloc_count ### exiting, total: 524,353,036, peak: 265,763,004, current: 0

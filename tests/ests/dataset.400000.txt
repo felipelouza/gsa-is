@@ -1,0 +1,13 @@
+Fri Sep 18 18:55:38 BRT 2015
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 400000 1 0
+malloc_count ### exiting, total: 890,459,191, peak: 230,706,224, current: 230,705,536
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 400000 2 0
+malloc_count ### exiting, total: 890,459,191, peak: 230,706,224, current: 230,705,536
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 400000 3 0
+malloc_count ### exiting, total: 890,459,191, peak: 230,706,224, current: 230,705,536
+ 
+./main /mnt/disk1/database/ests/ all_ests.fasta 400000 4 0
+malloc_count ### exiting, total: 890,459,191, peak: 230,706,224, current: 230,705,536
