@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "lib/utils.h"
+
 /*
 // set only the highest bit as 1, i.e. 1000...
 const unsigned int EMPTY=((unsigned int)1)<<(sizeof(unsigned int)*8-1);
@@ -22,12 +24,12 @@ const unsigned int EMPTY=((unsigned int)1)<<(sizeof(unsigned int)*8-1);
 // get s[i] at a certain level
 //#define chr(i) ((level==0)?((unsigned char *)s)[i]:((int *)s)[i])
 
-int SACA_K(unsigned char *s, unsigned int *SA,
-  unsigned int n, unsigned int K,
-  unsigned int m, int cs, int level);
+int_t SACA_K(int_t *s, uint_t *SA,
+  uint_t n, unsigned int K,
+  uint_t m, int cs, int level);
 
-int gSACA_K(unsigned char *s, unsigned int *SA,
-  unsigned int n, unsigned int K,
-  unsigned int m, int cs, int level, unsigned char separator);
+int_t gSACA_K(unsigned char *s, uint_t *SA,
+  uint_t n, unsigned int K,
+  uint_t m, int cs, int level, unsigned char separator);
 
 #endif

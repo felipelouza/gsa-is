@@ -45,7 +45,7 @@ return 0;
 
 /*******************************************************************/
 
-int file_size(FILE* f_in){
+size_t file_size(FILE* f_in){
 
     fseek(f_in, 0, SEEK_END);
     size_t length = ftell(f_in);
@@ -81,7 +81,7 @@ return c_buffer;
 /*******************************************************************/
 
 // read line by line
-char** load_multiple_txt(FILE* f_in, int k, int *n) {
+char** load_multiple_txt(FILE* f_in, int k, int_t *n) {
 
 	char **c_buffer = (char**) malloc(k*sizeof(char*));
 
@@ -104,7 +104,7 @@ return c_buffer;
 }
 
 // read sequences separeted by '@' line
-char** load_multiple_fastq(FILE* f_in, int k, int *n){
+char** load_multiple_fastq(FILE* f_in, int k, int_t *n){
 
 	char **c_buffer = (char**) malloc(k*sizeof(char*));
 
@@ -134,7 +134,7 @@ return c_buffer;
 }
 
 // read sequences separeted by '>' line
-char** load_multiple_fasta(FILE* f_in, int k, int *n){
+char** load_multiple_fasta(FILE* f_in, int k, int_t *n){
 
 	char **c_buffer = (char**) malloc(k*sizeof(char*));
 
@@ -154,7 +154,7 @@ char** load_multiple_fasta(FILE* f_in, int k, int *n){
 		int nalloc = 128;
 		c_buffer[i] = malloc(nalloc*sizeof(char));
 
-		int p=0;
+		int_t p=0;
 		while(getline(&buf, &len, f_in)!=-1){
 
 			if(buf[0] == '>'){
@@ -182,7 +182,7 @@ return c_buffer;
 
 /*******************************************************************/
 
-char** file_load_multiple(char* c_file, int k, int *n) {
+char** file_load_multiple(char* c_file, int k, int_t *n) {
 
 /* .ext
  * .txt   - strings per line

@@ -1,20 +1,21 @@
 #include "gsaca-k.h"
 
 // set only the highest bit as 1, i.e. 1000...
-const unsigned int EMPTY_k=((unsigned int)1)<<(sizeof(unsigned int)*8-1); 
+//const unsigned int EMPTY_k=((unsigned int)1)<<(sizeof(unsigned int)*8-1); 
+const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1); 
 
 // get s[i] at a certain level
-#define chr(i) (cs==sizeof(int)?((int*)s)[i]:((unsigned char *)s)[i])
+#define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:((unsigned char *)s)[i])
 
 #define true 1
 #define false 0
 
 #define DEBUG 0
 
-void getBuckets_k(unsigned char *s, 
-  unsigned int *bkt, unsigned int n,
+void getBuckets_k(int_t *s, 
+  uint_t *bkt, uint_t n,
   unsigned int K, int end, int cs) { 
-  unsigned int i, sum=0;
+  uint_t i, sum=0;
   
   // clear all buckets .
   for(i=0; i<K; i++) bkt[i]=0; 
@@ -28,10 +29,10 @@ void getBuckets_k(unsigned char *s,
   }
 }
 
-void putSuffix0(unsigned int *SA, 
-  unsigned char *s, unsigned int *bkt, 
-  unsigned int n, unsigned int K, int n1, int cs) {
-  unsigned int i, j;
+void putSuffix0(uint_t *SA, 
+  int_t *s, uint_t *bkt, 
+  uint_t n, unsigned int K, int_t n1, int cs) {
+  uint_t i, j;
 
   // find the end of each bucket.
   getBuckets_k(s, bkt, n, K, true, cs);
@@ -46,15 +47,15 @@ void putSuffix0(unsigned int *SA,
 
 /*****************************************************************************/
 
-void putSuffix0_generalized(unsigned int *SA, 
-  unsigned char *s, unsigned int *bkt, 
-  unsigned int n, unsigned int K, int n1, int cs, unsigned char separator) {
-  unsigned int i, j;
+void putSuffix0_generalized(uint_t *SA, 
+  unsigned char *s, uint_t *bkt, 
+  uint_t n, unsigned int K, int_t n1, int cs, unsigned char separator) {
+  uint_t i, j;
 
   // find the end of each bucket.
-  getBuckets_k(s, bkt, n, K, true, cs);
+  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
 
-  int tmp=bkt[separator]--;// shifts one position left of bkt[separator]
+  int_t tmp=bkt[separator]--;// shifts one position left of bkt[separator]
 
   // put the suffixes into their buckets.
   for(i=n1-1; i>0; i--) {
@@ -71,10 +72,10 @@ void putSuffix0_generalized(unsigned int *SA,
 
 /*****************************************************************************/
 
-void induceSAl0(unsigned int *SA,
-  unsigned char *s, unsigned int *bkt,
-  unsigned int n, unsigned int K, int suffix, int cs) {
-  unsigned int i, j;
+void induceSAl0(uint_t *SA,
+  int_t *s, uint_t *bkt,
+  uint_t n, unsigned int K, int_t suffix, int cs) {
+  uint_t i, j;
 
   // find the head of each bucket.
   getBuckets_k(s, bkt, n, K, false, cs);
@@ -100,13 +101,13 @@ void induceSAl0(unsigned int *SA,
 
 /*****************************************************************************/
 
-void induceSAl0_generalized(unsigned int *SA,
-  unsigned char *s, unsigned int *bkt,
-  unsigned int n, unsigned int K, int suffix, int cs, unsigned char separator) {
-  unsigned int i, j;
+void induceSAl0_generalized(uint_t *SA,
+  unsigned char *s, uint_t *bkt,
+  uint_t n, unsigned int K, int_t suffix, int cs, unsigned char separator) {
+  uint_t i, j;
 
   // find the head of each bucket.
-  getBuckets_k(s, bkt, n, K, false, cs);
+  getBuckets_k((int_t*)s, bkt, n, K, false, cs);
 
   bkt[0]++; // skip the virtual sentinel.
   for(i=0; i<n; i++)
@@ -129,10 +130,10 @@ void induceSAl0_generalized(unsigned int *SA,
 
 /*****************************************************************************/
 
-void induceSAs0(unsigned int *SA,
-  unsigned char *s, unsigned int *bkt,
-  unsigned int n, unsigned int K, int suffix, int cs) {
-  unsigned int i, j;
+void induceSAs0(uint_t *SA,
+  int_t *s, uint_t *bkt,
+  uint_t n, unsigned int K, int_t suffix, int cs) {
+  uint_t i, j;
 
   // find the end of each bucket.
   getBuckets_k(s, bkt, n, K, true, cs);
@@ -157,13 +158,13 @@ void induceSAs0(unsigned int *SA,
 
 /*****************************************************************************/
 
-void induceSAs0_generalized(unsigned int *SA,
-  unsigned char *s, unsigned int *bkt,
-  unsigned int n, unsigned int K, int suffix, int cs, unsigned char separator) {
-  unsigned int i, j;
+void induceSAs0_generalized(uint_t *SA,
+  unsigned char *s, uint_t *bkt,
+  uint_t n, uint_t K, int_t suffix, int cs, unsigned char separator) {
+  uint_t i, j;
 
   // find the end of each bucket.
-  getBuckets_k(s, bkt, n, K, true, cs);
+  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
 
   for(i=n-1; i>0; i--)
     if(SA[i]>0) {
@@ -185,10 +186,10 @@ void induceSAs0_generalized(unsigned int *SA,
 
 /*****************************************************************************/
 
-void putSubstr0(unsigned int *SA,
-  unsigned char *s, unsigned int *bkt,
-  unsigned int n, unsigned int K, int cs) {
-  unsigned int i, cur_t, succ_t;
+void putSubstr0(uint_t *SA,
+  int_t *s, uint_t *bkt,
+  uint_t n, unsigned int K, int cs) {
+  uint_t i, cur_t, succ_t;
 
   // find the end of each bucket.
   getBuckets_k(s, bkt, n, K, true, cs);
@@ -224,13 +225,13 @@ void putSubstr0(unsigned int *SA,
 }
 
 /*****************************************************************************/
-void putSubstr0_generalized(unsigned int *SA,
-  unsigned char *s, unsigned int *bkt,
-  unsigned int n, unsigned int K, int cs, unsigned char separator) {
-  unsigned int i, cur_t, succ_t;
+void putSubstr0_generalized(uint_t *SA,
+  unsigned char *s, uint_t *bkt,
+  uint_t n, unsigned int K, int cs, unsigned char separator) {
+  uint_t i, cur_t, succ_t;
 
   // find the end of each bucket.
-  getBuckets_k(s, bkt, n, K, true, cs);
+  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
 
   // set each item in SA as empty.
   for(i=0; i<n; i++) SA[i]=0;
@@ -243,13 +244,13 @@ void putSubstr0_generalized(unsigned int *SA,
   #endif
 
   // FELIPE
-  int tmp=bkt[separator]--;// shifts one position left of bkt[separator]
+  int_t tmp=bkt[separator]--;// shifts one position left of bkt[separator]
   
   SA[0]=n-1;// set the single sentinel LMS-substring.
 
   SA[tmp] = SA[0]-1; // insert the last separator at the end of bkt[separator]
 
-  int p=n-2;
+  int_t p=n-2;
 
   succ_t=0; // s[n-2] must be L-type.
   for(i=n-2; i>0; i--) {
@@ -276,8 +277,8 @@ void putSubstr0_generalized(unsigned int *SA,
 }
 /*****************************************************************************/
 
-void putSuffix1(int *SA, int *s, int n1, int cs) {
-  int i, j, pos=n1, cur, pre=-1;
+void putSuffix1(int_t *SA, int_t *s, int_t n1, int cs) {
+  int_t i, j, pos=n1, cur, pre=-1;
   
   for(i=n1-1; i>0; i--) {
     j=SA[i]; SA[i]=EMPTY_k;
@@ -289,26 +290,26 @@ void putSuffix1(int *SA, int *s, int n1, int cs) {
   }
 }
 
-void induceSAl1(int *SA, int *s, 
-  int n, int suffix, int cs) {
-  int h, i, j, step=1;
+void induceSAl1(int_t *SA, int_t *s, 
+  int_t n, int_t suffix, int cs) {
+  int_t h, i, j, step=1;
   
   for(i=0; i<n; i+=step) {
     step=1; j=SA[i]-1;
     if(SA[i]<=0) continue;
-    int c=chr(j), c1=chr(j+1);
-    int isL=c>=c1;
+    int_t c=chr(j), c1=chr(j+1);
+    int_t isL=c>=c1;
     if(!isL) continue;
 
     // s[j] is L-type.
 
-    int d=SA[c];
+    int_t d=SA[c];
     if(d>=0) {
       // SA[c] is borrowed by the left
       //   neighbor bucket.
       // shift-left the items in the
       //   left neighbor bucket.
-      int foo, bar;
+      int_t foo, bar;
       foo=SA[c];
       for(h=c-1; SA[h]>=0||SA[h]==EMPTY_k; h--)
       { bar=SA[h]; SA[h]=foo; foo=bar; }
@@ -327,7 +328,7 @@ void induceSAl1(int *SA, int *s,
         SA[c]=j; // a size-1 bucket.
     }
     else { // SA[c] is reused as a counter.
-        int pos=c-d+1;
+        int_t pos=c-d+1;
         if(pos>n-1 || SA[pos]!=EMPTY_k) {
           // we are running into the right
           //   neighbor bucket.
@@ -344,10 +345,10 @@ void induceSAl1(int *SA, int *s,
         SA[pos]=j;
     }
 
-    int c2;
-    int isL1=(j+1<n-1) && (c1>(c2=chr(j+2)) || (c1==c2 && c1<i));  // is s[SA[i]] L-type?
+    int_t c2;
+    int_t isL1=(j+1<n-1) && (c1>(c2=chr(j+2)) || (c1==c2 && c1<i));  // is s[SA[i]] L-type?
     if((!suffix || !isL1) && i>0) {
-      int i1=(step==0)?i-1:i;
+      int_t i1=(step==0)?i-1:i;
       SA[i1]=EMPTY_k;
     }
   }
@@ -364,26 +365,26 @@ void induceSAl1(int *SA, int *s,
   }
 }
 
-void induceSAs1(int *SA, int *s, 
-  int n, int suffix, int cs) {
-  int h, i, j, step=1;
+void induceSAs1(int_t *SA, int_t *s, 
+  int_t n, int_t suffix, int cs) {
+  int_t h, i, j, step=1;
   
   for(i=n-1; i>0; i-=step) {
     step=1; j=SA[i]-1;
     if(SA[i]<=0) continue;
-    int c=chr(j), c1=chr(j+1);
-    int isS=(c<c1) || (c==c1 && c>i);
+    int_t c=chr(j), c1=chr(j+1);
+    int_t isS=(c<c1) || (c==c1 && c>i);
     if(!isS) continue;
 
     // s[j] is S-type
 
-    int d=SA[c];
+    int_t d=SA[c];
     if(d>=0) {
       // SA[c] is borrowed by the right
       //   neighbor bucket.
       // shift-right the items in the
       //   right neighbor bucket.
-      int foo, bar;
+      int_t foo, bar;
       foo=SA[c];
       for(h=c+1; SA[h]>=0||SA[h]==EMPTY_k; h++)
       { bar=SA[h]; SA[h]=foo; foo=bar; }
@@ -402,7 +403,7 @@ void induceSAs1(int *SA, int *s,
         SA[c]=j; // a size-1 bucket.
     }
     else { // SA[c] is reused as a counter.
-        int pos=c+d-1;
+        int_t pos=c+d-1;
         if(SA[pos]!=EMPTY_k) {
           // we are running into the left
           //   neighbor bucket.
@@ -420,7 +421,7 @@ void induceSAs1(int *SA, int *s,
     }
 
     if(!suffix) {
-      int i1=(step==0)?i+1:i;
+      int_t i1=(step==0)?i+1:i;
       SA[i1]=EMPTY_k;
     }
   }
@@ -438,12 +439,12 @@ void induceSAs1(int *SA, int *s,
     }
 }
 
-void putSubstr1(int *SA, int *s, int n, int cs) {
-  int h, i, j;
+void putSubstr1(int_t *SA, int_t *s, int_t n, int cs) {
+  int_t h, i, j;
 
   for(i=0; i<n; i++) SA[i]=EMPTY_k;
 
-  int c, c1, t, t1;
+  int_t c, c1, t, t1;
   c1=chr(n-2);
   t1=0; 
   for(i=n-2; i>0; i--) {
@@ -456,7 +457,7 @@ void putSubstr1(int *SA, int *s, int n, int cs) {
         //   neighbor bucket.
         // shift-right the items in the
         //   right neighbor bucket.
-        int foo, bar;
+        int_t foo, bar;
         foo=SA[c];
         for(h=c+1; SA[h]>=0; h++)
         { bar=SA[h]; SA[h]=foo; foo=bar; }
@@ -465,7 +466,7 @@ void putSubstr1(int *SA, int *s, int n, int cs) {
         SA[c]=EMPTY_k;
       }
 
-      int d=SA[c];
+      int_t d=SA[c];
       if(d==EMPTY_k) { // SA[c] is empty.
         if(SA[c-1]==EMPTY_k) {
           SA[c]=-1; // init the counter.
@@ -475,7 +476,7 @@ void putSubstr1(int *SA, int *s, int n, int cs) {
           SA[c]=i; // a size-1 bucket.
       }
       else { // SA[c] is reused as a counter
-          int pos=c+d-1;
+          int_t pos=c+d-1;
           if(SA[pos]!=EMPTY_k) {
             // we are running into the left
             //   neighbor bucket.
@@ -508,11 +509,11 @@ void putSubstr1(int *SA, int *s, int n, int cs) {
   SA[0]=n-1;
 }
 
-unsigned int getLengthOfLMS(unsigned char *s, 
-  unsigned int n, int level, unsigned int x, int cs) {
+uint_t getLengthOfLMS(int_t *s, 
+  uint_t n, int level, uint_t x, int cs) {
   if(x==n-1) return 1;  
   
-  unsigned int dist=0, i=1;  
+  uint_t dist=0, i=1;  
   while(1) {
     if(chr(x+i)<chr(x+i-1)) break;
     i++;
@@ -526,22 +527,22 @@ unsigned int getLengthOfLMS(unsigned char *s,
   return dist+1;
 }
 
-unsigned int nameSubstr(unsigned int *SA, 
-  unsigned char *s, unsigned int *s1, unsigned int n, 
-  unsigned int m, unsigned int n1, int level, int cs) {
-  unsigned int i, j, cur_t, succ_t;
+uint_t nameSubstr(uint_t *SA, 
+  int_t *s, uint_t *s1, uint_t n, 
+  uint_t m, uint_t n1, int level, int cs) {
+  uint_t i, j, cur_t, succ_t;
 
   // init the name array buffer
   for(i=n1; i<n; i++) SA[i]=EMPTY_k;
 
   // scan to compute the interim s1
-  unsigned int name=0, name_ctr=0;
-  unsigned int pre_pos=n-1, pre_len=0;
+  uint_t name=0, name_ctr=0;
+  uint_t pre_pos=n-1, pre_len=0;
   for(i=0; i<n1; i++) {
     int diff=false;
-    unsigned int len, pos=SA[i];
+    uint_t len, pos=SA[i];
 
-    unsigned int d;
+    uint_t d;
     len=getLengthOfLMS(s, n, level, pos, cs);
     if(len!=pre_len) diff=true;
     else
@@ -572,7 +573,7 @@ unsigned int nameSubstr(unsigned int *SA,
   //   to produce the final s1.
   succ_t=1;
   for(i=n1-1; i>0; i--) {
-    int ch=s1[i], ch1=s1[i-1];
+    int_t ch=s1[i], ch1=s1[i-1];
     cur_t=(ch1< ch || (ch1==ch && succ_t==1))?1:0;
     if(cur_t==1) {
       s1[i-1]+=SA[s1[i-1]]-1;
@@ -585,23 +586,23 @@ unsigned int nameSubstr(unsigned int *SA,
 
 /*****************************************************************************/
 
-unsigned int nameSubstr_generalized(unsigned int *SA, 
-  unsigned char *s, unsigned int *s1, unsigned int n, 
-  unsigned int m, unsigned int n1, int level, int cs, unsigned char separator) {
-  unsigned int i, j, cur_t, succ_t;
+uint_t nameSubstr_generalized(uint_t *SA, 
+  unsigned char *s, uint_t *s1, uint_t n, 
+  uint_t m, uint_t n1, int level, int cs, unsigned char separator) {
+  uint_t i, j, cur_t, succ_t;
 
   // init the name array buffer
   for(i=n1; i<n; i++) SA[i]=EMPTY_k;
 
   // scan to compute the interim s1
-  unsigned int name=0, name_ctr=0;
-  unsigned int pre_pos=n-1, pre_len=0;
+  uint_t name=0, name_ctr=0;
+  uint_t pre_pos=n-1, pre_len=0;
   for(i=0; i<n1; i++) {
     int diff=false;
-    unsigned int len, pos=SA[i];
+    uint_t len, pos=SA[i];
 
-    unsigned int d;  
-    len=getLengthOfLMS(s, n, level, pos, cs);
+    uint_t d;  
+    len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
     if(len!=pre_len) diff=true;
     else
       for(d=0; d<len; d++)
@@ -639,7 +640,7 @@ unsigned int nameSubstr_generalized(unsigned int *SA,
   //   to produce the final s1.
   succ_t=1;
   for(i=n1-1; i>0; i--) {
-    int ch=s1[i], ch1=s1[i-1];
+    int_t ch=s1[i], ch1=s1[i-1];
     cur_t=(ch1< ch || (ch1==ch && succ_t==1))?1:0;
     if(cur_t==1) {
       s1[i-1]+=SA[s1[i-1]]-1;
@@ -659,11 +660,11 @@ unsigned int nameSubstr_generalized(unsigned int *SA,
 
 /*****************************************************************************/
 
-void getSAlms(unsigned int *SA, 
-  unsigned char *s, 
-  unsigned int *s1, unsigned int n, 
-  unsigned int n1, int level, int cs) {
-  unsigned int i, j, cur_t, succ_t;
+void getSAlms(uint_t *SA, 
+  int_t *s, 
+  uint_t *s1, uint_t n, 
+  uint_t n1, int level, int cs) {
+  uint_t i, j, cur_t, succ_t;
 
   j=n1-1; s1[j--]=n-1;
   succ_t=0; // s[n-2] must be L-type
@@ -682,14 +683,14 @@ void getSAlms(unsigned int *SA,
 
 /*****************************************************************************/
 
-int SACA_K(unsigned char *s, unsigned int *SA,
-  unsigned int n, unsigned int K,
-  unsigned int m, int cs, int level) {
-  unsigned int i;
-  unsigned int *bkt=NULL;
+int_t SACA_K(int_t *s, uint_t *SA,
+  uint_t n, unsigned int K,
+  uint_t m, int cs, int level) {
+  uint_t i;
+  uint_t *bkt=NULL;
 
   #if DEBUG
-  int j;
+  int_t j;
   for(j=0; j<n; j++)
     printf("%d) %d\n", j, chr(j));
   printf("\n");
@@ -699,7 +700,7 @@ int SACA_K(unsigned char *s, unsigned int *SA,
 
   if(level==0) {
 
-    bkt=(unsigned int *)malloc(sizeof(int)*K);
+    bkt=(uint_t *)malloc(sizeof(int_t)*K);
     putSubstr0(SA, s, bkt, n, K, cs);
 
     induceSAl0(SA, s, bkt, n, K, false, cs);
@@ -707,9 +708,9 @@ int SACA_K(unsigned char *s, unsigned int *SA,
 
   }
   else {
-    putSubstr1((int *)SA, (int *)s,(int)n, cs);
-    induceSAl1((int *)SA, (int *)s, n ,false, cs);
-    induceSAs1((int *)SA, (int *)s, n, false, cs);
+    putSubstr1((int_t *)SA, (int_t *)s,(int_t)n, cs);
+    induceSAl1((int_t *)SA, (int_t *)s, n ,false, cs);
+    induceSAs1((int_t *)SA, (int_t *)s, n, false, cs);
   }
 
   // now, all the LMS-substrings are sorted and 
@@ -718,21 +719,21 @@ int SACA_K(unsigned char *s, unsigned int *SA,
   // compact all the sorted substrings into
   //   the first n1 items of SA.
   // 2*n1 must be not larger than n.
-  unsigned int n1=0;
+  uint_t n1=0;
   for(i=0; i<n; i++) 
-    if((!level&&SA[i]>0) || (level&&((int *)SA)[i]>0))
+    if((!level&&SA[i]>0) || (level&&((int_t *)SA)[i]>0))
       SA[n1++]=SA[i];
 
-  unsigned int *SA1=SA, *s1=SA+m-n1;
-  unsigned int name_ctr;
+  uint_t *SA1=SA, *s1=SA+m-n1;
+  uint_t name_ctr;
   name_ctr=nameSubstr(SA,s,s1,n,m,n1,level,cs);
 
   // stage 2: solve the reduced problem.
-  int depth=1;
+  int_t depth=1;
   // recurse if names are not yet unique.
   if(name_ctr<n1)
-    depth += SACA_K((unsigned char *)s1, SA1, 
-          n1, 0, m-n1, sizeof(int), level+1);
+    depth += SACA_K((int_t*)s1, SA1, 
+          n1, 0, m-n1, sizeof(int_t), level+1);
   else // get the suffix array of s1 directly.
     for(i=0; i<n1; i++) SA1[s1[i]]=i;
 
@@ -746,9 +747,9 @@ int SACA_K(unsigned char *s, unsigned int *SA,
     free(bkt);
   }
   else {
-    putSuffix1((int *)SA, (int *)s, n1, cs);
-    induceSAl1((int *)SA, (int *)s, n, true, cs);
-    induceSAs1((int *)SA, (int *)s, n, true, cs);
+    putSuffix1((int_t *)SA, (int_t *)s, n1, cs);
+    induceSAl1((int_t *)SA, (int_t *)s, n, true, cs);
+    induceSAs1((int_t *)SA, (int_t *)s, n, true, cs);
   }
 
 return depth;
@@ -756,14 +757,14 @@ return depth;
 
 /*****************************************************************************/
 
-int gSACA_K(unsigned char *s, unsigned int *SA,
-  unsigned int n, unsigned int K,
-  unsigned int m, int cs, int level, unsigned char separator) {
-  unsigned int i;
-  unsigned int *bkt=NULL;
+int_t gSACA_K(unsigned char *s, uint_t *SA,
+  uint_t n, unsigned int K,
+  uint_t m, int cs, int level, unsigned char separator) {
+  uint_t i;
+  uint_t *bkt=NULL;
 
   #if DEBUG
-  int j;
+  int_t j;
   for(j=0; j<n; j++)
     printf("%d) %d\n", j, chr(j));
   printf("\n");
@@ -771,7 +772,7 @@ int gSACA_K(unsigned char *s, unsigned int *SA,
 
   // stage 1: reduce the problem by at least 1/2.
 
-  bkt=(unsigned int *)malloc(sizeof(int)*K);
+  bkt=(uint_t *)malloc(sizeof(int_t)*K);
   putSubstr0_generalized(SA, s, bkt, n, K, cs, separator);
  
   induceSAl0_generalized(SA, s, bkt, n, K, false, cs, separator);
@@ -789,9 +790,9 @@ int gSACA_K(unsigned char *s, unsigned int *SA,
   // compact all the sorted substrings into
   //   the first n1 items of SA.
   // 2*n1 must be not larger than n.
-  unsigned int n1=0;
+  uint_t n1=0;
   for(i=0; i<n; i++) 
-    if((!level&&SA[i]>0) || (level&&((int *)SA)[i]>0))
+    if((!level&&SA[i]>0) || (level&&((int_t *)SA)[i]>0))
       SA[n1++]=SA[i];
 
   #if DEBUG
@@ -801,8 +802,8 @@ int gSACA_K(unsigned char *s, unsigned int *SA,
   printf("\n");
   #endif
 
-  unsigned int *SA1=SA, *s1=SA+m-n1;
-  unsigned int name_ctr;
+  uint_t *SA1=SA, *s1=SA+m-n1;
+  uint_t name_ctr;
   name_ctr=nameSubstr_generalized(SA,s,s1,n,m,n1,level,cs,separator);
 
   #if DEBUG
@@ -813,11 +814,11 @@ int gSACA_K(unsigned char *s, unsigned int *SA,
   #endif
 
   // stage 2: solve the reduced problem.
-  int depth=1;
+  int_t depth=1;
   // recurse if names are not yet unique.
   if(name_ctr<n1)
-    depth += SACA_K((unsigned char *)s1, SA1, 
-          n1, 0, m-n1, sizeof(int), level+1);
+    depth += SACA_K((int_t*)s1, SA1, 
+          n1, 0, m-n1, sizeof(int_t), level+1);
   else // get the suffix array of s1 directly.
     for(i=0; i<n1; i++) SA1[s1[i]]=i;
 
@@ -831,7 +832,7 @@ int gSACA_K(unsigned char *s, unsigned int *SA,
   printf("\nstage 3:\n\n");
   #endif
 
-  getSAlms(SA, s, s1, n, n1, level, cs);
+  getSAlms(SA, (int_t*)s, s1, n, n1, level, cs);
   
   #if DEBUG
   printf("SA\n");

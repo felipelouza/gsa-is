@@ -6,7 +6,7 @@ CFLAGS += -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscri
 LFLAGS = -lm -lrt -ldl
 
 DIR = dataset/
-INPUT = input.1000.txt
+INPUT = input.100000.txt
 
 #DIR = /home/louza/database/ests/
 #INPUT = all_ests.fasta
@@ -17,13 +17,13 @@ INPUT = input.1000.txt
 #DIR = /home/louza/database/reads/
 #INPUT = Vr6_L001_R1.clipped.fastq
 
-K = 10
+K = 3
 MODE = 1
 CHECK = 1
 
 LIBOBJ = \
-	lib/file.o\
 	lib/utils.o\
+	lib/file.o\
 	lib/suffix_array.o\
 	external/malloc_count/malloc_count.o\
 	gsais.o\
@@ -32,13 +32,13 @@ LIBOBJ = \
 all: compile
 
 clean:
-	\rm lib/*.o *.o external/*.o -v
+	\rm lib/*.o *.o external/*.o gsais -v
 
 compile: main.c ${LIBOBJ} 
-	$(CC) $(CFLAGS) $(LFLAGS) -o main main.c ${LIBOBJ}
+	$(CC) $(CFLAGS) $(LFLAGS) -o gsais main.c ${LIBOBJ}
 
 run:
-	./main $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
+	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
 
 valgrind:
-	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./main $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
+	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)

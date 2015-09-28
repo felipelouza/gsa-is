@@ -1,7 +1,5 @@
 #include "utils.h"
 
-
-
 /**********************************************************************/
 
 
@@ -25,7 +23,7 @@ void die(const char* where) {
  
 void dies(const char* where, char* format, ...) {
 
-	int err = errno;
+	int_t err = errno;
 	va_list val;
 
 	printf("Error at %s: %s.\n",where,errno ? strerror(errno) : "errno not set");
@@ -37,41 +35,41 @@ void dies(const char* where, char* format, ...) {
 	exit(err ? err : 1);
 }
 /**********************************************************************/
-int print_char(char* A, int n){
+int_t print_char(char* A, int_t n){
 
-	int i;
+	int_t i;
 	for(i=0; i<n; i++)	
-		printf("%d) %c\n", i, A[i]);
+		printf("%" PRIdN ") %c\n", i, A[i]);
 
 	printf("\n");
 
 return 0;
 }
 /**********************************************************************/
-int print_int(int* A, int n){
+int_t print_int(int_t* A, int_t n){
 
-	int i;
+	int_t i;
 	for(i=0; i<n; i++)	
-		printf("%d) %d\n", i, A[i]);
+		printf("%" PRIdN ") %" PRIdN "\n", i, A[i]);
 
 	printf("\n");
 
 return 0;
 }
 /**********************************************************************/
-int min_range(int* A, int l, int r){
+int_t min_range(int_t* A, int_t l, int_t r){
 
 
 	if(r>l)return 0;
 
-	printf("[l, r] = [%d, %d]\n", l, r);
+	printf("[l, r] = [%" PRIdN ", %" PRIdN "]\n", l, r);
 
-	int min = INT_MAX;
-	int i;
+	int_t min = INT_MAX;
+	int_t i;
 	for(i=l; i<=l; i++)
 		min = (A[i]<min?A[i]:min);
 
-	printf("min = %d\n", min);
+	printf("min = %" PRIdN "\n", min);
 
 return min;
 }

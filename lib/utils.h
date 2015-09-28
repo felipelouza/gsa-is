@@ -9,12 +9,29 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <time.h>
+#include <stdint.h>
+#include <inttypes.h>
 
 #ifndef UCHAR_SIZE
 #define UCHAR_SIZE 256
 #endif
 
 #define END_MARKER '$'
+
+#define m64 0
+
+#if m64
+	typedef int64_t  int_t;
+	typedef uint64_t uint_t;
+	#define PRIdN	 PRId64
+#else
+	typedef int32_t  int_t;
+	typedef uint32_t uint_t;
+	#define PRIdN	 PRId32
+#endif
+
+typedef uint32_t int_text;
+
 
 /**********************************************************************/
 
@@ -28,9 +45,9 @@ double time_stop(time_t t_time, clock_t c_clock);
 void die(const char* where);
 void dies(const char* where, char* format, ...);
 
-int print_int(int* A, int n);
-int print_char(char* A, int n);
-int min_range(int* A, int l, int r);
+int_t print_int(int_t* A, int_t n);
+int_t print_char(char* A, int_t n);
+int_t min_range(int_t* A, int_t l, int_t r);
 
 /**********************************************************************/
 

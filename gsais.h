@@ -12,13 +12,15 @@
 #include <memory.h>
 #include <time.h>
 
+#include "lib/utils.h"
+
 #define tget(i) ( (t[(i)/8]&mask[(i)%8]) ? 1 : 0 )
 #define tset(i, b) t[(i)/8]=(b) ? (mask[(i)%8]|t[(i)/8]) : ((~mask[(i)%8])&t[(i)/8])
 
 #define isLMS(i) (i>0 && tget(i) && !tget(i-1))
 
 /*
-#define chr(i) (cs==sizeof(int)?((int*)s)[i]:((unsigned char *)s)[i])
+#define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:((unsigned char *)s)[i])
 #define false 0
 #define true 1
 */
@@ -27,14 +29,14 @@
 // require s[n-1]=0 (the virtual sentinel!), n>=2
 // level starts from 0
 // returns the reduction depht
-int SAIS(unsigned char *s, int *SA, int n, int K, int cs, int level);
+int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level);
 
 
 // find the generalized suffix array GSA of s[0..n-1] in {0..K-1}^n
 // require s[n-1]=0 (the virtual sentinel!), n>=2
 // level starts from 0
 // returns the reduction depht
-int gSAIS(unsigned char *s, int *SA, int n, int K, int cs, int level, unsigned char separator);
+int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, unsigned char separator);
 
 
 #endif

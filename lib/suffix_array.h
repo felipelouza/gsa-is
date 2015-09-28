@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <limits.h>
 
+#include "utils.h"
 
-int suffix_array_print(int *SA, unsigned char *T, size_t len, int cs);
-
-int suffix_array_check(int *SA, unsigned char *T, size_t len, int cs, unsigned char sentinel);
+int_t suffix_array_print(int_t *SA, unsigned char *T, size_t len, int cs);
+int_t suffix_array_check(int_t *SA, unsigned char *T, size_t len, int cs, unsigned char sentinel);
 
 #endif

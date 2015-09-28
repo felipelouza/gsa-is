@@ -1,20 +1,20 @@
 #include "suffix_array.h"
 
 
-#define chr(i) (cs==sizeof(int)?((int*)T)[i]:((unsigned char *)T)[i])
+#define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
 
 /*******************************************************************/
 
-int suffix_array_print(int *SA, unsigned char *T, size_t len, int cs){
+int_t suffix_array_print(int_t *SA, unsigned char *T, size_t len, int cs){
 
-int i;
+int_t i;
 	for(i=0; i<len; i++){
 
-		printf("%d) %d\t", i, SA[i]);
+		printf("%" PRIdN ") %" PRIdN "\t", i, SA[i]);
 	
-		int j=SA[i];
+		int_t j=SA[i];
 		for(j=SA[i]; (j<SA[i]+5); j++)
-			printf("%d ", chr(j));
+			printf("%" PRIdN " ", chr(j));
 		printf("\n");
 	}
 
@@ -23,7 +23,7 @@ return 1;
 
 /*******************************************************************/
 
-int sleq(unsigned char *T, int a, int b, size_t len, int cs, unsigned char sentinel) {
+int_t sleq(unsigned char *T, int_t a, int_t b, size_t len, int cs, unsigned char sentinel) {
 
 	size_t i;
 
@@ -48,18 +48,18 @@ return 1;
 
 /*******************************************************************/
 
-int suffix_array_check(int *SA, unsigned char *T, size_t len, int cs, unsigned char sentinel){
+int_t suffix_array_check(int_t *SA, unsigned char *T, size_t len, int cs, unsigned char sentinel){
 
-	unsigned i,j,k;
+	int_t i,j,k;
 	
 	for (i = 0; i < len-1;  i++) {
 		size_t min = SA[i+1]<SA[i]?(len-SA[i]):(len-SA[i+1]);
 		if (!sleq(T, SA[i], SA[i+1], min, cs, sentinel)){
 
-			printf("#%d) %d, %d&\n", i, SA[i], SA[i+1]);
+			printf("#%" PRIdN ") %" PRIdN ", %" PRIdN "&\n", i, SA[i], SA[i+1]);
 
 			for(j=SA[i], k=SA[i+1]; (j<SA[i]+5); j++, k++)
-				printf("%d | %d\n", chr(j), chr(k));
+				printf("%" PRIdN " | %" PRIdN "\n", chr(j), chr(k));
 			printf("\n");
 
 			return 0;
