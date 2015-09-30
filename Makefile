@@ -6,7 +6,7 @@ CFLAGS += -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscri
 LFLAGS = -lm -lrt -ldl
 
 DIR = dataset/
-INPUT = input.100000.txt
+INPUT = input.1000.txt
 
 #DIR = /home/louza/database/ests/
 #INPUT = all_ests.fasta
