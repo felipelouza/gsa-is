@@ -1,9 +1,0 @@
-Fri Sep 18 20:46:58 BRT 2015
- 
-./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 6400000 1 0
- 
-./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 6400000 2 0
- 
-./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 6400000 3 0
- 
-./main /mnt/disk1/database/protein/ uniprot_trembl.fasta 6400000 4 0

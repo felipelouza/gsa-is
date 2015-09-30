@@ -1,9 +1,0 @@
-Sat Sep 19 01:53:19 BRT 2015
- 
-./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 25600000 1 0
- 
-./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 25600000 2 0
- 
-./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 25600000 3 0
- 
-./main /mnt/disk1/database/reads/ VrET3-2_R1.clipped.fastq 25600000 4 0

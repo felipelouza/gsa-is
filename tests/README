@@ -1,0 +1,14 @@
+uniprot_trembl.fasta
+50,825,784
+
+ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/
+
+reads.fastq
+32,621,862 strings
+
+http://gage.cbcb.umd.edu/data/Hg_chr14/Data.quakeCor.tgz
+cat frag_1.fastq frag_2.fastq
+
+http://gage.cbcb.umd.edu/data/index.html
+Human Chromosome 14
+
