@@ -1,4 +1,5 @@
 # ignore objects and archives, anywhere in the tree.
 *.[oa]
-main
+gsais
 *.swp
+*.sa

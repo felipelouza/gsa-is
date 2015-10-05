@@ -15,7 +15,7 @@
 #include "gsais.h"
 #include "gsaca-k.h"
 
-#define DEBUG 0
+#define DEBUG 1
 
 /*******************************************************************/
 int_t* cat_int(unsigned char** R, int k, int_t *n){
@@ -60,9 +60,9 @@ return str;
 
 int main(int argc, char** argv){
 
-int VALIDATE=0, MODE=0;
+int VALIDATE=0, MODE=0, OUTPUT=0;
 
-	if(argc!=6){
+	if(argc!=7){
 		dies(__func__,"argc!=4");
 	}
 
@@ -70,19 +70,20 @@ int VALIDATE=0, MODE=0;
 	int_t i, n=0;
 	int   k;
 
-	char* dir = argv[1];
-	char* file = argv[2];
+	char* c_dir = argv[1];
+	char* c_file = argv[2];
 
 	sscanf(argv[3], "%d", &k);
 	sscanf(argv[4], "%u", &MODE);
 	sscanf(argv[5], "%u", &VALIDATE);
+	sscanf(argv[6], "%u", &OUTPUT);
 
-	file_chdir(dir);
+	file_chdir(c_dir);
 
 	//disk access
-	R = (unsigned char**) file_load_multiple(file, k, &n);
+	R = (unsigned char**) file_load_multiple(c_file, k, &n);
 	if(!R){
-		fprintf(stderr, "Error: less than %d strings in %s\n", k, file);	
+		fprintf(stderr, "Error: less than %d strings in %s\n", k, c_file);
 		return 0;
 	}
 
@@ -168,6 +169,16 @@ int VALIDATE=0, MODE=0;
 		}
 	}
 	else printf("depth = %" PRIdN "\n", depth);
+
+	// output
+	if(OUTPUT){
+		suffix_array_write(SA, n, c_file, "sa");
+	}
+
+/*
+	free(SA);
+	SA = suffix_array_read(n, c_file, "sa"); 
+*/
 
 	#if DEBUG
 	if(MODE==1 || MODE==2)//sais or saca-k	

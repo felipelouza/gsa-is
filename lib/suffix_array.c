@@ -5,6 +5,41 @@
 
 /*******************************************************************/
 
+int_t suffix_array_write(int_t *SA, int_t n, char* c_file, const char* ext){
+
+	FILE *f_out;
+	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+	
+	sprintf(c_out, "%s.%s", c_file, ext);
+	f_out = file_open(c_out, "wb");
+	
+	fwrite(SA, sizeof(int_t), n, f_out);
+	
+	file_close(f_out);
+	free(c_out);
+
+return 1;
+}
+
+int_t* suffix_array_read(int_t n, char* c_file, const char* ext){
+
+        FILE *f_in;
+        char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+
+        sprintf(c_in, "%s.%s", c_file, ext);
+        f_in = file_open(c_in, "rb");
+
+        int_t *SA = (int_t*) malloc(n*sizeof(int_t));
+        fread(SA, sizeof(int_t), n, f_in);
+
+        file_close(f_in);
+        free(c_in);
+
+return SA;
+}
+
+/*******************************************************************/
+
 int_t suffix_array_print(int_t *SA, unsigned char *T, size_t len, int cs){
 
 int_t i;

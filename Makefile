@@ -8,18 +8,16 @@ LFLAGS = -lm -lrt -ldl
 DIR = dataset/
 INPUT = input.1000.txt
 
-#DIR = /home/louza/database/ests/
-#INPUT = all_ests.fasta
-
 #DIR = /home/louza/database/protein/
 #INPUT = uniprot_trembl.fasta
 
 #DIR = /home/louza/database/reads/
 #INPUT = Vr6_L001_R1.clipped.fastq
 
-K = 3
-MODE = 1
-CHECK = 1
+K	= 3
+MODE 	= 1
+CHECK	= 1
+OUTPUT	= 0
 
 LIBOBJ = \
 	lib/utils.o\
@@ -38,7 +36,7 @@ compile: main.c ${LIBOBJ}
 	$(CC) $(CFLAGS) $(LFLAGS) -o gsais main.c ${LIBOBJ}
 
 run:
-	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
+	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(CHECK) $(OUTPUT)
 
 valgrind:
-	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(CHECK)
+	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(CHECK) $(OUTPUT)
