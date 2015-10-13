@@ -15,7 +15,7 @@
 #include "gsais.h"
 #include "gsaca-k.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 /*******************************************************************/
 int_t* cat_int(unsigned char** R, int k, int_t *n){
@@ -95,7 +95,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 	int_t  *str_int = NULL;
 	
 	//concatenate strings
-	if(MODE==1 || MODE==2){//sais or saca-k	
+	if(MODE==1 || MODE==2){//sais or saca-k (int)	
 		str_int = cat_int(R, k, &n);
 		
 		#if DEBUG
@@ -105,8 +105,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		printf("\n");
 		#endif
 	}
-	else if(MODE==3 || MODE==4){
-		
+	else{ // sais, saca-k, gsais, gsaca-k (char)
 		str = cat_char(R, k, &n);
 		#if DEBUG
 		int_t i=0;
@@ -130,28 +129,36 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 	//sorted array
 	int_t *SA = (int_t*) malloc(n*sizeof(int_t));
 	int_t depth=0;
-	//sais, saca-k, gsais, gsaca-k
 
 	time_t t_start = time(NULL);
 	clock_t c_start =  clock();
 
 	switch(MODE){
-		case 1: printf("## SAIS ##\n");
+		case 1: printf("## SAIS (int) ##\n");
 			depth = SAIS((int_t*)str_int, SA, n, 256+k, sizeof(int_t), 0);
 			break;
 
-		case 2: printf("## SACA_K ##\n"); 
+		case 2: printf("## SACA_K (int) ##\n"); 
 			depth = SACA_K((int_t*)str_int, (uint_t*)SA, n, 256+k, n, sizeof(int_t), 0);
 			break;
+		
+		case 3: printf("## SAIS (char) ##\n");
+			depth = SAIS((int_t*)str, SA, n, 256, sizeof(char), 0);
+			break;
 
-		case 3: printf("## gSAIS ##\n"); 
+		case 4: printf("## SACA_K (char) ##\n"); 
+			depth = SACA_K((int_t*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0);
+			break;
+	
+		/**/	
+		case 5: printf("## gSAIS ##\n"); 
 			depth = gSAIS((unsigned char*)str, SA, n, 256, sizeof(char), 0, 1);//separator=1
 			break;
 
- 		case 4: printf("## gSACA_K ##\n"); 
+ 		case 6: printf("## gSACA_K ##\n"); 
 			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);
 			break;
-
+		/**/
 		default: break;
 	}
 
@@ -164,6 +171,10 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
 		else if(MODE==3 || MODE==4){
+	        	if(!suffix_array_check(SA, (unsigned char*)str, n, sizeof(char), 0)) printf("isNotSorted!!\n");
+		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
+		}
+		else if(MODE==5 || MODE==6){
 	        	if(!suffix_array_check(SA, (unsigned char*)str, n, sizeof(char), 1)) printf("isNotSorted!!\n");
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
@@ -183,7 +194,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 	#if DEBUG
 	if(MODE==1 || MODE==2)//sais or saca-k	
 		suffix_array_print(SA, (unsigned char*)str_int, min(10,n), sizeof(int_t));	
-	else if(MODE==3 || MODE==4)
+	else
 		suffix_array_print(SA, (unsigned char*)str, min(10,n), sizeof(char));
 	#endif
 
