@@ -22,14 +22,16 @@ int_t* cat_int(unsigned char** R, int k, int_t *n){
 
 	(*n)++; //add 0 at the end
 
-	int i, j;
+	int_t i, j;
 	int_t l=0;
 	int_t *str_int = (int_t*) malloc((*n)*sizeof(int_t));
 
 	for(i=0; i<k; i++){
-		for(j=0; j<strlen((char*)R[i]); j++)
+		int_t m = strlen((char*)R[i]);
+		for(j=0; j<m; j++)
 			str_int[l++] = R[i][j]+(k+1);
 		str_int[l++] = i+1; //add $_i as separator
+
 	}
 	
 	str_int[l]=0;
@@ -41,13 +43,15 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 
 	(*n)++; //add 0 at the end
 
-	int i, j;
+	int_t i, j;
 	int_t l=0;
 	unsigned char *str = (unsigned char*) malloc((*n)*sizeof(unsigned char));
 
 	for(i=0; i<k; i++){
-		for(j=0; j<strlen((char*)R[i]); j++)
+		int_t m = strlen((char*)R[i]);
+		for(j=0; j<m; j++){
 			str[l++] = R[i][j]+1;
+		}
 		str[l++] = 1; //add 1 as separator
 	}
 
@@ -114,7 +118,6 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		printf("\n");
 		#endif
 	}
-
 	#if DEBUG
 		printf("R:\n");
 		for(i=0; i<k; i++)

@@ -1,0 +1,13 @@
+Sat Oct 10 03:51:14 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 3903704 1 0
+Makefile:41: recipe for target 'run' failed
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 3903704 2 0
+Wed Oct 14 05:07:49 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 3903704 3 0 0
+Makefile:39: recipe for target 'run' failed
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 3903704 4 0 0
+Makefile:39: recipe for target 'run' failed

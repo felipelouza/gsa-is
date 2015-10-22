@@ -1,0 +1,56 @@
+Sun Sep 27 22:25:54 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 1600000 1 0
+K = 1600000
+N = 531194430
+sizeof(int) = 4 bytes
+## SAIS ##
+CLOCK = 362.590562 TIME = 363.000000
+depth = 8
+malloc_count ### exiting, total: 7,644,904,156, peak: 4,497,269,923, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 1600000 2 0
+K = 1600000
+N = 531194430
+sizeof(int) = 4 bytes
+## SACA_K ##
+CLOCK = 254.699513 TIME = 254.000000
+depth = 8
+malloc_count ### exiting, total: 6,981,307,397, peak: 4,255,956,464, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 1600000 3 0
+K = 1600000
+N = 531194430
+sizeof(int) = 4 bytes
+## gSAIS ##
+CLOCK = 339.163776 TIME = 339.000000
+depth = 8
+malloc_count ### exiting, total: 6,038,520,866, peak: 2,903,686,633, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 1600000 4 0
+K = 1600000
+N = 531194430
+sizeof(int) = 4 bytes
+## gSACA_K ##
+CLOCK = 234.034005 TIME = 234.000000
+depth = 8
+malloc_count ### exiting, total: 5,381,324,107, peak: 2,655,973,174, current: 0
+Mon Oct 12 22:44:16 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 1600000 3 0 0
+K = 1600000
+N = 531194430
+sizeof(int) = 4 bytes
+## SAIS (char) ##
+CLOCK = 343.859942 TIME = 343.000000
+depth = 8
+malloc_count ### exiting, total: 6,009,578,463, peak: 2,901,519,641, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 1600000 4 0 0
+K = 1600000
+N = 531194430
+sizeof(int) = 4 bytes
+## SACA_K (char) ##
+CLOCK = 238.698124 TIME = 238.000000
+depth = 8
+malloc_count ### exiting, total: 5,381,324,107, peak: 2,655,973,174, current: 0

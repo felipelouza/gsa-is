@@ -1,37 +1,55 @@
-Mon Sep 28 06:41:05 AMT 2015
+Mon Oct 19 00:18:16 AMST 2015
  
-./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 1 0
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 1 0 0
 K = 25600000
 N = 9070832678
 sizeof(int) = 8 bytes
-## SAIS ##
-CLOCK = 9450.150216 TIME = 9443.000000
+## SAIS (int) ##
+CLOCK = 11616.241630 TIME = 11608.000000
 depth = 9
 malloc_count ### exiting, total: 210,106,767,793, peak: 150,668,921,585, current: 0
  
-./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 2 0
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 2 0 0
 K = 25600000
 N = 9070832678
 sizeof(int) = 8 bytes
-## SACA_K ##
-CLOCK = 7171.613199 TIME = 7166.000000
+## SACA_K (int) ##
+CLOCK = 9395.014987 TIME = 9388.000000
 depth = 9
 malloc_count ### exiting, total: 193,726,435,980, peak: 145,338,124,896, current: 0
  
-./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 3 0
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 3 0 0
+K = 25600000
+N = 9070832678
+sizeof(int) = 8 bytes
+## SAIS (char) ##
+CLOCK = 10227.695253 TIME = 10220.000000
+depth = 9
+malloc_count ### exiting, total: 145,106,251,402, peak: 87,070,183,631, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 4 0 0
+K = 25600000
+N = 9070832678
+sizeof(int) = 8 bytes
+## SACA_K (char) ##
+CLOCK = 7313.402391 TIME = 7308.000000
+depth = 9
+malloc_count ### exiting, total: 130,025,807,234, peak: 81,637,496,150, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 5 0 0
 K = 25600000
 N = 9070832678
 sizeof(int) = 8 bytes
 ## gSAIS ##
-CLOCK = 8712.411929 TIME = 8705.000000
+CLOCK = 10144.761653 TIME = 10138.000000
 depth = 9
 malloc_count ### exiting, total: 146,201,339,047, peak: 87,173,092,839, current: 0
  
-./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 4 0
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 25600000 6 0 0
 K = 25600000
 N = 9070832678
 sizeof(int) = 8 bytes
 ## gSACA_K ##
-CLOCK = 5957.715445 TIME = 5953.000000
+CLOCK = 7035.042062 TIME = 7030.000000
 depth = 9
 malloc_count ### exiting, total: 130,025,807,234, peak: 81,637,496,150, current: 0

@@ -1,7 +1,13 @@
+datasets
+
+--
+
 uniprot_trembl.fasta
 50,825,784
 
 ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/
+
+--
 
 reads.fastq
 32,621,862 strings
@@ -11,4 +17,12 @@ cat frag_1.fastq frag_2.fastq
 
 http://gage.cbcb.umd.edu/data/index.html
 Human Chromosome 14
+
+--
+
+text_SURF.txt
+3,903,704 strings
+
+http://algo2.iti.kit.edu/gog/projects/ALENEX15/collections/ENWIKIBIG/
+http://arxiv.org/pdf/1311.1249v1.pdf
 

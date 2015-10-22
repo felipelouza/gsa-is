@@ -35,3 +35,22 @@ sizeof(int) = 4 bytes
 CLOCK = 418.836331 TIME = 418.000000
 depth = 5
 malloc_count ### exiting, total: 9,222,297,795, peak: 6,047,893,114, current: 0
+Tue Oct 13 23:28:17 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt reads.fastq 12800000 3 0 0
+K = 12800000
+N = 1209578418
+sizeof(int) = 4 bytes
+## SAIS (char) ##
+CLOCK = 652.384086 TIME = 652.000000
+depth = 5
+malloc_count ### exiting, total: 9,923,984,482, peak: 6,360,614,465, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt reads.fastq 12800000 4 0 0
+K = 12800000
+N = 1209578418
+sizeof(int) = 4 bytes
+## SACA_K (char) ##
+CLOCK = 454.519466 TIME = 454.000000
+depth = 5
+malloc_count ### exiting, total: 9,222,297,795, peak: 6,047,893,114, current: 0

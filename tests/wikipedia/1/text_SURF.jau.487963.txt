@@ -1,0 +1,56 @@
+Sat Oct 10 07:24:54 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 487963 1 0
+K = 487963
+N = 1071827039
+sizeof(int) = 4 bytes
+## SAIS ##
+CLOCK = 685.775024 TIME = 686.000000
+depth = 8
+malloc_count ### exiting, total: 11774978898, peak: 8944997500, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 487963 2 0
+K = 487963
+N = 1071827039
+sizeof(int) = 4 bytes
+## SACA_K ##
+CLOCK = 497.760045 TIME = 497.000000
+depth = 8
+malloc_count ### exiting, total: 10763703359, peak: 8576569188, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 487963 3 0
+K = 487963
+N = 1071827039
+sizeof(int) = 4 bytes
+## gSAIS ##
+CLOCK = 624.380401 TIME = 624.000000
+depth = 8
+malloc_count ### exiting, total: 8555594077, peak: 5729516383, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 487963 4 0
+K = 487963
+N = 1071827039
+sizeof(int) = 4 bytes
+## gSACA_K ##
+CLOCK = 426.570405 TIME = 427.000000
+depth = 8
+malloc_count ### exiting, total: 7546270390, peak: 5359136219, current: 0
+Wed Oct 14 01:43:11 AMT 2015
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 487963 3 0 0
+K = 487963
+N = 1071827039
+sizeof(int) = 4 bytes
+## SAIS (char) ##
+CLOCK = 615.072797 TIME = 615.000000
+depth = 8
+malloc_count ### exiting, total: 8,548,239,091, peak: 5,729,197,071, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt text_SURF.txt 487963 4 0 0
+K = 487963
+N = 1071827039
+sizeof(int) = 4 bytes
+## SACA_K (char) ##
+CLOCK = 432.270249 TIME = 432.000000
+depth = 8
+malloc_count ### exiting, total: 7,546,270,390, peak: 5,359,136,219, current: 0

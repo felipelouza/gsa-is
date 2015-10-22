@@ -1,0 +1,34 @@
+\rm lib/*.o *.o external/*.o gsais -v
+removed ‘lib/file.o’
+removed ‘lib/suffix_array.o’
+removed ‘lib/utils.o’
+removed ‘gsaca-k.o’
+removed ‘gsais.o’
+rm: cannot remove ‘external/*.o’: No such file or directory
+removed ‘gsais’
+Makefile:33: recipe for target 'clean' failed
+make: *** [clean] Error 1
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o lib/utils.o lib/utils.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o lib/file.o lib/file.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o lib/suffix_array.o lib/suffix_array.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o gsais.o gsais.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o gsaca-k.o gsaca-k.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts  -lm -lrt -ldl -o gsais main.c lib/utils.o lib/file.o lib/suffix_array.o external/malloc_count/malloc_count.o gsais.o gsaca-k.o
+\rm lib/*.o *.o external/*.o gsais -v
+removed ‘lib/file.o’
+removed ‘lib/suffix_array.o’
+removed ‘lib/utils.o’
+removed ‘gsaca-k.o’
+removed ‘gsais.o’
+rm: cannot remove ‘external/*.o’: No such file or directory
+removed ‘gsais’
+Makefile:33: recipe for target 'clean' failed
+make: *** [clean] Error 1
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o lib/utils.o lib/utils.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o lib/file.o lib/file.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o lib/suffix_array.o lib/suffix_array.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o gsais.o gsais.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts    -c -o gsaca-k.o gsaca-k.c
+gcc -Wall  -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts  -lm -lrt -ldl -o gsais main.c lib/utils.o lib/file.o lib/suffix_array.o external/malloc_count/malloc_count.o gsais.o gsaca-k.o
+('pages')dataset:  '650' strings
+('pages')dataset:  '1000' strings
