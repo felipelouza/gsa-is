@@ -38,3 +38,10 @@ malloc_count ### exiting, total: 240,323,991,275, peak: 152,382,856,109, current
  
 ./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 50825784 5 0 0
 Makefile:39: recipe for target 'run' failed
+Thu Oct 22 09:06:32 AMST 2015
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 50825784 5 0 0
+Makefile:39: recipe for target 'run' failed
+ 
+./gsais /mnt/data/bio/projects/gpt uniprot_trembl.fasta 50825784 6 0 0
+Makefile:39: recipe for target 'run' failed

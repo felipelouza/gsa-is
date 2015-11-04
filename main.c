@@ -165,6 +165,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		default: break;
 	}
 
+	printf("total:\n");
 	time_stop(t_start, c_start);
 
 	// validate	

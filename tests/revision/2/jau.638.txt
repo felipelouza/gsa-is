@@ -1,0 +1,55 @@
+Wed Oct 21 23:32:42 AMST 2015
+ 
+./gsais /mnt/data/bio/projects/gpt revision.txt 638 1 0 0
+K = 638
+N = 4294715
+sizeof(int) = 4 bytes
+## SAIS (int) ##
+CLOCK = 0.763948 TIME = 0.000000
+depth = 8
+malloc_count ### exiting, total: 45,594,163, peak: 35,151,601, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt revision.txt 638 2 0 0
+K = 638
+N = 4294715
+sizeof(int) = 4 bytes
+## SACA_K (int) ##
+CLOCK = 0.553239 TIME = 0.000000
+depth = 8
+malloc_count ### exiting, total: 44,495,233, peak: 34,361,296, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt revision.txt 638 3 0 0
+K = 638
+N = 4294715
+sizeof(int) = 4 bytes
+## SAIS (char) ##
+CLOCK = 0.435231 TIME = 1.000000
+depth = 8
+malloc_count ### exiting, total: 32,691,306, peak: 22,265,348, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt revision.txt 638 4 0 0
+K = 638
+N = 4294715
+sizeof(int) = 4 bytes
+## SACA_K (char) ##
+CLOCK = 0.325003 TIME = 0.000000
+depth = 8
+malloc_count ### exiting, total: 31,608,536, peak: 21,474,599, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt revision.txt 638 5 0 0
+K = 638
+N = 4294715
+sizeof(int) = 4 bytes
+## gSAIS ##
+CLOCK = 0.469542 TIME = 0.000000
+depth = 8
+malloc_count ### exiting, total: 32,704,914, peak: 22,267,456, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt revision.txt 638 6 0 0
+K = 638
+N = 4294715
+sizeof(int) = 4 bytes
+## gSACA_K ##
+CLOCK = 0.338043 TIME = 1.000000
+depth = 8
+malloc_count ### exiting, total: 31,608,536, peak: 21,474,599, current: 0

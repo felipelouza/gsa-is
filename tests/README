@@ -26,3 +26,31 @@ text_SURF.txt
 http://algo2.iti.kit.edu/gog/projects/ALENEX15/collections/ENWIKIBIG/
 http://arxiv.org/pdf/1311.1249v1.pdf
 
+
+--
+
+influenza.fasta
+394,217 strings
+
+ftp://ftp.ncbi.nih.gov/genomes/INFLUENZA/influenza.fna.gz
+
+--
+
+pages.txt
+1,000 strings
+
+http://jltsiren.kapsi.fi/data/fiwiki.bz2
+
+http://jltsiren.kapsi.fi/software/rlcsa.tgz
+bunzip2 -c fiwiki.bz2 | extract_sequences.py - 1000 page
+
+--
+
+revision.txt
+20,434 strings
+
+http://jltsiren.kapsi.fi/data/fiwiki.bz2
+
+http://jltsiren.kapsi.fi/software/rlcsa.tgz
+bunzip2 -c fiwiki.bz2 | wikipedia_extract.py - 400 revision
+

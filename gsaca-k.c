@@ -11,6 +11,7 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define false 0
 
 #define DEBUG 0
+#define DEPTH 1
 
 void getBuckets_k(int_t *s, 
   uint_t *bkt, uint_t n,
@@ -689,6 +690,11 @@ int_t SACA_K(int_t *s, uint_t *SA,
   uint_t i;
   uint_t *bkt=NULL;
 
+  #if DEPTH
+  time_t t_start = time(NULL);
+  clock_t c_start =  clock();
+  #endif
+
   #if DEBUG
   int_t j;
   for(j=0; j<n; j++)
@@ -752,6 +758,11 @@ int_t SACA_K(int_t *s, uint_t *SA,
     induceSAs1((int_t *)SA, (int_t *)s, n, true, cs);
   }
 
+  #if DEPTH
+  printf("depth %" PRIdN ":\n", depth);
+  time_stop(t_start, c_start);
+  #endif
+
 return depth;
 }
 
@@ -762,6 +773,11 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   uint_t m, int cs, int level, unsigned char separator) {
   uint_t i;
   uint_t *bkt=NULL;
+
+  #if DEPTH
+  time_t t_start = time(NULL);
+  clock_t c_start =  clock();
+  #endif
 
   #if DEBUG
   int_t j;
@@ -854,6 +870,11 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   induceSAs0_generalized(SA, s, bkt, n, K, true, cs, separator);
 
   free(bkt);
+
+  #if DEPTH
+  printf("depth %" PRIdN ":\n", depth);
+  time_stop(t_start, c_start);
+  #endif
 
 return depth;
 }

@@ -1,0 +1,55 @@
+Thu Oct 22 08:35:34 AMST 2015
+ 
+./gsais /mnt/data/bio/projects/gpt influenza.fasta 197108 1 0 0
+K = 197108
+N = 289558572
+sizeof(int) = 4 bytes
+## SAIS (int) ##
+CLOCK = 113.479091 TIME = 113.000000
+depth = 7
+malloc_count ### exiting, total: 4,846,180,147, peak: 2,370,998,549, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt influenza.fasta 197108 2 0 0
+K = 197108
+N = 289558572
+sizeof(int) = 4 bytes
+## SACA_K (int) ##
+CLOCK = 96.695140 TIME = 97.000000
+depth = 7
+malloc_count ### exiting, total: 4,763,522,913, peak: 2,317,258,032, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt influenza.fasta 197108 3 0 0
+K = 197108
+N = 289558572
+sizeof(int) = 4 bytes
+## SAIS (char) ##
+CLOCK = 97.417395 TIME = 97.000000
+depth = 10
+malloc_count ### exiting, total: 3,965,718,228, peak: 1,501,404,856, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt influenza.fasta 197108 4 0 0
+K = 197108
+N = 289558572
+sizeof(int) = 4 bytes
+## SACA_K (char) ##
+CLOCK = 82.325923 TIME = 82.000000
+depth = 10
+malloc_count ### exiting, total: 3,894,058,765, peak: 1,447,793,884, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt influenza.fasta 197108 5 0 0
+K = 197108
+N = 289558572
+sizeof(int) = 4 bytes
+## gSAIS ##
+CLOCK = 100.016620 TIME = 99.000000
+depth = 7
+malloc_count ### exiting, total: 3,975,927,567, peak: 1,502,322,833, current: 0
+ 
+./gsais /mnt/data/bio/projects/gpt influenza.fasta 197108 6 0 0
+K = 197108
+N = 289558572
+sizeof(int) = 4 bytes
+## gSACA_K ##
+CLOCK = 81.704190 TIME = 82.000000
+depth = 7
+malloc_count ### exiting, total: 3,894,058,765, peak: 1,447,793,884, current: 0

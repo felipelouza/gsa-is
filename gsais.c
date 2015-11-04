@@ -6,6 +6,7 @@
 #define true 1  
 
 #define DEBUG 0
+#define DEPTH 1
 
 #if m64
 	const int_t EMPTY=0xffffffffffffffff; 
@@ -77,6 +78,11 @@ void induceSAs_generalized(unsigned char *t, int_t *SA, unsigned char *s, int_t 
 
 int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
   int_t i, j;
+
+  #if DEPTH
+  time_t t_start = time(NULL);
+  clock_t c_start =  clock();
+  #endif
 
   #if DEBUG
   printf("S:\n");
@@ -245,11 +251,21 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
   free(bkt); 
   free(t);
 
+  #if DEPTH
+  printf("depth %" PRIdN ":\n", depth);
+  time_stop(t_start, c_start);
+  #endif
+
 return depth;
 }
 
 int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, unsigned char separator) {
   int_t i, j;
+
+  #if DEPTH
+  time_t t_start = time(NULL);
+  clock_t c_start =  clock();
+  #endif
 
   unsigned char *t=(unsigned char *)malloc(n/8+1); // LS-type array in bits
 
@@ -459,6 +475,11 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
 
   free(bkt); 
   free(t);
+
+  #if DEPTH
+  printf("depth %" PRIdN ":\n", depth);
+  time_stop(t_start, c_start);
+  #endif
 
 return depth;
 }
