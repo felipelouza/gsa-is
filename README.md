@@ -1,9 +1,8 @@
 #gsa-is
 
 This code is an implementation of gSAIS and gSACA-K, which are modifications of
-SAIS [1] and SACA-K [2], to sort the concatenated string using the same end
-marker, maintaining their theoretical bounds, respecting the order among all
-suffixes, and improving their practical performance
+SAIS [1] and SACA-K [2] algorithms to compute the generalized suffix array,
+maintaining their theoretical bounds and improving their practical performance
 
 #run:
 
@@ -290,4 +289,11 @@ make run DIR=dataset INPUT=input.1000.txt K=1000 MODE=1
 | protein 8	| 3,026.95	| 97.66 	| 2,980.53	| 1,024         | 3,026.95      | 1,024     |
 | protein 9	| 5,279.16	| 195.31	| 5,181.02	| 1,024         | 5,279.16      | 1,024     |
 | protein 10	| 9,125.83	| 387.77	| 8,890.27	| 1,024         | 9,125.83      | 1,024     |
+
+##references
+
+\[1\] G. Nong, S. Zhang, and W. H. Chan, “Two efficient algorithms for linear time suffix array construction,” IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+
+\[2\] Nong, G. Practical linear-time O(1)-workspace suffix sorting for constant alphabets,” ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
+
 
