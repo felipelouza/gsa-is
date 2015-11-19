@@ -1,5 +1,8 @@
 /*
- * Felipe A. Louza (louza@ic.unicamp.br)
+ * Induced Suffix Sorting for String Collections
+ *
+ * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
+ * contact: louza@ic.unicamp.br
  * 01/09/2015
  *
  */
@@ -118,6 +121,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		printf("\n");
 		#endif
 	}
+
 	#if DEBUG
 		printf("R:\n");
 		for(i=0; i<k; i++)
@@ -153,7 +157,6 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 			depth = SACA_K((int_t*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0);
 			break;
 	
-		/**/	
 		case 5: printf("## gSAIS ##\n"); 
 			depth = gSAIS((unsigned char*)str, SA, n, 256, sizeof(char), 0, 1);//separator=1
 			break;
@@ -161,7 +164,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
  		case 6: printf("## gSACA_K ##\n"); 
 			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);
 			break;
-		/**/
+		
 		default: break;
 	}
 
@@ -190,18 +193,12 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		suffix_array_write(SA, n, c_file, "sa");
 	}
 
-/*
-	free(SA);
-	SA = suffix_array_read(n, c_file, "sa"); 
-*/
-
 	#if DEBUG
 	if(MODE==1 || MODE==2)//sais or saca-k	
 		suffix_array_print(SA, (unsigned char*)str_int, min(10,n), sizeof(int_t));	
 	else
 		suffix_array_print(SA, (unsigned char*)str, min(10,n), sizeof(char));
 	#endif
-
 
 	free(SA);
 	free(str_int);

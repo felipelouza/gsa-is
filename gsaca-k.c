@@ -11,7 +11,8 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define false 0
 
 #define DEBUG 0
-#define DEPTH 1
+#define DEPTH 0  // compute time and size of reduced problem for each recursion call
+#define PHASES 0 // compute time for each phase
 
 void getBuckets_k(int_t *s, 
   uint_t *bkt, uint_t n,
@@ -91,13 +92,6 @@ void induceSAl0(uint_t *SA,
         if(!suffix && i>0) SA[i]=0;
       }
     }
-  
-  #if DEBUG
-  printf("L-type\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 }
 
 /*****************************************************************************/
@@ -115,18 +109,11 @@ void induceSAl0_generalized(uint_t *SA,
     if(SA[i]>0) {
       j=SA[i]-1;
       if(chr(j)>=chr(j+1) ) {
-	if(chr(j)!=separator)//FELIPE
+	if(chr(j)!=separator)//gsa-is
           SA[bkt[chr(j)]++]=j;
         if(!suffix && i>0) SA[i]=0;
       }
     }
-  
-  #if DEBUG
-  printf("L-type\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 }
 
 /*****************************************************************************/
@@ -148,13 +135,6 @@ void induceSAs0(uint_t *SA,
         if(!suffix) SA[i]=0;
       }
     }
-
-  #if DEBUG
-  printf("S-type\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 }
 
 /*****************************************************************************/
@@ -176,13 +156,6 @@ void induceSAs0_generalized(uint_t *SA,
         if(!suffix) SA[i]=0;
       }
     }
-
-  #if DEBUG
-  printf("S-type\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 }
 
 /*****************************************************************************/
@@ -198,13 +171,6 @@ void putSubstr0(uint_t *SA,
   // set each item in SA as empty.
   for(i=0; i<n; i++) SA[i]=0;
 
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
-
   succ_t=0; // s[n-2] must be L-type.
   for(i=n-2; i>0; i--) {
     cur_t=(chr(i-1)<chr(i) ||
@@ -216,13 +182,6 @@ void putSubstr0(uint_t *SA,
 
   // set the single sentinel LMS-substring.
   SA[0]=n-1;
-
-  #if DEBUG
-  printf("bucket LMS-subs\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 }
 
 /*****************************************************************************/
@@ -237,14 +196,7 @@ void putSubstr0_generalized(uint_t *SA,
   // set each item in SA as empty.
   for(i=0; i<n; i++) SA[i]=0;
 
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
-
-  // FELIPE
+  // gsa-is
   int_t tmp=bkt[separator]--;// shifts one position left of bkt[separator]
   
   SA[0]=n-1;// set the single sentinel LMS-substring.
@@ -268,13 +220,6 @@ void putSubstr0_generalized(uint_t *SA,
     }
     succ_t=cur_t;
   }
-
-  #if DEBUG
-  printf("bucket LMS-subs\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 }
 /*****************************************************************************/
 
@@ -628,13 +573,6 @@ uint_t nameSubstr_generalized(uint_t *SA,
   //   in SA[n1, n-1] into SA[m-n1, m-1].
   for(i=n-1, j=m-1; i>=n1; i--)
     if(SA[i]!=EMPTY_k) SA[j--]=SA[i];
-  
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
 
   // rename each S-type character of the
   //   interim s1 as the end of its bucket
@@ -649,13 +587,6 @@ uint_t nameSubstr_generalized(uint_t *SA,
     succ_t=cur_t;
   }
   
-  #if DEBUG
-  printf("s1\n");
-  for(i=0; i<n1; i++)
-        printf("%d\t", s1[i]);
-  printf("\n");
-  #endif
-
   return name_ctr;
 }
 
@@ -689,21 +620,25 @@ int_t SACA_K(int_t *s, uint_t *SA,
   uint_t m, int cs, int level) {
   uint_t i;
   uint_t *bkt=NULL;
+  
+  #if PHASES
+  time_t t_start_phase = 0.0; 
+  clock_t c_start_phase = 0.0;
+  #endif
 
   #if DEPTH
   time_t t_start = time(NULL);
   clock_t c_start =  clock();
   #endif
 
-  #if DEBUG
-  int_t j;
-  for(j=0; j<n; j++)
-    printf("%d) %d\n", j, chr(j));
-  printf("\n");
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   // stage 1: reduce the problem by at least 1/2.
-
   if(level==0) {
 
     bkt=(uint_t *)malloc(sizeof(int_t)*K);
@@ -734,6 +669,20 @@ int_t SACA_K(int_t *s, uint_t *SA,
   uint_t name_ctr;
   name_ctr=nameSubstr(SA,s,s1,n,m,n1,level,cs);
 
+  #if PHASES
+  if(!level){
+	printf("phase 1:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
+  #endif
+
   // stage 2: solve the reduced problem.
   int_t depth=1;
   // recurse if names are not yet unique.
@@ -748,9 +697,36 @@ int_t SACA_K(int_t *s, uint_t *SA,
   getSAlms(SA, s, s1, n, n1, level, cs);
   if(level==0) {
     putSuffix0(SA, s, bkt, n, K, n1, cs);
+
+    #if PHASES
+    printf("phase 2:\n");
+    time_stop(t_start_phase, c_start_phase);
+    #endif
+  
+    #if PHASES
+    t_start_phase = time(NULL);
+    c_start_phase =  clock();
+    #endif
+
     induceSAl0(SA, s, bkt, n, K, true, cs);
+
+    #if PHASES
+    printf("phase 3:\n");
+    time_stop(t_start_phase, c_start_phase);
+    #endif
+  
+    #if PHASES
+    t_start_phase = time(NULL);
+    c_start_phase =  clock();
+    #endif
+
     induceSAs0(SA, s, bkt, n, K, true, cs);
     free(bkt);
+
+    #if PHASES
+    printf("phase 4:\n");
+    time_stop(t_start_phase, c_start_phase);
+    #endif
   }
   else {
     putSuffix1((int_t *)SA, (int_t *)s, n1, cs);
@@ -759,7 +735,7 @@ int_t SACA_K(int_t *s, uint_t *SA,
   }
 
   #if DEPTH
-  printf("depth %" PRIdN ":\n", depth);
+  printf("depth %" PRIdN ":\nname_ctr = %" PRIdN ", n1 =%" PRIdN ", n = %" PRIdN "\n", depth, name_ctr, n1, n);
   time_stop(t_start, c_start);
   #endif
 
@@ -774,18 +750,22 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   uint_t i;
   uint_t *bkt=NULL;
 
+  #if PHASES
+  time_t t_start_phase = 0.0; 
+  clock_t c_start_phase = 0.0;
+  #endif
+
   #if DEPTH
   time_t t_start = time(NULL);
   clock_t c_start =  clock();
   #endif
 
-  #if DEBUG
-  int_t j;
-  for(j=0; j<n; j++)
-    printf("%d) %d\n", j, chr(j));
-  printf("\n");
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
-
   // stage 1: reduce the problem by at least 1/2.
 
   bkt=(uint_t *)malloc(sizeof(int_t)*K);
@@ -795,7 +775,7 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   induceSAs0_generalized(SA, s, bkt, n, K, false, cs, separator);
   
   // insert separator suffixes in their buckets
-  // bkt[separator]=1; // FELIPE
+  // bkt[separator]=1; // gsa-is
   for(i=n-3; i>0; i--)
     if(chr(i)==separator)
       SA[bkt[chr(i)]--]=i;
@@ -811,22 +791,22 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
     if((!level&&SA[i]>0) || (level&&((int_t *)SA)[i]>0))
       SA[n1++]=SA[i];
 
-  #if DEBUG
-  printf("SA1\n");
-  for(i=0; i<n1; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
-
   uint_t *SA1=SA, *s1=SA+m-n1;
   uint_t name_ctr;
   name_ctr=nameSubstr_generalized(SA,s,s1,n,m,n1,level,cs,separator);
 
-  #if DEBUG
-  printf("s1\n");
-  for(i=0; i<n1; i++)
-        printf("%d\t", s1[i]);
-  printf("\n");
+  #if PHASES
+  if(!level){
+	printf("phase 1:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   // stage 2: solve the reduced problem.
@@ -840,40 +820,53 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
 
   // stage 3: induce SA(S) from SA(S1).
 
-  #if DEBUG
-  printf("SA1\n");
-  for(i=0; i<n1; i++)
-        printf("%d\t", SA1[i]);
-  printf("\n");
-  printf("\nstage 3:\n\n");
-  #endif
-
   getSAlms(SA, (int_t*)s, s1, n, n1, level, cs);
-  
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
-  #endif
-
   putSuffix0_generalized(SA, s, bkt, n, K, n1, cs, separator);
   
-  #if DEBUG
-  printf("SA (mapped)\n");
-  for(i=0; i<n; i++)
-        printf("%d\t", SA[i]);
-  printf("\n");
+  #if PHASES
+  if(!level){
+	printf("phase 2:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   induceSAl0_generalized(SA, s, bkt, n, K, true, cs, separator);
+
+  #if PHASES
+  if(!level){
+      printf("phase 3:\n");
+      time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+  
+  #if PHASES
+  if(!level){
+      t_start_phase = time(NULL);
+      c_start_phase =  clock();
+  }
+  #endif
+
   induceSAs0_generalized(SA, s, bkt, n, K, true, cs, separator);
 
   free(bkt);
 
   #if DEPTH
-  printf("depth %" PRIdN ":\n", depth);
+  printf("depth %" PRIdN ":\nname_ctr = %" PRIdN ", n1 =%" PRIdN ", n = %" PRIdN "\n", depth, name_ctr, n1, n);
   time_stop(t_start, c_start);
+  #endif
+
+  #if PHASES
+  if(!level){
+      printf("phase 4:\n");
+      time_stop(t_start_phase, c_start_phase);
+  }
   #endif
 
 return depth;

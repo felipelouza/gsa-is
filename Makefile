@@ -8,12 +8,6 @@ LFLAGS = -lm -lrt -ldl
 DIR = dataset/
 INPUT = input.1000.txt
 
-#DIR = /home/louza/database/protein/
-#INPUT = uniprot_trembl.fasta
-
-#DIR = /home/louza/database/reads/
-#INPUT = Vr6_L001_R1.clipped.fastq
-
 K	= 3
 MODE 	= 1
 CHECK	= 1

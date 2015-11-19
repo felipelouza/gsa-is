@@ -2,7 +2,6 @@
 
 /**********************************************************************/
 
-
 double time_stop(time_t t_time, clock_t c_clock){
 
 	double aux1 = (clock() - c_clock) / (double)(CLOCKS_PER_SEC);

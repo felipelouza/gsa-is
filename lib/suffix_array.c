@@ -21,6 +21,8 @@ int_t suffix_array_write(int_t *SA, int_t n, char* c_file, const char* ext){
 return 1;
 }
 
+/*******************************************************************/
+
 int_t* suffix_array_read(int_t n, char* c_file, const char* ext){
 
         FILE *f_in;

@@ -6,7 +6,8 @@
 #define true 1  
 
 #define DEBUG 0
-#define DEPTH 1
+#define DEPTH 0	 // compute time and size of reduced problem for each recursion call
+#define PHASES 0 // compute time for each phase
 
 #if m64
 	const int_t EMPTY=0xffffffffffffffff; 
@@ -79,16 +80,21 @@ void induceSAs_generalized(unsigned char *t, int_t *SA, unsigned char *s, int_t 
 int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
   int_t i, j;
 
+  #if PHASES
+  time_t t_start_phase = 0.0;
+  clock_t c_start_phase = 0.0;
+  #endif
+
   #if DEPTH
   time_t t_start = time(NULL);
   clock_t c_start =  clock();
   #endif
 
-  #if DEBUG
-  printf("S:\n");
-  for(i=0; i<n; i++)
-        printf("%" PRIdN "\t", chr(i));
-  printf("\n");
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   unsigned char *t=(unsigned char *)malloc(n/8+1); // LS-type array in bits
@@ -108,31 +114,8 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
     if(isLMS(i)) SA[bkt[chr(i)]--]=i;
   SA[0]=n-1; // set the single sentinel LMS-substring
 
-  #if DEBUG
-  printf("bucketing:\n");
-  for(i=0; i<n; i++)
-        printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   induceSAl(t, SA, s, bkt, n, K, cs, level); 
-
-  #if DEBUG
-  printf("L-type:\n");
-  for(i=0; i<n; i++)
-        printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   induceSAs(t, SA, s, bkt, n, K, cs, level); 
-
-  #if DEBUG
-  printf("S-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   free(bkt);
 
   // compact all the sorted substrings into the first n1 items of s
@@ -144,14 +127,6 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
 
   // Init the name array buffer
   for(i=n1; i<n; i++) SA[i]=EMPTY;
-
-  #if DEBUG
-  printf("LMS\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
 
   // find the lexicographic names of all substrings
   int_t name=0;
@@ -175,12 +150,21 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
   }
   for(i=n-1, j=n-1; i>=n1; i--)
 	  if(SA[i]!=EMPTY) SA[j--]=SA[i];
-  
-  #if DEBUG
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
+
+  #if PHASES
+  if(!level){
+	printf("phase 1:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
   #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
+  #endif
+ 
   // s1 is done now
   int_t *SA1=SA, *s1=SA+n-n1;
 
@@ -193,15 +177,7 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
     for(i=0; i<n1; i++) SA1[s1[i]] = i;
   }
 
-  #if DEBUG
-  printf("SA1\n");
-  for(i=0; i<n1; i++)
-	printf("%" PRIdN "\t", SA1[i]);
-  printf("\n");
-  printf("\nstage 3:\n\n");
-  #endif
   // stage 3: induce the result for the original problem
-
   bkt = (int_t *)malloc(sizeof(int_t)*K); // bucket counters
 
   // put all left-most S characters into their buckets
@@ -209,13 +185,6 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
   j=0;
   for(i=1; i<n; i++)
     if(isLMS(i)) s1[j++]=i; // get p1
-  
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
 
   for(i=0; i<n1; i++) SA1[i]=s1[SA1[i]]; // get index in s1
   for(i=n1; i<n; i++) SA[i]=EMPTY; // init SA[n1..n-1]
@@ -226,30 +195,48 @@ int_t SAIS(int_t *s, int_t *SA, int_t n, int_t K, int cs, int level) {
     else
       SA[bkt[chr(j)]--]=j;
   }
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
+  
+  #if PHASES
+  if(!level){
+	printf("phase 2:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   induceSAl(t, SA, s, bkt, n, K, cs, level); 
-  #if DEBUG
-  printf("L-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
+
+  #if PHASES
+  if(!level){
+	printf("phase 3:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
   #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
+  #endif
+
   induceSAs(t, SA, s, bkt, n, K, cs, level); 
-  #if DEBUG
-  printf("S-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
 
   free(bkt); 
   free(t);
+
+  #if PHASES
+  if(!level){
+	printf("phase 4:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
 
   #if DEPTH
   printf("depth %" PRIdN ":\n", depth);
@@ -261,10 +248,22 @@ return depth;
 
 int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, unsigned char separator) {
   int_t i, j;
+  
+  #if PHASES
+  time_t t_start_phase = 0.0;
+  clock_t c_start_phase = 0.0;
+  #endif
 
   #if DEPTH
   time_t t_start = time(NULL);
   clock_t c_start =  clock();
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   unsigned char *t=(unsigned char *)malloc(n/8+1); // LS-type array in bits
@@ -301,22 +300,7 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
     }
   }
 
-  #if DEBUG
-  printf("bucketing:\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   induceSAl_generalized(t, SA, s, bkt, n, K, cs, level, separator); 
-
-  #if DEBUG
-  printf("L-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   induceSAs_generalized(t, SA, s, bkt, n, K, cs, level, separator); 
 
   // insert separator suffixes in their buckets
@@ -324,14 +308,6 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   for(i=0; i<n-1; i++) 
     if(chr(i)==separator)
       SA[bkt[chr(i)]++]=i;
-
-  #if DEBUG
-  printf("S-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   
   free(bkt);
 
@@ -345,13 +321,6 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
 
   // Init the name array buffer
   for(i=n1; i<n; i++) SA[i]=EMPTY;
-
-  #if DEBUG
-  printf("LMS\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
 
   // find the lexicographic names of all substrings
   int_t name=0, prev=-1;
@@ -383,12 +352,21 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
 
   for(i=n-1, j=n-1; i>=n1; i--)
 	  if(SA[i]!=EMPTY) SA[j--]=SA[i];
-
-  #if DEBUG
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
+  
+  #if PHASES
+  if(!level){
+	printf("phase 1:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
   #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
+  #endif
+
   // s1 is done now
   int_t *SA1=SA, *s1=SA+n-n1;
 
@@ -401,13 +379,19 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   } else{ // generate the suffix array of s1 directly
     for(i=0; i<n1; i++) SA1[s1[i]] = i;
   }
+  
+  #if PHASES
+  if(!level){
+	printf("phase 2:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
 
-  #if DEBUG
-  printf("SA1\n");
-  for(i=0; i<n1; i++)
-	printf("%" PRIdN "\t", SA1[i]);
-  printf("\n");
-  printf("\nstage 3:\n\n");
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   // stage 3: induce the result for the original problem
@@ -420,22 +404,8 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   for(i=1; i<n; i++)
     if(isLMS(i)) s1[j++]=i; // get p1
 
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   for(i=0; i<n1; i++) SA1[i]=s1[SA1[i]]; // get index in s1
   for(i=n1; i<n; i++) SA[i]=EMPTY; // init SA[n1..n-1]
-
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
 
   tmp=bkt[separator]--;// shift one position left of bkt[separator]
   for(i=n1-1; i>=0; i--) {
@@ -446,33 +416,25 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
           SA[bkt[chr(j)]--]=j;
   }
   
-  #if DEBUG
-  printf("SA\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   SA[tmp]=SA[0]-1;// insert the last separator at the end of bkt[separator]
-
   induceSAl_generalized(t, SA, s, bkt, n, K, cs, level, separator); 
   
-  #if DEBUG
-  printf("L-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
+  #if PHASES
+  if(!level){
+	printf("phase 3:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
   #endif
 
   induceSAs_generalized(t, SA, s, bkt, n, K, cs, level, separator); 
   
-  #if DEBUG
-  printf("S-type\n");
-  for(i=0; i<n; i++)
-	printf("%" PRIdN "\t", SA[i]);
-  printf("\n");
-  #endif
-
   free(bkt); 
   free(t);
 
@@ -480,6 +442,14 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   printf("depth %" PRIdN ":\n", depth);
   time_stop(t_start, c_start);
   #endif
+  
+  #if PHASES
+  if(!level){
+	printf("phase 4:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
 
 return depth;
 }

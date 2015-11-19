@@ -194,8 +194,6 @@ char** file_load_multiple(char* c_file, int k, int_t *n) {
 	if(!f_in) return 0;
 
 	const char *type = get_filename_ext(c_file);
-//	printf("%s\n", type);
-
 	char **c_buffer = NULL; // = (char**) malloc(k*sizeof(char*));
 
 	if(strcmp(type,"txt") == 0)
