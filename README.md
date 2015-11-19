@@ -7,7 +7,7 @@ maintaining their theoretical bounds and improving their practical performance
 --
 **Settings:**
 
-We have implemented six MODEs in main.c:
+MODE parameter specifies which algorithm is called by main.c:
 
 * 1: SAIS\* 
 * 2: SACA-K\* 
@@ -16,7 +16,7 @@ We have implemented six MODEs in main.c:
 * 5: gSAIS
 * 6: gSACA-K
 
-\* uses integer alphabet as input.
+\* SAIS and SACA-K versions to receive an integer alphabet as input.
 
 --
 ##run:
@@ -28,8 +28,11 @@ make
 make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6
 ```
 
+One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
+to 0.
 
-##Experimental results
+
+##experimental results
 
 
 **Collections:**
