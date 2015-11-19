@@ -4,17 +4,32 @@ This code is an implementation of gSAIS and gSACA-K, which are modifications of
 SAIS [1] and SACA-K [2] algorithms to compute the generalized suffix array,
 maintaining their theoretical bounds and improving their practical performance
 
-#run:
+--
+**Settings:**
+
+We have implemented six MODEs in main.c:
+
+* 1: SAIS\* 
+* 2: SACA-K\* 
+* 3: SAIS  
+* 4: SACA-K 
+* 5: gSAIS
+* 6: gSACA-K
+
+\* uses integer alphabet as input.
+
+--
+##run:
 
 To run a test type:
 
 ```sh
 make
-make run DIR=dataset INPUT=input.1000.txt K=1000 MODE=1
+make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6
 ```
 
 
-#Experimental results
+##Experimental results
 
 
 **Collections:**

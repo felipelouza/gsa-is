@@ -15,8 +15,8 @@
 #include "lib/file.h"
 #include "lib/suffix_array.h"
 #include "external/malloc_count/malloc_count.h"
-#include "src/gsais.h"
-#include "src/gsaca-k.h"
+#include "gsais.h"
+#include "gsaca-k.h"
 
 #define DEBUG 0
 

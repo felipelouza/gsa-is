@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../lib/utils.h"
+#include "lib/utils.h"
 
 int_t SACA_K(int_t *s, uint_t *SA,
   uint_t n, unsigned int K,
