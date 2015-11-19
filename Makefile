@@ -18,8 +18,8 @@ LIBOBJ = \
 	lib/file.o\
 	lib/suffix_array.o\
 	external/malloc_count/malloc_count.o\
-	gsais.o\
-	gsaca-k.o
+	src/gsais.o\
+	src/gsaca-k.o
 
 all: compile
 

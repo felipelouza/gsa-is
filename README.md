@@ -1,6 +1,21 @@
 #gsa-is
 
-##Experimental results
+This code is an implementation of gSAIS and gSACA-K, which are modifications of
+SAIS [1] and SACA-K [2], to sort the concatenated string using the same end
+marker, maintaining their theoretical bounds, respecting the order among all
+suffixes, and improving their practical performance
+
+#run:
+
+To run a test type:
+
+```sh
+make
+make run DIR=dataset INPUT=input.1000.txt K=1000 MODE=1
+```
+
+
+#Experimental results
 
 
 **Collections:**

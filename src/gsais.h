@@ -11,7 +11,7 @@
 #include <memory.h>
 #include <time.h>
 
-#include "lib/utils.h"
+#include "../lib/utils.h"
 
 #define tget(i) ( (t[(i)/8]&mask[(i)%8]) ? 1 : 0 )
 #define tset(i, b) t[(i)/8]=(b) ? (mask[(i)%8]|t[(i)/8]) : ((~mask[(i)%8])&t[(i)/8])
