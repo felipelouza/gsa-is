@@ -16,7 +16,7 @@ MODE parameter specifies which algorithm is called by main.c:
 * 5: gSAIS
 * 6: gSACA-K
 
-\* SAIS and SACA-K versions to receive an integer alphabet as input.
+\* SAIS and SACA-K versions that receive an integer alphabet as input.
 
 --
 ##run:
@@ -31,8 +31,8 @@ make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6
 One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
 to 0.
 
-
-##experimental results
+--
+##experiments:
 
 
 **Collections:**
