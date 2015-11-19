@@ -280,7 +280,7 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   getBuckets((int_t*)s, bkt, n, K, cs, true); // find ends of buckets
   for(i=0; i<n; i++) SA[i]=EMPTY;
 
-  // FELIPE
+  // gsa-is
   int_t tmp=bkt[separator]--;// shift one position left of bkt[separator]
 
   SA[0]=n-1; // set the single sentinel LMS-substring
@@ -292,7 +292,7 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   for(i=n-2; i>=0; i--){
     if(isLMS(i)){
 
-      if(chr(i)==separator) // FELIPE
+      if(chr(i)==separator) // gsa-is
         SA[bkt[chr(p)]++]=EMPTY; // removes LMS-positions that induces separator suffixes
 
       SA[bkt[chr(i)]--]=i;
@@ -304,7 +304,7 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
   induceSAs_generalized(t, SA, s, bkt, n, K, cs, level, separator); 
 
   // insert separator suffixes in their buckets
-  bkt[separator]=1; // FELIPE
+  bkt[separator]=1; // gsa-is
   for(i=0; i<n-1; i++) 
     if(chr(i)==separator)
       SA[bkt[chr(i)]++]=i;
@@ -332,7 +332,7 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
       if(prev==-1 || pos+d==n-1 || prev+d==n-1 ||
          chr(pos+d)!=chr(prev+d) ||
          (chr(pos+d)==separator && chr(prev+d)==separator) || // $_i < $_j iff i < j
-         tget(pos+d)!=tget(prev+d) // FELIPE
+         tget(pos+d)!=tget(prev+d) // gsa-is
       )
       { 
 	diff=true; break;

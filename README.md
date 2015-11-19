@@ -5,6 +5,19 @@ SAIS [1] and SACA-K [2] algorithms to compute the generalized suffix array,
 maintaining their theoretical bounds and improving their practical performance
 
 --
+##run:
+
+To run a test type:
+
+```sh
+make
+make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6
+```
+
+One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
+to 0.
+
+--
 **Settings:**
 
 MODE parameter specifies which algorithm is called by main.c:
@@ -17,19 +30,6 @@ MODE parameter specifies which algorithm is called by main.c:
 * 6: gSACA-K
 
 \* SAIS and SACA-K versions that receive an integer alphabet as input.
-
---
-##run:
-
-To run a test type:
-
-```sh
-make
-make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6
-```
-
-One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
-to 0.
 
 --
 ##experiments:
@@ -45,6 +45,8 @@ to 0.
 | Enwiki     |    8.32    |  3,903,703 |  8,933,518,792 |     2,288 |
 | DNA reads  |    2.87    | 32,621,862 |  3,082,739,100 |        94 |
 | Uniprot    |    15.77   | 50,825,784 | 16,931,428,229 |       333 |
+
+
 
 **Datasets:**
 
