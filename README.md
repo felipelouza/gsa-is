@@ -37,7 +37,7 @@ MODE parameter specifies which algorithm is called by main.c:
 
 **Collections:**
 
-| Collection | size (GiB) |      d     |        n       |    n/d    |
+| Collection | size (GB) |      d     |        n       |    n/d    |
 |------------|:----------:|-----------:|---------------:|----------:|
 | Revision   |    0.39    |     20,433 |    419,437,293 |    20,527 |
 | Page       |    3.74    |      1,000 |  4,019,585,128 | 4,019,585 |
@@ -50,7 +50,7 @@ MODE parameter specifies which algorithm is called by main.c:
 
 **Datasets:**
 
-| Dataset		| 		d		| 		n	 	 | 	size (MiB)	 | 	avgLen		|
+| Dataset		| 		d		| 		n	 	 | 	size (MB)	 | 	avgLen		|
 |---------------|--------------:|---------------:|--------------:|-------------:|
 | pages	1 		| 2				| 2,371,241		 | 2.26          | 1,185,621    |
 | pages 2 		| 7				| 14,707,622	 | 14.03         | 2,101,089    |
@@ -115,7 +115,7 @@ MODE parameter specifies which algorithm is called by main.c:
 
 **Running time (seconds):**
 
-| Dataset	| SAIS (int)	| SACA-K (int)	| SAIS		| SACA-K	| gSAIS		| gSACA-K  |
+| Dataset	| SAIS\*	| SACA-K\*	| SAIS		| SACA-K	| gSAIS		| gSACA-K  |
 |---------------|---------------|---------------|---------------|---------------|---------------|----------| 
 | pages	1 	| 2.90E-01	| 4.10E-01	| 1.90E-01	| 1.20E-01	| 1.90E-01	| 1.20E-01 |
 | pages 2 	| 3.43E+00	| 3.35E+00	| 3.38E+00	| 2.09E+00	| 2.22E+00	| 2.06E+00 |
@@ -178,9 +178,9 @@ MODE parameter specifies which algorithm is called by main.c:
 | protein 9	| 9.45E+03	| 7.17E+03	| 1.02E+04	| 7.34E+03	| 8.71E+03	| 5.96E+03 |
 | protein 10	| 2.13E+04	| 1.65E+04	| 1.87E+04	| 1.26E+04	| 1.86E+04	| 1.22E+04 |
 
-**Space (MiB):**
+**Space (MB):**
 
-| Dataset	| SAIS (int)	| SACA-K (int)	| SAIS		| SACA-K	| gSAIS		| gSACA-K  |
+| Dataset	| SAIS\*	| SACA-K\*	| SAIS		| SACA-K	| gSAIS		| gSACA-K  |
 |---------------|---------------|---------------|---------------|---------------|---------------|----------| 
 | pages	1 	| 18.50		| 18.09		| 11.72		| 11.31		| 11.72		| 11.31	    |
 | pages 2 	| 114.76	| 112.21	| 72.68		| 70.13		| 72.68		| 70.13     |
@@ -245,9 +245,9 @@ MODE parameter specifies which algorithm is called by main.c:
 
 
 
-**Workspace (MiB, but SACA-K and gSACA-K):**
+**Workspace (MB, but SACA-K and gSACA-K):**
 
-| Dataset	| SAIS (int)	| SACA-K (int)	| SAIS		| SACA-K	| gSAIS		| gSACA-K  |
+| Dataset	| SAIS\*	| SACA-K\*	| SAIS		| SACA-K	| gSAIS		| gSACA-K  |
 |---------------|---------------|---------------|---------------|---------------|---------------|----------| 
 | pages	1 	| 0.41    	| 0.00  	| 0.41    	| 1,024		| 0.41    	| 1,024     |  	
 | pages 2 	| 2.55    	| 0.00  	| 2.55    	| 1,024         | 2.55          | 1,024     |
