@@ -1,8 +1,11 @@
 #gsa-is
 
 This code is an implementation of gSAIS and gSACA-K, which are modifications of
-SAIS [1] and SACA-K [2] algorithms to compute the generalized suffix array,
-maintaining their theoretical bounds and improving their practical performance
+SAIS [1] and SACA-K [2] to compute the generalized suffix array,
+maintaining their theoretical bounds and improving their practical performance.
+
+Overall, SACA-K's time-space trade-off is Pareto optimal compared to the all
+other algorithms in the experiments.
 
 --
 ##run:
@@ -37,14 +40,14 @@ MODE parameter specifies which algorithm is called by main.c:
 
 **Collections:**
 
-| Collection | size (GB) |      d     |        n       |    n/d    |
-|------------|:----------:|-----------:|---------------:|----------:|
-| Revision   |    0.39    |     20,433 |    419,437,293 |    20,527 |
-| Page       |    3.74    |      1,000 |  4,019,585,128 | 4,019,585 |
-| Influenza  |    0.56    |    394,217 |    597,471,768 |     1,516 |
-| Enwiki     |    8.32    |  3,903,703 |  8,933,518,792 |     2,288 |
-| DNA reads  |    2.87    | 32,621,862 |  3,082,739,100 |        94 |
-| Uniprot    |    15.77   | 50,825,784 | 16,931,428,229 |       333 |
+| Collection | size (GB)  |      d     |        n       |    n/d    | available at |
+|------------|:----------:|-----------:|---------------:|----------:|:-------------|
+| Revision   |    0.39    |     20,433 |    419,437,293 |    20,527 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
+| Page       |    3.74    |      1,000 |  4,019,585,128 | 4,019,585 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
+| Influenza  |    0.56    |    394,217 |    597,471,768 |     1,516 | ftp://ftp.ncbi.nih.gov/genomes/INFLUENZA/influenza.fna.gz |
+| Enwiki     |    8.32    |  3,903,703 |  8,933,518,792 |     2,288 | http://algo2.iti.kit.edu/gog/projects/ALENEX15/collections/ENWIKIBIG/text_SURF.sdsl |
+| DNA reads  |    2.87    | 32,621,862 |  3,082,739,100 |        94 | http://gage.cbcb.umd.edu/data/Hg_chr14/Data.quakeCor.tgz | 
+| Uniprot    |    15.77   | 50,825,784 | 16,931,428,229 |       333 | ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/ |
 
 
 
