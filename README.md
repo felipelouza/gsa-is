@@ -1,10 +1,8 @@
 #gsa-is
 
-This code is an implementation of gSAIS and gSACA-K, which are modifications of
-SAIS [1] and SACA-K [2] to compute the generalized suffix array,
-maintaining their theoretical bounds and improving their practical performance.
+This code is an implementation of two modified version of SAIS [1] and SACA-K [2], called gSAIS and gSACA-K, that compute the generalized suffix array by induced sorting.
 
-Overall, SACA-K's time-space trade-off is Pareto optimal compared to the all
+Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
 
 --
