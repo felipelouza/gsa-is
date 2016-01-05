@@ -4,7 +4,7 @@ This code is an implementation of gSAIS and gSACA-K [1], which extend the
 linear­time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
 generalized suffix array.
 
-Overall, SACA-K's time-space trade-off is Pareto optimal compared to the all
+Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
 
 --
