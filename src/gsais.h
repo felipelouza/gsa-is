@@ -1,7 +1,17 @@
-// This is (a modification of) SA-IS algorithm, which can be retrieved at:
-// http://code.google.com/p/ge-nong/ 
-// Our version of SAIS, called gSAIS, maintain the theoretical bounds of the
-// original algorithm to construct the generalized suffix array.
+/* 
+ * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
+ * contact: louza@ic.unicamp.br
+ * 01/09/2015
+ */
+
+/* 
+ * This code is a modification of SA-IS algorithm by G. Nong, which can be
+ * retrieved at: http://code.google.com/p/ge-nong/ 
+ *
+ * Our version of SA-IS, called gSA-IS, maintain the theoretical bounds of the
+ * original algorithm to construct the generalized suffix array.
+ *
+ */
 
 #ifndef GSAIS_H
 #define GSAIS_H
@@ -11,7 +21,7 @@
 #include <memory.h>
 #include <time.h>
 
-#include "lib/utils.h"
+#include "../lib/utils.h"
 
 #define tget(i) ( (t[(i)/8]&mask[(i)%8]) ? 1 : 0 )
 #define tset(i, b) t[(i)/8]=(b) ? (mask[(i)%8]|t[(i)/8]) : ((~mask[(i)%8])&t[(i)/8])

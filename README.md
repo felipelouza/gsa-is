@@ -1,8 +1,8 @@
 #gsa-is
 
-This code is an implementation of gSAIS and gSACA-K, which are modifications of
-SAIS [1] and SACA-K [2] to compute the generalized suffix array,
-maintaining their theoretical bounds and improving their practical performance.
+This code is an implementation of gSAIS and gSACA-K [1], which extend the
+linear­time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
+generalized suffix array.
 
 Overall, SACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
@@ -315,8 +315,10 @@ MODE parameter specifies which algorithm is called by main.c:
 
 ##references
 
-\[1\] G. Nong, S. Zhang, and W. H. Chan, “Two efficient algorithms for linear time suffix array construction,” IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+\[1\] Louza, F. A., Gog, S., Telles, G. P, "Induced Suffix Sorting for String Collections", submitted to DCC, 2016.
 
-\[2\] Nong, G. Practical linear-time O(1)-workspace suffix sorting for constant alphabets,” ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
+\[2\] Nong G., Zhang S., Chan W. H., "Two efficient algorithms for linear time suffix array construction", IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+
+\[3\] Nong, G., "Practical linear-time O(1)-workspace suffix sorting for constant alphabets", ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
 
