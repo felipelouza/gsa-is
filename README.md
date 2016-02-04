@@ -315,10 +315,11 @@ MODE parameter specifies which algorithm is called by main.c:
 
 ##references
 
-\[1\] Louza, F. A., Gog, S., Telles, G. P, "Induced Suffix Sorting for String Collections", submitted to DCC, 2016.
+\[1\] Louza, F. A., Gog, S., Telles, G. P. (2016). Induced Suffix Sorting for String Collections. In Proc. DCC (to appear).
 
-\[2\] Nong G., Zhang S., Chan W. H., "Two efficient algorithms for linear time suffix array construction", IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
 
-\[3\] Nong, G., "Practical linear-time O(1)-workspace suffix sorting for constant alphabets", ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
+\[2\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+
+\[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
 
