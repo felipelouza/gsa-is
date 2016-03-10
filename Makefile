@@ -6,7 +6,7 @@ CFLAGS += -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscri
 LFLAGS = -lm -lrt -ldl
 
 DIR = dataset/
-INPUT = input.1000.txt
+INPUT = input.100.txt
 
 K	= 3
 MODE 	= 1
