@@ -213,7 +213,7 @@ void putSubstr0_generalized(uint_t *SA,
     if(cur_t==0 && succ_t==1){
 
       if(chr(i)==separator)
-        SA[bkt[chr(p)]++]=0; // removes LMS-positions that induces separator suffixes
+        SA[++bkt[chr(p)]]=0; // removes LMS-positions that induces separator suffixes
 
       SA[bkt[chr(i)]--]=i;
       p=i;

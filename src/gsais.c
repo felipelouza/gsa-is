@@ -293,7 +293,7 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
     if(isLMS(i)){
 
       if(chr(i)==separator) // gsa-is
-        SA[bkt[chr(p)]++]=EMPTY; // removes LMS-positions that induces separator suffixes
+        SA[++bkt[chr(p)]]=EMPTY; // removes LMS-positions that induces separator suffixes
 
       SA[bkt[chr(i)]--]=i;
       p=i;
