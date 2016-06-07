@@ -5,4 +5,4 @@ gsais
 *.sa
 utils_32.h
 utils_64.h
-
+*.sh

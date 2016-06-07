@@ -2,6 +2,12 @@
 
 /**********************************************************************/
 
+void time_start(time_t *t_time, clock_t *c_clock){
+
+	*t_time = time(NULL);
+	*c_clock =  clock();
+}
+
 double time_stop(time_t t_time, clock_t c_clock){
 
 	double aux1 = (clock() - c_clock) / (double)(CLOCKS_PER_SEC);
@@ -9,7 +15,7 @@ double time_stop(time_t t_time, clock_t c_clock){
 	
 	printf("CLOCK = %lf TIME = %lf\n", aux1, aux2);
 	
-	return aux2;
+	return aux1;
 }
 
 
@@ -72,4 +78,48 @@ int_t min_range(int_t* A, int_t l, int_t r){
 
 return min;
 }
+/*******************************************************************/
+int_t* cat_int(unsigned char** R, int k, int_t *n){
+
+	(*n)++; //add 0 at the end
+
+	int_t i, j;
+	int_t l=0;
+	int_t *str_int = (int_t*) malloc((*n)*sizeof(int_t));
+
+	for(i=0; i<k; i++){
+		int_t m = strlen((char*)R[i]);
+		for(j=0; j<m; j++)
+			str_int[l++] = R[i][j]+(k+1);
+		str_int[l++] = i+1; //add $_i as separator
+	}
+	
+	str_int[l]=0;
+
+return str_int;
+}
+/*******************************************************************/
+unsigned char* cat_char(unsigned char** R, int k, int_t *n){
+
+	(*n)++; //add 0 at the end
+
+	int_t i, j;
+	int_t l=0;
+	unsigned char *str = (unsigned char*) malloc((*n)*sizeof(unsigned char));
+
+	for(i=0; i<k; i++){
+		int_t m = strlen((char*)R[i]);
+		for(j=0; j<m; j++){
+			if(R[i][j]+1<256) str[l++] = R[i][j]+1;
+			else (*n)--;
+		}
+		str[l++] = 1; //add 1 as separator
+	}
+
+	str[l]=0;
+
+return str;
+}
+
 /**********************************************************************/
+

@@ -1,11 +1,10 @@
 #include "suffix_array.h"
 
-
 #define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
 
 /*******************************************************************/
 
-int_t suffix_array_write(int_t *SA, int_t n, char* c_file, const char* ext){
+int suffix_array_write(int_t *SA, int_t n, char* c_file, const char* ext){
 
 	FILE *f_out;
 	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
@@ -42,10 +41,10 @@ return SA;
 
 /*******************************************************************/
 
-int_t suffix_array_print(int_t *SA, unsigned char *T, size_t len, int cs){
+int_t suffix_array_print(unsigned char *T, int_t *SA, size_t n, int cs){
 
 int_t i;
-	for(i=0; i<len; i++){
+	for(i=0; i<n; i++){
 
 		printf("%" PRIdN ") %" PRIdN "\t", i, SA[i]);
 	
@@ -60,11 +59,11 @@ return 1;
 
 /*******************************************************************/
 
-int_t sleq(unsigned char *T, int_t a, int_t b, size_t len, int cs, unsigned char sentinel) {
+int_t sleq(unsigned char *T, int_t a, int_t b, size_t n, int cs, unsigned char sentinel) {
 
 	size_t i;
 
-	for(i=0; i<len; i++){
+	for(i=0; i<n; i++){
 
 	        if (chr(a) < chr(b))
 			return 1;
@@ -85,12 +84,12 @@ return 1;
 
 /*******************************************************************/
 
-int_t suffix_array_check(int_t *SA, unsigned char *T, size_t len, int cs, unsigned char sentinel){
+int_t suffix_array_check(unsigned char *T, int_t *SA,  size_t n, int cs, unsigned char sentinel){
 
 	int_t i,j,k;
 	
-	for (i = 0; i < len-1;  i++) {
-		size_t min = SA[i+1]<SA[i]?(len-SA[i]):(len-SA[i+1]);
+	for (i = 0; i < n-1;  i++) {
+		size_t min = SA[i+1]<SA[i]?(n-SA[i]):(n-SA[i+1]);
 		if (!sleq(T, SA[i], SA[i+1], min, cs, sentinel)){
 
 			printf("#%" PRIdN ") %" PRIdN ", %" PRIdN "&\n", i, SA[i], SA[i+1]);
@@ -103,18 +102,18 @@ int_t suffix_array_check(int_t *SA, unsigned char *T, size_t len, int cs, unsign
 		}
 	}
 
-	unsigned char *tmp = (unsigned char*) malloc(len*sizeof(unsigned char));
+	unsigned char *tmp = (unsigned char*) malloc(n*sizeof(unsigned char));
 
-	for (i = 0; i < len;  i++) 
+	for (i = 0; i < n;  i++) 
 		tmp[i] = 0;
 
-	for (i = 0; i < len;  i++) 
+	for (i = 0; i < n;  i++) 
 		tmp[SA[i]] = 1;
 	
-	for (i = 0; i < len;  i++){ 
+	for (i = 0; i < n;  i++){ 
 		if(!tmp[i]){
 			free(tmp);
-			fprintf(stderr, "Error: not a permutation\n");
+			fprintf(stderr, "Error: is not a permutation\n");
 			return 0;
 		}
 	}

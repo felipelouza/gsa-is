@@ -3,7 +3,9 @@
  *
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
- * 01/09/2015
+ * 
+ * version 1.2: computing the LCP
+ * 06/06/2016
  *
  */
 
@@ -11,67 +13,27 @@
 #include <errno.h>
 #include <time.h>
 
-#include "lib/utils.h"
 #include "lib/file.h"
 #include "lib/suffix_array.h"
+#include "lib/lcp_array.h"
 #include "external/malloc_count/malloc_count.h"
 #include "src/gsais.h"
 #include "src/gsaca-k.h"
 
-#define DEBUG 0
+#ifndef DEBUG
+        #define DEBUG   0
+#endif
 
-/*******************************************************************/
-int_t* cat_int(unsigned char** R, int k, int_t *n){
-
-	(*n)++; //add 0 at the end
-
-	int_t i, j;
-	int_t l=0;
-	int_t *str_int = (int_t*) malloc((*n)*sizeof(int_t));
-
-	for(i=0; i<k; i++){
-		int_t m = strlen((char*)R[i]);
-		for(j=0; j<m; j++)
-			if(R[i][j]+(k+1)<256) str_int[l++] = R[i][j]+(k+1);
-			else (*n)--;
-		str_int[l++] = i+1; //add $_i as separator
-
-	}
-	
-	str_int[l]=0;
-
-return str_int;
-}
-/*******************************************************************/
-unsigned char* cat_char(unsigned char** R, int k, int_t *n){
-
-	(*n)++; //add 0 at the end
-
-	int_t i, j;
-	int_t l=0;
-	unsigned char *str = (unsigned char*) malloc((*n)*sizeof(unsigned char));
-
-	for(i=0; i<k; i++){
-		int_t m = strlen((char*)R[i]);
-		for(j=0; j<m; j++){
-			if(R[i][j]+1<256) str[l++] = R[i][j]+1;
-			else (*n)--;
-		}
-		str[l++] = 1; //add 1 as separator
-	}
-
-	str[l]=0;
-
-return str;
-}
 
 /*******************************************************************/
 
 int main(int argc, char** argv){
 
-int VALIDATE=0, MODE=0, OUTPUT=0;
+int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0;
+time_t t_start=0, t_total=0;
+clock_t c_start=0, c_total=0;
 
-	if(argc!=7){
+	if(argc!=8){
 		dies(__func__,"argc!=4");
 	}
 
@@ -84,8 +46,9 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 
 	sscanf(argv[3], "%d", &k);
 	sscanf(argv[4], "%u", &MODE);
-	sscanf(argv[5], "%u", &VALIDATE);
-	sscanf(argv[6], "%u", &OUTPUT);
+	sscanf(argv[5], "%u", &LCP_COMPUTE);
+	sscanf(argv[6], "%u", &VALIDATE);
+	sscanf(argv[7], "%u", &OUTPUT);
 
 	file_chdir(c_dir);
 
@@ -108,8 +71,8 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		str_int = cat_int(R, k, &n);
 		
 		#if DEBUG
-		int_t i=0;
-		for(;i<n; i++)
+		int_t i;
+		for(i=0;i<min(5,n); i++)
 			 printf("%" PRIdN ") %" PRIdN "\n", i, str_int[i]);
 		printf("\n");
 		#endif
@@ -117,8 +80,8 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 	else{ // sais, saca-k, gsais, gsaca-k (char)
 		str = cat_char(R, k, &n);
 		#if DEBUG
-		int_t i=0;
-		for(;i<n; i++)
+		int_t i;
+		for(i=0;i<min(5,n); i++)
 			 printf("%" PRIdN ") %d\n", i, str[i]);
 		printf("\n");
 		#endif
@@ -126,7 +89,7 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 
 	#if DEBUG
 		printf("R:\n");
-		for(i=0; i<k; i++)
+		for(i=0; i<min(5,k); i++)
 			printf("%" PRIdN ") %s (%zu)\n", i, R[i], strlen((char*)R[i]));
 	#endif
 
@@ -135,12 +98,18 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 		free(R[i]);
 	free(R);
 
-	//sorted array
 	int_t *SA = (int_t*) malloc(n*sizeof(int_t));
+	for(i=0; i<n; i++) SA[i]=0;
 	int_t depth=0;
 
-	time_t t_start = time(NULL);
-	clock_t c_start =  clock();
+	int_t *LCP = NULL;	
+	if(LCP_COMPUTE){
+		LCP = (int_t*) malloc(n*sizeof(int_t));
+		for(i=0; i<n; i++) LCP[i]=0;
+	}
+
+	time_start(&t_total, &c_total);
+	time_start(&t_start, &c_start);
 
 	switch(MODE){
 		case 1: printf("## SAIS (int) ##\n");
@@ -164,45 +133,82 @@ int VALIDATE=0, MODE=0, OUTPUT=0;
 			break;
 
  		case 6: printf("## gSACA_K ##\n"); 
-			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);
+			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);//separator=1
 			break;
+
+//		case 7: printf("## gSAIS+LCP ##\n"); 
+//			depth = gSAIS((unsigned char*)str, SA, n, 256, sizeof(char), 0, 1);//separator=1
+//			break;
+
+// 		case 8: printf("## gSACA_K+LCP ##\n"); 
+//			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);
+//			break;
 		
 		default: break;
 	}
 
-	printf("total:\n");
-	time_stop(t_start, c_start);
+	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+
+	if(LCP_COMPUTE && MODE<7){
+		time_start(&t_start, &c_start);
+		if(MODE==1 || MODE==2)
+			lcp_PHI_int((unsigned char*)str_int, SA, LCP, n, sizeof(int_t));
+		else
+			lcp_PHI((unsigned char*)str, SA, LCP, n, sizeof(char), 1);//separator=1
+		printf("PHI-algorithm:\n");
+		fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+	}
+
+        printf("total:\n");
+        fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
+
+	#if DEBUG
+	if(MODE==1 || MODE==2)//sais or saca-k	
+		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str_int, SA, LCP, min(10,n), sizeof(int_t));	
+		else suffix_array_print((unsigned char*)str_int, SA, min(10,n), sizeof(int_t));	
+	else
+		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str, SA, LCP, min(10,n), sizeof(char));	
+		else suffix_array_print((unsigned char*)str, SA, min(10,n), sizeof(char));
+	#endif
+
 
 	// validate	
 	if(VALIDATE){
 		if(MODE==1 || MODE==2){//sais or saca-k	
-	        	if(!suffix_array_check(SA, (unsigned char*)str_int, n, sizeof(int_t), 0)) printf("isNotSorted!!\n");
+	        	if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_t), 0)) printf("isNotSorted!!\n");
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
 		else if(MODE==3 || MODE==4){
-	        	if(!suffix_array_check(SA, (unsigned char*)str, n, sizeof(char), 0)) printf("isNotSorted!!\n");
+	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) printf("isNotSorted!!\n");//compares until the sentinel=0
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
 		else if(MODE==5 || MODE==6){
-	        	if(!suffix_array_check(SA, (unsigned char*)str, n, sizeof(char), 1)) printf("isNotSorted!!\n");
+	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) printf("isNotSorted!!\n");//compares until the separator=1
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
+
+		if(LCP_COMPUTE){
+			if(MODE==1 || MODE==2)//sais or saca-k	
+	                	if(!lcp_array_check((unsigned char*)str_int, SA, LCP, n, sizeof(int_t), 1)) printf("isNotLCP!!\n");
+	        	        else printf("isLCP!!\n");
+			else
+	                	if(!lcp_array_check((unsigned char*)str, SA, LCP, n, sizeof(char), 1)) printf("isNotLCP!!\n");
+	        	        else printf("isLCP!!\n");
+		}
+
 	}
 	else printf("depth = %" PRIdN "\n", depth);
 
 	// output
 	if(OUTPUT){
-		suffix_array_write(SA, n, c_file, "sa");
+		if(LCP_COMPUTE) lcp_array_write(SA, LCP, n, c_file, "sa_lcp");
+		else suffix_array_write(SA, n, c_file, "sa");
 	}
 
-	#if DEBUG
-	if(MODE==1 || MODE==2)//sais or saca-k	
-		suffix_array_print(SA, (unsigned char*)str_int, min(10,n), sizeof(int_t));	
-	else
-		suffix_array_print(SA, (unsigned char*)str, min(10,n), sizeof(char));
-	#endif
-
 	free(SA);
+	if(LCP_COMPUTE){
+		free(LCP);
+	}
 	free(str_int);
 	free(str);
 

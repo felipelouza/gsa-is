@@ -1,5 +1,7 @@
 #include "file.h"
 
+/* Returns the file extension
+ */
 const char *get_filename_ext(const char *filename) {                                                  
     const char *dot = strrchr(filename, '.');                                                         
     if(!dot || dot == filename) return "";                                                            
@@ -9,7 +11,7 @@ const char *get_filename_ext(const char *filename) {
 /*******************************************************************/
 
 /* Changes to a working directory, where everything will be read
- * from and written to:
+ * from and written to
  */ 
 int file_chdir(char* dir){
 	
@@ -30,6 +32,8 @@ FILE* file_open(char *c_file, const char * c_mode){
 	
 	f_in = fopen(c_file, c_mode);
 	if (!f_in) perror ("file_open");
+
+	fseek(f_in, 0, SEEK_SET);
 	
 return f_in;
 }
@@ -52,6 +56,29 @@ size_t file_size(FILE* f_in){
     rewind(f_in);
 	
 return length;
+}
+
+/*******************************************************************/
+
+uint_t file_read(FILE* f_in){
+
+uint_t value;
+
+	fread(&value, sizeof(uint_t), 1, f_in);
+
+//	printf("read = %" PRIdN"\n", value);
+
+return value;
+}
+
+/*******************************************************************/
+
+int file_write(FILE* f_out, uint_t value){
+
+//	printf("write(%" PRIdN")\n", value);
+	fwrite(&value, sizeof(uint_t), 1, f_out);
+
+return 0;
 }
 
 /*******************************************************************/
