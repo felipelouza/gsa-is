@@ -50,6 +50,8 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[6], "%u", &VALIDATE);
 	sscanf(argv[7], "%u", &OUTPUT);
 
+	if(MODE==7 || MODE==8) LCP_COMPUTE=1;
+
 	file_chdir(c_dir);
 
 	//disk access
@@ -136,13 +138,9 @@ clock_t c_start=0, c_total=0;
 			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);//separator=1
 			break;
 
-//		case 7: printf("## gSAIS+LCP ##\n"); 
-//			depth = gSAIS((unsigned char*)str, SA, n, 256, sizeof(char), 0, 1);//separator=1
-//			break;
-
-// 		case 8: printf("## gSACA_K+LCP ##\n"); 
-//			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);
-//			break;
+ 		case 7: printf("## gSACA_K+LCP ##\n"); 
+			depth = gSACA_K_LCP((unsigned char*)str, (uint_t*)SA, LCP, n, 256, n, sizeof(char), 0, 1);
+			break;
 		
 		default: break;
 	}
@@ -164,10 +162,10 @@ clock_t c_start=0, c_total=0;
 
 	#if DEBUG
 	if(MODE==1 || MODE==2)//sais or saca-k	
-		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str_int, SA, LCP, min(10,n), sizeof(int_t));	
+		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str_int, SA, LCP, min(20,n), sizeof(int_t));	
 		else suffix_array_print((unsigned char*)str_int, SA, min(10,n), sizeof(int_t));	
 	else
-		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str, SA, LCP, min(10,n), sizeof(char));	
+		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str, SA, LCP, min(20,n), sizeof(char));	
 		else suffix_array_print((unsigned char*)str, SA, min(10,n), sizeof(char));
 	#endif
 
@@ -182,7 +180,7 @@ clock_t c_start=0, c_total=0;
 	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) printf("isNotSorted!!\n");//compares until the sentinel=0
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
-		else if(MODE==5 || MODE==6){
+		else if(MODE==5 || MODE==6 || MODE==7){
 	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) printf("isNotSorted!!\n");//compares until the separator=1
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}

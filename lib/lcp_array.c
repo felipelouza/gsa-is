@@ -145,7 +145,7 @@ int lcp_array_print(unsigned char *T, int_t *SA, int_t *LCP, size_t n, int cs){
                 printf("%" PRIdN ") %" PRIdN ", %" PRIdN "  \t", i, SA[i], LCP[i]);
 
                 int_t j=SA[i];
-                for(j=SA[i]; (j<SA[i]+min(10,LCP[i]+2)); j++)
+                for(j=SA[i]; (j<SA[i]+min(10,LCP[i]+10)); j++)
                         printf("%" PRIdN " ", chr(j));
                 printf("\n");
         }

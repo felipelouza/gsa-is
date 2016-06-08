@@ -20,12 +20,17 @@
 #include <stdio.h>
 
 #include "../lib/utils.h"
+#include "../lib/lcp_array.h"
 
 int_t SACA_K(int_t *s, uint_t *SA,
   uint_t n, unsigned int K,
   uint_t m, int cs, int level);
 
 int_t gSACA_K(unsigned char *s, uint_t *SA,
+  uint_t n, unsigned int K,
+  uint_t m, int cs, int level, unsigned char separator);
+
+int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   uint_t n, unsigned int K,
   uint_t m, int cs, int level, unsigned char separator);
 

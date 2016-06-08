@@ -63,4 +63,7 @@ int_t min_range(int_t* A, int_t l, int_t r);
 int_t* cat_int(unsigned char** R, int k, int_t *n);
 unsigned char* cat_char(unsigned char** R, int k, int_t *n);
 
+double log2(double i);
+void qsort2(void *array, size_t nitems, size_t size, int (*cmp)(void*,void*));
+
 #endif
