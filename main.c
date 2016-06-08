@@ -50,7 +50,7 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[6], "%u", &VALIDATE);
 	sscanf(argv[7], "%u", &OUTPUT);
 
-	if(MODE==7 || MODE==8) LCP_COMPUTE=1;
+	if(MODE==7) LCP_COMPUTE=1;
 
 	file_chdir(c_dir);
 
