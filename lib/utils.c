@@ -109,14 +109,26 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 
 	for(i=0; i<k; i++){
 		int_t m = strlen((char*)R[i]);
+		//removes empty strings
+		if(m==0){
+			(*n)--;
+			continue;
+		}
 		for(j=0; j<m; j++){
+			//removes symbols > 255
 			if(R[i][j]+1<256) str[l++] = R[i][j]+1;
 			else (*n)--;
 		}
 		str[l++] = 1; //add 1 as separator
 	}
 
-	str[l]=0;
+	str[l++]=0;
+        if(*n>l){
+		str = (unsigned char*) realloc(str, (l)*sizeof(unsigned char));
+		//printf("str_realloc(%" PRIdN ", %" PRIdN ")\n", *n, l);
+	}
+
+	*n = l;
 
 return str;
 }
