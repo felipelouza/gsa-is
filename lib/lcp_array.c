@@ -80,7 +80,7 @@ return 0;
 
 /*******************************************************************/
 
-int lcp_PHI_int(unsigned char* T, int_t* SA, int_t* LCP, uint_t n, int cs){
+int lcp_PHI_int(int_t* T, int_t* SA, int_t* LCP, uint_t n, int cs){
 
 	uint_t* PLCP = (uint_t*) malloc(n * sizeof(uint_t));;
 

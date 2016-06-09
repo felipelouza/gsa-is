@@ -89,12 +89,22 @@ int_t* cat_int(unsigned char** R, int k, int_t *n){
 
 	for(i=0; i<k; i++){
 		int_t m = strlen((char*)R[i]);
-		for(j=0; j<m; j++)
-			str_int[l++] = R[i][j]+(k+1);
+		for(j=0; j<m; j++){
+			//removes symbols > 255
+			if(R[i][j]+1<256) str_int[l++] = R[i][j]+(k+1);
+			else (*n)--;
+		}
+//		for(j=0; j<m; j++)
+//			str_int[l++] = R[i][j]+(k+1);
 		str_int[l++] = i+1; //add $_i as separator
 	}
 	
-	str_int[l]=0;
+	str_int[l++]=0;
+        if(*n>l){
+		str_int = (int_t*) realloc(str_int, (l)*sizeof(int_t));
+		printf("N = %" PRIdN "\n", l);
+	}
+	*n = l;
 
 return str_int;
 }
@@ -125,9 +135,8 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 	str[l++]=0;
         if(*n>l){
 		str = (unsigned char*) realloc(str, (l)*sizeof(unsigned char));
-		//printf("str_realloc(%" PRIdN ", %" PRIdN ")\n", *n, l);
+		printf("N = %" PRIdN "\n", l);
 	}
-
 	*n = l;
 
 return str;

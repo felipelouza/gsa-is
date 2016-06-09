@@ -119,6 +119,7 @@ char** load_multiple_txt(FILE* f_in, int k, int_t *n) {
 			
 		ssize_t size = getline(&c_buffer[i], &len, f_in);
 		if (size == -1){
+			printf("K = %d\n", i);
 			return 0;
 		}
 		c_buffer[i][size-1] = 0;
@@ -231,6 +232,10 @@ char** file_load_multiple(char* c_file, int k, int_t *n) {
 
 	else if(strcmp(type,"fastq") == 0)
 		c_buffer = load_multiple_fastq(f_in, k, n);
+	else{
+		printf("Error: file not recognized (.txt, .fasta, .fastq)\n");
+		return 0;
+	}
 
 	fclose(f_in);
 

@@ -25,7 +25,7 @@ int lcp_kasai(char* T, int_t* SA, uint_t n, int_t* LCP);
  * @param n The length of the given string.
 */
 int lcp_PHI(unsigned char* T, int_t* SA, int_t* LCP, uint_t n, int cs, unsigned char separator);
-int lcp_PHI_int(unsigned char* T, int_t* SA, int_t* LCP, uint_t n, int cs);
+int lcp_PHI_int(int_t* T, int_t* SA, int_t* LCP, uint_t n, int cs);
 
 int lcp_array_check(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, unsigned char separator);
 

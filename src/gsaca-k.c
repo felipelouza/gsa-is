@@ -10,10 +10,12 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define true 1
 #define false 0
 
-#define DEBUG 0
+#ifndef DEBUG
+        #define DEBUG   0
+#endif
 #define DEPTH 0  // compute time and size of reduced problem for each recursion call
 #define PHASES 0 // compute time for each phase
-#define RMQ   1  //variants = (1, trivial) (2, using Gog's stack)
+#define RMQ   2  //variants = (1, trivial) (2, using Gog's stack)
 #define BINARY 0 //binary search on stack operations
 
 typedef struct _pair{

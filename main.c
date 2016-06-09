@@ -61,10 +61,6 @@ clock_t c_start=0, c_total=0;
 		return 0;
 	}
 
-	printf("K = %" PRId32 "\n", k);
-	printf("N = %" PRIdN "\n", n+1);
-	printf("sizeof(int) = %zu bytes\n", sizeof(int_t));
-
 	unsigned char *str = NULL;
 	int_t  *str_int = NULL;
 	
@@ -74,7 +70,7 @@ clock_t c_start=0, c_total=0;
 		
 		#if DEBUG
 		int_t i;
-		for(i=0;i<min(5,n); i++)
+		for(i=0;i<min(10,n); i++)
 			 printf("%" PRIdN ") %" PRIdN "\n", i, str_int[i]);
 		printf("\n");
 		#endif
@@ -83,11 +79,15 @@ clock_t c_start=0, c_total=0;
 		str = cat_char(R, k, &n);
 		#if DEBUG
 		int_t i;
-		for(i=0;i<min(5,n); i++)
+		for(i=0;i<min(10,n); i++)
 			 printf("%" PRIdN ") %d\n", i, str[i]);
 		printf("\n");
 		#endif
 	}
+
+	printf("K = %" PRId32 "\n", k);
+	printf("N = %" PRIdN "\n", n+1);
+	printf("sizeof(int) = %zu bytes\n", sizeof(int_t));
 
 	#if DEBUG
 		printf("R:\n");
@@ -150,7 +150,7 @@ clock_t c_start=0, c_total=0;
 	if(LCP_COMPUTE && MODE<7){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
-			lcp_PHI_int((unsigned char*)str_int, SA, LCP, n, sizeof(int_t));
+			lcp_PHI_int((int_t*)str_int, SA, LCP, n, sizeof(int_t));
 		else
 			lcp_PHI((unsigned char*)str, SA, LCP, n, sizeof(char), 1);//separator=1
 		printf("PHI-algorithm:\n");
@@ -207,8 +207,8 @@ clock_t c_start=0, c_total=0;
 	if(LCP_COMPUTE){
 		free(LCP);
 	}
-	free(str_int);
-	free(str);
+	if(MODE==1 || MODE==2) free(str_int);
+	else free(str);
 
 return 0;
 }
