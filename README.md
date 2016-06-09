@@ -14,7 +14,7 @@ To run a test type:
 
 ```sh
 make
-make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6
+make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6 LCP_COMPUTE=1
 ```
 
 One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
@@ -31,31 +31,34 @@ MODE parameter specifies which algorithm is called by main.c:
 * 4: SACA-K 
 * 5: gSAIS
 * 6: gSACA-K
+* 7: gSACA-K+LCP 
 
 \* SAIS and SACA-K versions that receive an integer alphabet as input.
 
+**LCP array:**
+
+To compute the LCP array after the GSA construction, add the option LCP_COMPUTE=1:
+
+```sh
+make
+make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6 LCP_COMPUTE=1
+```
+
+Also, one can use gSACA-K+LCP (MODE=7) to compute the GSA and the LCP together:
+
+```sh
+make
+make run DIR=dataset INPUT=input-10000.txt K=10000 K=100 MODE=7
+```
+
 --
+##references
 
-##LCP array:
+\[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016.
 
-To compute the LCP array add the option LCP_COMPUTE=1 after the GSA construction type:
+\[2\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
 
-```sh
-make
-make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=6 LCP_COMPUTE=1
-```
-
-Also, one can use gSACA-K+LCP, which computes both GSA and LCP together:
-
-**Settings:**
-
-* 7: gSACA-K
-
-```sh
-make
-make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=7
-```
-
+\[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
 --
 ##experiments:
@@ -336,13 +339,5 @@ make run DIR=dataset INPUT=uniprot.100.fasta K=100 MODE=7
 | protein 9	| 5,279.16	| 195.31	| 5,181.02	| 1,024         | 5,279.16      | 1,024     |
 | protein 10	| 9,125.83	| 387.77	| 8,890.27	| 1,024         | 9,125.83      | 1,024     |
 
-##references
-
-\[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016.
-
-
-\[2\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
-
-\[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
 
