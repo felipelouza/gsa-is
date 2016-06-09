@@ -47,7 +47,6 @@ One can compute the LCP-array after the GSA construction using Phi-algorithm [4]
 make run LCP_COMPUTE=1
 ```
 
---
 **Output:**
 
 One can check if the output produced is correct:
@@ -56,7 +55,7 @@ One can check if the output produced is correct:
 make run CHECK=1
 ```
 
-Output the GSA (and the LCP) produced as .sa (or .sa_lcp):
+One can output the GSA (and the LCP) produced as .sa (or .sa_lcp):
 
 ```sh
 make run OUPUT=1
