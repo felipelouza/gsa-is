@@ -1,7 +1,7 @@
 #gsa-is
 
 This code is an implementation of gSAIS and gSACA-K [1], which extend the
-linear­time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
+linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
 generalized suffix array.
 
 Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
@@ -38,13 +38,16 @@ MODE parameter specifies which algorithm is called by main.c:
 --
 **LCP array:**
 
-To compute the LCP array after the GSA construction, add the option LCP_COMPUTE=1:
+To compute the LCP array after the GSA construction using Phi-algorithm [4], add the option LCP_COMPUTE=1:
 
 ```sh
 make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6 LCP_COMPUTE=1
 ```
 
-Also, one can use gSACA-K+LCP (MODE=7) to compute the GSA and the LCP together:
+--
+**gSACA-K+LCP:**
+
+The algorithm gSACA-K+LCP (MODE=7) computes the GSA and the LCP together in linear-time using constant-space:
 
 ```sh
 make run DIR=dataset INPUT=input-10000.txt K=10000 K=100 MODE=7
@@ -58,6 +61,8 @@ make run DIR=dataset INPUT=input-10000.txt K=10000 K=100 MODE=7
 \[2\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
 
 \[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
+
+\[4\] Kärkkäinen, J., Manzini, G., & Puglisi, S. J. (2009). Permuted Longest-Common-Prefix Array. In G. Kucherov & E. Ukkonen (Eds.), Proc. CPM (Vol. 5577, pp. 181–192).
 
 --
 ##experiments:
