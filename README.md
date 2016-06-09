@@ -35,7 +35,7 @@ MODE parameter specifies which algorithm is called by main.c:
 
 \* SAIS and SACA-K versions that receive an integer alphabet as input.
 
-
+--
 ##LCP array
 
 * Phi-algorithm
