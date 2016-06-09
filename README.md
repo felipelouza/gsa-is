@@ -31,33 +31,20 @@ MODE parameter specifies which algorithm is called by main.c:
 * 4: SACA-K 
 * 5: gSAIS
 * 6: gSACA-K
-
+* gSACA-K+LCP
 
 \* SAIS and SACA-K versions that receive an integer alphabet as input.
+* gSACA-K+LCP computes the LCP array together with the GSA construction. 
 
 --
 **LCP array**
 
-One can also compute the LCP-array with the following options:
-
-* Phi-algorithm
-* gSACA-K+LCP
-
-To compute the LCP after the GSA construction using Phi-algorithm [4], add the option LCP_COMPUTE=1:
+One can also compute the LCP array after the GSA construction using Phi-algorithm [4], add the option LCP_COMPUTE=1:
 
 ```sh
 make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6 LCP_COMPUTE=1
 ```
 
-To compute the LCP together with the GSA construction, use the new algorithm gSACA-K+LCP:
-
-New MODE:
-* 7: gSACA-K+LCP 
-
-
-```sh
-make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=7
-```
 
 --
 ##references
