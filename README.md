@@ -39,13 +39,15 @@ MODE parameter specifies which algorithm is called by main.c:
 \* SAIS and SACA-K versions that receive an integer alphabet as input.
 
 --
-**Options**
+**LCP-array:**
 
 One can compute the LCP after the GSA construction using Phi-algorithm [4]:
 
 ```sh
 make run LCP_COMPUTE=1
 ```
+--
+**Options:**
 
 One can check if the output produced is correct:
 
