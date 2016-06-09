@@ -34,7 +34,7 @@ MODE parameter specifies which algorithm is called by main.c:
 * gSACA-K+LCP
 
 \* SAIS and SACA-K versions that receive an integer alphabet as input.
-* gSACA-K+LCP computes the LCP array together with the GSA construction. 
+**gSACA-K+LCP** computes the LCP array together with the GSA construction. 
 
 --
 **LCP array**
