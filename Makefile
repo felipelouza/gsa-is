@@ -6,12 +6,12 @@ CFLAGS += -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscri
 LFLAGS = -lm -lrt -ldl
 
 DIR = dataset/
-INPUT = input.100.txt
+INPUT = input-10000.txt
 
 ##
 
-K	= 3
-MODE 	= 1
+K	= 10000
+MODE 	= 7 
 LCP_COMPUTE = 1
 CHECK	= 1
 OUTPUT	= 0
