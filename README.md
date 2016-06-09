@@ -7,7 +7,7 @@ generalized suffix array.
 Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
 
-**New**: gSACA-K+LCP extends the algorithm gSACA-K to also compute the LCP array as a by-product of the GSA construction. 
+**New**: gSACA-K+LCP extends the algorithm gSACA-K to also compute the LCP-array as a by-product of the GSA construction. 
 
 
 --
@@ -41,11 +41,14 @@ MODE parameter specifies which algorithm is called by main.c:
 --
 **LCP-array:**
 
-One can compute the LCP after the GSA construction using Phi-algorithm [4]:
+One can compute the LCP-array after the GSA construction using Phi-algorithm [4]:
 
 ```sh
 make run LCP_COMPUTE=1
 ```
+
+--
+**Output:**
 
 One can check if the output produced is correct:
 
