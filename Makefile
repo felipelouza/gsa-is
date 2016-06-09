@@ -11,8 +11,8 @@ INPUT = input-10000.txt
 ##
 
 K	= 10000
-MODE 	= 7 
-LCP_COMPUTE = 1
+MODE 	= 6
+LCP_COMPUTE = 0
 CHECK	= 1
 OUTPUT	= 0
 
