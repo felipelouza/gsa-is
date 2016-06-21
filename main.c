@@ -1,11 +1,11 @@
 /*
- * Induced Suffix Sorting for String Collections
+ * Induced Suffix Sorting and LCP array construction for String Collections
  *
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
  * 
- * version 1.2: computing the LCP
- * 06/06/2016
+ * version 1.2
+ * 21/06/2016
  *
  */
 
@@ -50,7 +50,7 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[6], "%u", &VALIDATE);
 	sscanf(argv[7], "%u", &OUTPUT);
 
-	if(MODE==7) LCP_COMPUTE=1;
+	if(MODE>6) LCP_COMPUTE=1;
 
 	file_chdir(c_dir);
 
@@ -135,11 +135,15 @@ clock_t c_start=0, c_total=0;
 			break;
 
  		case 6: printf("## gSACA_K ##\n"); 
-			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0, 1);//separator=1
+			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, sizeof(char), 0, 1);//separator=1
 			break;
 
- 		case 7: printf("## gSACA_K+LCP ##\n"); 
-			depth = gSACA_K_LCP((unsigned char*)str, (uint_t*)SA, LCP, n, 256, n, sizeof(char), 0, 1);
+ 		case 7: printf("## gSAIS+LCP ##\n"); 
+			depth = gSAIS_LCP((unsigned char*)str, SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
+			break;
+
+ 		case 8: printf("## gSACA_K+LCP ##\n"); 
+			depth = gSACA_K_LCP((unsigned char*)str, (uint_t*)SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
 			break;
 		
 		default: break;
@@ -180,7 +184,7 @@ clock_t c_start=0, c_total=0;
 	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) printf("isNotSorted!!\n");//compares until the sentinel=0
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
-		else if(MODE==5 || MODE==6 || MODE==7){
+		else if(MODE==5 || MODE==6 || MODE==7 || MODE==8){
 	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) printf("isNotSorted!!\n");//compares until the separator=1
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}

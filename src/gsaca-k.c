@@ -21,17 +21,17 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 typedef struct _pair{
   uint_t idx;
   int_t lcp;
-} t_pair;
+} t_pair_k;
 
-int compare (const void * a, const void * b){
+int compare_k (const void * a, const void * b){
   const uint_t *ia = (const uint_t *)a; 
   const uint_t *ib = (const uint_t *)b;
   return *ia  - *ib; 
 }
 
-int type_cmp(void *a, void *b){ return (*(uint_t*)a)-(*(uint_t*)b); }
+int type_cmp_k(void *a, void *b){ return (*(uint_t*)a)-(*(uint_t*)b); }
 
-void stack_push(t_pair* STACK, int_t *top, uint_t idx, int_t lcp){
+void stack_push_k(t_pair_k* STACK, int_t *top, uint_t idx, int_t lcp){
 
   STACK[*top].idx=idx;
   STACK[*top].lcp=lcp;
@@ -224,10 +224,10 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
   uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
   int_t stack_size = 895; //1023+K; //to use 10Kb of working space
-  t_pair* STACK = (t_pair*) malloc((stack_size+1)*sizeof(t_pair));
+  t_pair_k* STACK = (t_pair_k*) malloc((stack_size+1)*sizeof(t_pair_k));
   int_t top = 0;
   //init
-  stack_push(STACK, &top, 0, -1);
+  stack_push_k(STACK, &top, 0, -1);
   for(i=0;i<K;i++) last_occ[i]=0;
   #endif 
 
@@ -281,7 +281,7 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
           while(STACK[(top)-1].lcp>=lcp) (top)--;	
         #endif
 
-        stack_push(STACK, &top, i+1, lcp);
+        stack_push_k(STACK, &top, i+1, lcp);
         j = top-1;
 
         #if BINARY == 1 
@@ -327,8 +327,7 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
 
         int_t j;
         memcpy(tmp, last_occ, K*sizeof(uint_t));
-//      qsort(tmp, K, sizeof(uint_t), compare);
-        qsort2(tmp, K, sizeof(uint_t), type_cmp);
+        qsort2(tmp, K, sizeof(uint_t), type_cmp_k);
        
         int_t curr=1, end=1;
         STACK[top].idx=U_MAX;
@@ -438,10 +437,10 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
   int_t stack_size = 895; //1023+K; //to use 10Kb of working space
-  t_pair* STACK = (t_pair*) malloc((stack_size+1)*sizeof(t_pair));
+  t_pair_k* STACK = (t_pair_k*) malloc((stack_size+1)*sizeof(t_pair_k));
   int_t top = 0;
   //init
-  stack_push(STACK, &top, n, -1);
+  stack_push_k(STACK, &top, n, -1);
   for(i=0;i<K;i++) last_occ[i]=n-1;
   #endif
 
@@ -493,7 +492,6 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
             int_t l=0;	
             while(chr(SA[bkt[chr(j)]+1]+l)==chr(SA[bkt[chr(j)]]+l))++l;
             LCP[bkt[chr(j)]+1]=l;
-//printf("%d = %d\n", chr(j), bkt[chr(j)]+1);
   	  }
   	}
     }
@@ -519,14 +517,13 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
       #else
         while(STACK[(top)-1].lcp>=lcp) (top)--;
       #endif
-      stack_push(STACK, &top, i, lcp);
+      stack_push_k(STACK, &top, i, lcp);
 
       if(top>=stack_size){
 
           int_t j;
           memcpy(tmp, last_occ, K*sizeof(uint_t));
-//        qsort(tmp, K, sizeof(uint_t), compare);
-          qsort2(tmp, K, sizeof(uint_t), type_cmp);
+          qsort2(tmp, K, sizeof(uint_t), type_cmp_k);
 
           int_t curr=0, end=1;
           STACK[top].idx=U_MAX;
@@ -1226,10 +1223,11 @@ return depth;
 
 int_t gSACA_K(unsigned char *s, uint_t *SA,
   uint_t n, unsigned int K,
-  uint_t m, int cs, int level, unsigned char separator) {
+  int cs, int level, unsigned char separator) {
   uint_t i;
   uint_t *bkt=NULL;
-
+  uint_t m=n;
+  
   #if PHASES
   time_t t_start_phase = 0.0; 
   clock_t c_start_phase = 0.0;
@@ -1241,10 +1239,8 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   #endif
 
   #if PHASES
-  if(!level){
 	t_start_phase = time(NULL);
 	c_start_phase =  clock();
-  }
   #endif
   // stage 1: reduce the problem by at least 1/2.
 
@@ -1268,7 +1264,7 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   // 2*n1 must be not larger than n.
   uint_t n1=0;
   for(i=0; i<n; i++) 
-    if((!level&&SA[i]>0) || (level&&((int_t *)SA)[i]>0))
+    if((SA[i]>0))
       SA[n1++]=SA[i];
 
   uint_t *SA1=SA, *s1=SA+m-n1;
@@ -1276,17 +1272,13 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   name_ctr=nameSubstr_generalized(SA,s,s1,n,m,n1,level,cs,separator);
 
   #if PHASES
-  if(!level){
 	printf("phase 1:\n");
 	time_stop(t_start_phase, c_start_phase);
-  }
   #endif
 
   #if PHASES
-  if(!level){
 	t_start_phase = time(NULL);
 	c_start_phase =  clock();
-  }
   #endif
 
   // stage 2: solve the reduced problem.
@@ -1303,38 +1295,30 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   getSAlms(SA, (int_t*)s, s1, n, n1, level, cs);
 
   for(i=0; i<n1; i++) SA[i]=s1[SA[i]];
-  for(i=n1; i<n; i++) SA[i]=level?EMPTY_k:0; 
+  for(i=n1; i<n; i++) SA[i]=0; 
 
   putSuffix0_generalized(SA, s, bkt, n, K, n1, cs, separator);
   
   #if PHASES
-  if(!level){
 	printf("phase 2:\n");
 	time_stop(t_start_phase, c_start_phase);
-  }
   #endif
 
   #if PHASES
-  if(!level){
 	t_start_phase = time(NULL);
 	c_start_phase =  clock();
-  }
   #endif
 
   induceSAl0_generalized(SA, s, bkt, n, K, true, cs, separator);
 
   #if PHASES
-  if(!level){
       printf("phase 3:\n");
       time_stop(t_start_phase, c_start_phase);
-  }
   #endif
   
   #if PHASES
-  if(!level){
       t_start_phase = time(NULL);
       c_start_phase =  clock();
-  }
   #endif
 
   induceSAs0_generalized(SA, s, bkt, n, K, true, cs, separator);
@@ -1347,10 +1331,8 @@ int_t gSACA_K(unsigned char *s, uint_t *SA,
   #endif
 
   #if PHASES
-  if(!level){
       printf("phase 4:\n");
       time_stop(t_start_phase, c_start_phase);
-  }
   #endif
 
 return depth;
@@ -1360,10 +1342,11 @@ return depth;
 
 int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   uint_t n, unsigned int K,
-  uint_t m, int cs, int level, unsigned char separator) {
+  int cs, int level, unsigned char separator) {
   uint_t i;
   uint_t *bkt=NULL;
-
+  uint_t m=n;
+  
   #if PHASES
   time_t t_start_phase = 0.0; 
   clock_t c_start_phase = 0.0;
@@ -1432,7 +1415,7 @@ int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   // 2*n1 must be not larger than n.
   uint_t n1=0;
   for(i=0; i<n; i++) 
-    if((!level&&SA[i]>0) || (level&&((int_t *)SA)[i]>0))
+    if((SA[i]>0))
       SA[n1++]=SA[i];
 
   uint_t *SA1=SA, *s1=SA+m-n1;
@@ -1536,8 +1519,7 @@ int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   #endif
 
   for(i=0; i<n1; i++) SA[i]=s1[SA[i]];
-  //for(i=n1; i<n; i++) SA[i]=level?EMPTY_k:0; 
-  for(i=n1; i<n; i++) SA[i]=level?EMPTY_k:U_MAX; 
+  for(i=n1; i<n; i++) SA[i]=U_MAX; 
   for(i=n1;i<n;i++) LCP[i]=0;
 
   #if DEBUG
