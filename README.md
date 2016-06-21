@@ -8,9 +8,7 @@ Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
 
 **New**: gSAIS+LCP and gSACA-K+LCP extends the algorithms gSAIS and gSACA-K to
-also compute the LCP-array. 
-
-The new algorithms are a varition of the algorithms by Fischer [5] and by Louza
+also compute the LCP-array based on the algorithms by Fischer [5] and by Louza
 et. al [6].
 
 --
@@ -41,8 +39,6 @@ MODE parameter specifies which algorithm is called by main.c:
 * 8: gSACA-K+LCP
 
 SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
-
-gSAIS+LCP and  gSACA-K+LCP also computes the LCP-array
 
 --
 **LCP-array:**
