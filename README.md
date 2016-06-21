@@ -9,8 +9,9 @@ other algorithms in the experiments.
 
 **New**: gSAIS+LCP and gSACA-K+LCP extends the algorithms gSAIS and gSACA-K to
 also compute the LCP-array. 
-The algorithms are a varition of the algorithms by Fischer [5] and Louza et. al
-[6] that extend SAIS and SACA-K to compute both SA and LCP for a single string.
+
+The new algorithms are a varition of the algorithms by Fischer [5] and by Louza
+et. al [6].
 
 --
 ##run:
@@ -39,7 +40,8 @@ MODE parameter specifies which algorithm is called by main.c:
 * 7: gSAIS+LCP
 * 8: gSACA-K+LCP
 
-\* SAIS and SACA-K versions that receive an integer alphabet as input.
+\* SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
+\*\* gSAIS+LCP and  gSACA-K+LCP also computes the LCP-array
 
 --
 **LCP-array:**
@@ -50,7 +52,7 @@ One can also compute the LCP-array after the SA construction using Phi-algorithm
 make run LCP_COMPUTE=1
 ```
 
-**Output:**
+**Validate:**
 
 One can check if the output produced is correct:
 
@@ -58,13 +60,17 @@ One can check if the output produced is correct:
 make run CHECK=1
 ```
 
+**Output:**
+
 One can output the GSA (and the LCP) produced as .sa (or .sa_lcp):
 
 ```sh
 make run OUPUT=1
 ```
 
-**All-algorithms:**
+**Compare:**
+
+One can compare all algorithms:
 
 ```sh
 for i in {1..8}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPUTE=1 MODE=$i; done
