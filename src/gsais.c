@@ -162,9 +162,10 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
   stack_push_sais(STACK, &top, 0, -1);
   for(i=0;i<K;i++) last_occ[i]=0;
   #endif 
-    
-  for(i=0; i<n; i++)
-    if(SA[i]!=EMPTY) {
+  
+  bkt[0]++; // skip the virtual sentinel. 
+  for(i=0; i<n; i++){
+    if(SA[i]!=U_MAX){ //EMPTY) {
 		
 	  if(LCP[i]==I_MIN){ //is a L/S-seam position
   	  int_t l=0;
@@ -221,6 +222,7 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
         min_lcp=STACK[(j+1)].lcp;
       #endif
 	  
+      if(SA[i]>0) {
 	  j=SA[i]-1; 
 	  if(j>=0 && !tget(j) && chr(j)!=separator){
 		   SA[bkt[chr(j)]]=j;
@@ -232,6 +234,12 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
             #endif
             bkt[chr(j)]++;
 	   }
+      	if(bkt[chr(SA[i])]-1<i){ //if is LMS-type
+	  if(chr(SA[i])!=separator)
+	  SA[i]=U_MAX;
+        }
+
+      }
       #if RMQ == 2
       if(top>=stack_size){//if stack is full
 
@@ -258,15 +266,15 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
               curr = m;
             #else
               while(STACK[curr].idx<tmp[j]+1) curr++;
-	        #endif
+	    #endif
 
             if(curr<top) {
               STACK[end].idx=STACK[curr].idx;
               STACK[end].lcp=STACK[curr].lcp;
               end++; 
-	          curr++;
+	      curr++;
             }
-		  }
+	  }
         }
  
         if(end>=stack_size){
@@ -277,7 +285,7 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
       }
       #endif	   
     }
-    
+  }  
   #if RMQ == 1
   free(M);
   #elif RMQ == 2
@@ -309,8 +317,8 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
   for(i=0;i<K;i++) last_occ[i]=n-1;
   #endif  
 
-  for(i=n-1; i>=0; i--)
-    if(SA[i]!=EMPTY) {
+  for(i=n-1; i>0; i--){
+    if(SA[i]>0){//!=EMPTY) {
 	  j=SA[i]-1; 
 	  if(j>=0 && tget(j) && chr(j)!=separator){
 		  
@@ -358,6 +366,7 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
             LCP[bkt[chr(j)]+1]=l;
   	    }		     
 	  }
+    }
     if(LCP[i]<0) LCP[i]=0;
 
     #if RMQ == 1
@@ -421,7 +430,7 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
           top = end;
       }
       #endif	  
-    }
+  }
   LCP[0]=0;
 
   //variant 1
@@ -956,7 +965,7 @@ int_t gSAIS_LCP(unsigned char *s, int_t *SA, int_t *LCP, int_t n, int_t K, int c
 /**/
 
   for(i=0; i<n1; i++) SA1[i]=s1[SA1[i]]; // get index in s1
-  for(i=n1; i<n; i++) SA[i]=EMPTY; // init SA[n1..n-1]
+  for(i=n1; i<n; i++) SA[i]=U_MAX; //EMPTY; // init SA[n1..n-1]
 /**/
   for(i=n1;i<n;i++) LCP[i]=0;
 /**/
@@ -964,7 +973,7 @@ int_t gSAIS_LCP(unsigned char *s, int_t *SA, int_t *LCP, int_t n, int_t K, int c
   int_t l;
   tmp=bkt[separator]--;// shift one position left of bkt[separator]
   for(i=n1-1; i>=0; i--) {
-      j=SA[i]; SA[i]=EMPTY;
+      j=SA[i]; SA[i]=U_MAX;
       l=LCP[i]; LCP[i]=0;
 
       if(i==0)
