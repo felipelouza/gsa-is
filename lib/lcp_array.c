@@ -113,7 +113,7 @@ int lcp_array_check(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, u
 	
 	uint_t i,j,k;
 	uint_t h;
-	uint_t sum=0;
+	uint64_t sum=0;
 	int_t maximum=0;
 
 	for(i=1;i<n;i++) {
