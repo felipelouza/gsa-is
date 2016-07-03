@@ -20,18 +20,18 @@ unsigned char mask[]={0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
 #define RMQ   2  //variants = (1, trivial) (2, using Gog's stack)
 #define BINARY 0 //binary search on stack operations
 
+#define STACK_SIZE 895 //to use 10Kb of working space
+
 typedef struct _pair{
   uint_t idx;
   int_t lcp;
 } t_pair_sais;
 
-int compare_sais (const void * a, const void * b){
+int compare (const void * a, const void * b){
   const uint_t *ia = (const uint_t *)a; 
   const uint_t *ib = (const uint_t *)b;
   return *ia  - *ib; 
 }
-
-int type_cmp_sais(void *a, void *b){ return (*(uint_t*)a)-(*(uint_t*)b); }
 
 void stack_push_sais(t_pair_sais* STACK, int_t *top, uint_t idx, int_t lcp){
 
@@ -155,8 +155,7 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
   uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
-  int_t stack_size = 895; //1023+K; //to use 10Kb of working space
-  t_pair_sais* STACK = (t_pair_sais*) malloc((stack_size+1)*sizeof(t_pair_sais));
+  t_pair_sais* STACK = (t_pair_sais*) malloc((STACK_SIZE+1)*sizeof(t_pair_sais));
   int_t top = 0;
   //init
   stack_push_sais(STACK, &top, 0, -1);
@@ -241,11 +240,11 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
 
       }
       #if RMQ == 2
-      if(top>=stack_size){//if stack is full
+      if(top>=STACK_SIZE){//if stack is full
 
         int_t j;
         memcpy(tmp, last_occ, K*sizeof(uint_t));
-        qsort2(tmp, K, sizeof(uint_t), type_cmp_sais);
+        qsort(tmp, K, sizeof(uint_t), compare);
        
         int_t curr=1, end=1;
         STACK[top].idx=U_MAX;
@@ -277,7 +276,7 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
 	  }
         }
  
-        if(end>=stack_size){
+        if(end>=STACK_SIZE){
           fprintf(stderr,"ERROR: induceSAl0_LCP\n");
           exit(1);
         }
@@ -309,8 +308,7 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
   uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
-  int_t stack_size = 895; //1023+K; //to use 10Kb of working space
-  t_pair_sais* STACK = (t_pair_sais*) malloc((stack_size+1)*sizeof(t_pair_sais));
+  t_pair_sais* STACK = (t_pair_sais*) malloc((STACK_SIZE+1)*sizeof(t_pair_sais));
   int_t top = 0;
   //init
   stack_push_sais(STACK, &top, n, -1);
@@ -390,11 +388,11 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
       #endif
       stack_push_sais(STACK, &top, i, lcp);
 
-      if(top>=stack_size){
+      if(top>=STACK_SIZE){
 
           int_t j;
           memcpy(tmp, last_occ, K*sizeof(uint_t));
-          qsort2(tmp, K, sizeof(uint_t), type_cmp_sais);
+          qsort(tmp, K, sizeof(uint_t), compare);
 
           int_t curr=0, end=1;
           STACK[top].idx=U_MAX;
@@ -423,7 +421,7 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
             }
           } 
 
-          if(end>=stack_size){
+          if(end>=STACK_SIZE){
             fprintf(stderr,"ERROR: induceSAl0_LCP\n");
             exit(1);
           }
