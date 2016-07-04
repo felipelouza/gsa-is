@@ -94,14 +94,14 @@ for i in {1..8}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPU
 
 **Collections:**
 
-| Collection | size (GB)  |      d     |        n       |    n/d    | available at |
-|------------|:----------:|-----------:|---------------:|----------:|:-------------|
-| Revision   |    0.39    |     20,433 |    419,437,293 |    20,527 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
-| Page       |    3.74    |      1,000 |  4,019,585,128 | 4,019,585 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
-| Influenza  |    0.56    |    394,217 |    597,471,768 |     1,516 | ftp://ftp.ncbi.nih.gov/genomes/INFLUENZA/influenza.fna.gz |
-| Enwiki     |    8.32    |  3,903,703 |  8,933,518,792 |     2,288 | http://algo2.iti.kit.edu/gog/projects/ALENEX15/collections/ENWIKIBIG/text_SURF.sdsl |
-| DNA reads  |    2.87    | 32,621,862 |  3,082,739,100 |        94 | http://gage.cbcb.umd.edu/data/Hg_chr14/Data.quakeCor.tgz | 
-| Uniprot    |    15.77   | 50,825,784 | 16,931,428,229 |       333 | ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/ |
+| Collection | size (GB)  |      d     |        n       |    n/d    |  mean_lcp    |  max_lcp    | available at |
+|------------|:----------:|-----------:|---------------:|----------:|-------------:|-------------:|:-------------|
+| Revision   |    0.39    |     20,433 |    419,437,293 |    20,527 |    31,612.79 |    1,995,055 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
+| Page       |    3.74    |      1,000 |  4,019,585,128 | 4,019,585 |    29,595.13 |    2,912,604 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
+| Influenza  |    0.56    |    394,217 |    597,471,768 |     1,516 |      533.83  |        2,379 | ftp://ftp.ncbi.nih.gov/genomes/INFLUENZA/influenza.fna.gz |
+| Enwiki     |    8.32    |  3,903,703 |  8,933,518,792 |     2,288 |        27.12 |       61,055 | http://algo2.iti.kit.edu/gog/projects/ALENEX15/collections/ENWIKIBIG/text_SURF.sdsl |
+| DNA reads  |    2.87    | 32,621,862 |  3,082,739,100 |        94 |        43.35  |         101 | http://gage.cbcb.umd.edu/data/Hg_chr14/Data.quakeCor.tgz | 
+| Uniprot    |    15.77   | 50,825,784 | 16,931,428,229 |       333 |         91.03 |       32,882 | ftp://ftp.uniprot.org/pub/databases/uniprot/previous_releases/release-2015_09/knowledgebase/complete/ |
 
 
 **Running time (seconds):**
