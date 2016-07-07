@@ -8,10 +8,6 @@ the order among all suffixes, and improving their practical performance
 Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
 
-**New**: gSAIS+LCP and gSACA-K+LCP extends the algorithms gSAIS and gSACA-K to
-also compute the LCP-array. The new algorithms are based on the algorithms by
-Fischer [5] and by Louza et. al [6].
-
 --
 ##run:
 
@@ -36,8 +32,6 @@ MODE parameter specifies which algorithm is called by main.c:
 * 4: SACA-K 
 * 5: gSAIS
 * 6: gSACA-K
-* 7: gSAIS+LCP
-* 8: gSACA-K+LCP
 
 SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
@@ -85,9 +79,6 @@ for i in {1..8}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPU
 
 \[4\] Kärkkäinen, J., Manzini, G., & Puglisi, S. J. (2009). Permuted Longest-Common-Prefix Array. In G. Kucherov & E. Ukkonen (Eds.), Proc. CPM (Vol. 5577, pp. 181–192).
 
-\[5\] Fischer, J., Inducing the LCP-Array, in: Proc. WADS, 2011, pp. 374-385.
-
-\[6\] Louza, F. A., Gog, S., Telles, G. P., Optimal suffix sorting and LCP array construction for constant alphabets (submitted). [https://github.com/felipelouza/sacak-lcp](https://github.com/felipelouza/sacak-lcp).
 
 --
 ##experiments:
