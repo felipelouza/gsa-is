@@ -29,6 +29,7 @@ One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
 to 0.
 
 --
+
 **Settings:**
 
 MODE parameter specifies which algorithm is called by main.c:
