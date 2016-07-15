@@ -12,6 +12,9 @@ other algorithms in the experiments.
 also compute the LCP-array. The new algorithms are based on the algorithms by
 Fischer [5] and by Louza et. al [6].
 
+**New**: gSAIS+DA and gSACA-K+DA extends the algorithms gSAIS and gSACA-K to
+also compute the Document array (DA). 
+
 --
 ##run:
 
@@ -30,24 +33,35 @@ to 0.
 
 MODE parameter specifies which algorithm is called by main.c:
 
-* 1: SAIS\* 
-* 2: SACA-K\* 
-* 3: SAIS  
-* 4: SACA-K 
-* 5: gSAIS
-* 6: gSACA-K
-* 7: gSAIS+LCP
-* 8: gSACA-K+LCP
+* 1:  SAIS\* 
+* 2:  SACA-K\* 
+* 3:  SAIS  
+* 4:  SACA-K 
+* 5:  gSAIS
+* 6:  gSACA-K
+* 7:  gSAIS+LCP
+* 8:  gSACA-K+LCP
+* 9:  gSAIS+DA
+* 10: gSACA-K+DA
 
 SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
 --
+
 **LCP-array:**
 
 One can also compute the LCP-array after the SA construction using Phi-algorithm [4]:
 
 ```sh
 make run LCP_COMPUTE=1
+```
+
+**Document-array:**
+
+One can also compute the Document-array after the SA construction using an algorithm base on LF-array (Algorithm 7.30, [7, page 347]):
+
+```sh
+make run DA_COMPUTE=1
 ```
 
 **Validate:**
@@ -88,6 +102,8 @@ for i in {1..8}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPU
 \[5\] Fischer, J., Inducing the LCP-Array, in: Proc. WADS, 2011, pp. 374-385.
 
 \[6\] Louza, F. A., Gog, S., Telles, G. P., Optimal suffix sorting and LCP array construction for constant alphabets (submitted). [https://github.com/felipelouza/sacak-lcp](https://github.com/felipelouza/sacak-lcp).
+
+\[7\] Ohlebusch, E., Bioinformatics Algorithms: Sequence Analysis, Genome Rearrangements, and Phylogenetic Reconstruction. Oldenbusch Verlag, 2013.
 
 --
 ##experiments:
@@ -303,6 +319,4 @@ for i in {1..8}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPU
 | protein      | 6,400,000  | 2,667,015,568  | 417       | 1,544.59           | 48.83               | 1,520.08       | **2,048**            | 1,544.59        | **2,048**             | 20,347.71         | 20,347.71     | 21,892.31                  | 20,396.54                    | 21,867.80              | 20,347.72                | 21,892.31               | 20,347.72                 | 1,544.59            | **20,480**                | 
 | protein      | 12,800,000 | 5,162,366,462  | 403       | 3,026.95           | 97.66               | 2,980.53       | **2,048**            | 3,026.95        | **2,048**             | 39,385.73         | 39,385.73     | 42,412.68                  | 39,483.39                    | 42,366.26              | 39,385.73                | 42,412.68               | 39,385.73                 | 3,026.95            | **20,480**                | 
 | protein      | 25,600,000 | 9,070,832,678  | 354       | 5,279.16           | 195.31              | 5,181.02       | **2,048**            | 5,279.16        | **2,048**             | 69,204.96         | 69,204.96     | 74,484.12                  | 69,400.28                    | 74,385.98              | 69,204.96                | 74,484.12               | 69,204.96                 | 5,279.16            | **20,480**                | 
-| protein      | 50,825,784 | 16,931,428,229 | 333       | 9,125.83           | 387.77              | 8,890.27       | **2,048**            | 9,125.83        | **2,048**             | ***               | ***           | ***                        | ***                          | ***                    | ***                      | ***                     | 0.00                      | 9,125.83            | **20,480**                | 
-
-
+| protein      | 50,825,784 | 16,931,428,229 | 333       | 9,125.83           | 387.77              | 8,890.27       | **2,048**            | 9,125.83        | **2,048**             | ***               | ***           | ***                        | ***                          | ***                    | ***                      | ***                     | 0.00                      | 9,125.83            | **20,480**                |
