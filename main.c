@@ -4,8 +4,8 @@
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
  * 
- * version 1.2
- * 21/06/2016
+ * version 1.3
+ * 06/07/2016
  *
  */
 
@@ -16,6 +16,7 @@
 #include "lib/file.h"
 #include "lib/suffix_array.h"
 #include "lib/lcp_array.h"
+#include "lib/document_array.h"
 #include "external/malloc_count/malloc_count.h"
 #include "src/gsais.h"
 #include "src/gsaca-k.h"
@@ -24,17 +25,16 @@
         #define DEBUG   0
 #endif
 
-
 /*******************************************************************/
 
 int main(int argc, char** argv){
 
-int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0;
+int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0, DA_COMPUTE=0;
 time_t t_start=0, t_total=0;
 clock_t c_start=0, c_total=0;
 
-	if(argc!=8){
-		dies(__func__,"argc!=4");
+	if(argc!=9){
+		dies(__func__,"argc!=9");
 	}
 
 	unsigned char **R;
@@ -47,10 +47,13 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[3], "%d", &k);
 	sscanf(argv[4], "%u", &MODE);
 	sscanf(argv[5], "%u", &LCP_COMPUTE);
-	sscanf(argv[6], "%u", &VALIDATE);
-	sscanf(argv[7], "%u", &OUTPUT);
+	sscanf(argv[6], "%u", &DA_COMPUTE);
+	sscanf(argv[7], "%u", &VALIDATE);
+	sscanf(argv[8], "%u", &OUTPUT);
 
-	if(MODE>6) LCP_COMPUTE=1;
+	if(MODE==7 || MODE==8) LCP_COMPUTE=1;
+	if(MODE==9 || MODE==10) DA_COMPUTE=1;
+	if(MODE>10) return 1;
 
 	file_chdir(c_dir);
 
@@ -110,6 +113,12 @@ clock_t c_start=0, c_total=0;
 		for(i=0; i<n; i++) LCP[i]=0;
 	}
 
+	int_t *DA = NULL;	
+	if(DA_COMPUTE){
+		DA = (int_t*) malloc(n*sizeof(int_t));
+                for(i=0; i<n; i++) DA[i]=-1;
+	}
+
 	time_start(&t_total, &c_total);
 	time_start(&t_start, &c_start);
 
@@ -145,21 +154,44 @@ clock_t c_start=0, c_total=0;
  		case 8: printf("## gSACA_K+LCP ##\n"); 
 			depth = gSACA_K_LCP((unsigned char*)str, (uint_t*)SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
 			break;
-		
+
+ 		case 9: printf("## gSAIS+DA ##\n"); 
+			depth = gSAIS_DA((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
+			break;
+
+ 		case 10: printf("## gSACA_K+DA ##\n"); 
+			depth = gSACA_K_DA((unsigned char*)str, (uint_t*)SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
+			break;
+
 		default: break;
 	}
 
 	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 
+	//LCP array
 	if(LCP_COMPUTE && MODE<7){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			lcp_PHI_int((int_t*)str_int, SA, LCP, n, sizeof(int_t));
 		else
 			lcp_PHI((unsigned char*)str, SA, LCP, n, sizeof(char), 1);//separator=1
-		printf("PHI-algorithm:\n");
+		printf("PHI-algorithm (LCP array):\n");
 		fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 	}
+	
+	//Document array
+	if(DA_COMPUTE && MODE<9){
+		time_start(&t_start, &c_start);
+		if(MODE==1 || MODE==2)
+			document_array_LF_int((int_t*)str_int, SA, DA, n, 256+k, sizeof(int_t), 1, k);
+		else if(MODE==3 || MODE==4)
+			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, k);//separator=0,1,..,k-1
+		else
+			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 1, k);//separator=1
+		printf("LF-algorithm (document array):\n");
+		fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+	}
+
 
         printf("total:\n");
         fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
@@ -176,6 +208,9 @@ clock_t c_start=0, c_total=0;
 
 	// validate	
 	if(VALIDATE){
+
+		printf("## CHECK ##\n"); 
+
 		if(MODE==1 || MODE==2){//sais or saca-k	
 	        	if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_t), 0)) printf("isNotSorted!!\n");
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
@@ -184,7 +219,7 @@ clock_t c_start=0, c_total=0;
 	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) printf("isNotSorted!!\n");//compares until the sentinel=0
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
-		else if(MODE==5 || MODE==6 || MODE==7 || MODE==8){
+		else if(MODE>=5){
 	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) printf("isNotSorted!!\n");//compares until the separator=1
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
@@ -198,19 +233,27 @@ clock_t c_start=0, c_total=0;
 	        	        else printf("isLCP!!\n");
 		}
 
+		if(DA_COMPUTE){
+			if(MODE==1 || MODE==2)//sais or saca-k	
+			        if(!document_array_check_int(str_int, SA, DA, n, sizeof(int_t), k)) printf("isNotDA!!\n");
+			        else printf("isDA!!\n");
+			else
+			        if(!document_array_check(str, SA, DA, n, sizeof(char), 1, k)) printf("isNotDA!!\n");
+			        else printf("isDA!!\n");
+		}
 	}
 	else printf("depth = %" PRIdN "\n", depth);
 
 	// output
 	if(OUTPUT){
-		if(LCP_COMPUTE) lcp_array_write(SA, LCP, n, c_file, "sa_lcp");
-		else suffix_array_write(SA, n, c_file, "sa");
+		suffix_array_write(SA, n, c_file, "sa");
+		if(LCP_COMPUTE) lcp_array_write(LCP, n, c_file, "lcp");
+		if(DA_COMPUTE) document_array_write(DA, n, c_file, "da");
 	}
 
 	free(SA);
-	if(LCP_COMPUTE){
-		free(LCP);
-	}
+	if(LCP_COMPUTE) free(LCP);
+	if(DA_COMPUTE) free(DA);
 	if(MODE==1 || MODE==2) free(str_int);
 	else free(str);
 

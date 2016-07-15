@@ -31,6 +31,6 @@ int lcp_array_check(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, u
 
 int lcp_array_print(unsigned char *T, int_t *SA, int_t *LCP, size_t n, int cs); 
 
-int lcp_array_write(int_t *SA, int_t *LCP, int_t n, char* c_file, const char* ext);
+int lcp_array_write(int_t *LCP, int_t n, char* c_file, const char* ext);
 
 #endif

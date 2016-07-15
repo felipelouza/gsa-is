@@ -51,4 +51,11 @@ int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   uint_t n, unsigned int K,
   int cs, int level, unsigned char separator);
 
+/** @brief Computes the suffix and the Document array T^cat in s[0..n-1]
+ *  @param DA 	Document array 
+ */
+int_t gSACA_K_DA(unsigned char *s, uint_t *SA, int_t *DA,
+  uint_t n, unsigned int K,
+  int cs, int level, unsigned char separator);
+  
 #endif

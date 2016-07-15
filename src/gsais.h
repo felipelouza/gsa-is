@@ -51,4 +51,10 @@ int_t gSAIS(unsigned char *s, int_t *SA, int_t n, int_t K, int cs, int level, un
  */
 int_t gSAIS_LCP(unsigned char *s, int_t *SA, int_t *LCP, int_t n, int_t K, int cs, int level, unsigned char separator);
 
+/** @brief Computes the suffix and the Document array T^cat in s[0..n-1]
+ *  @param DA 	DA array 
+ */
+int_t gSAIS_DA(unsigned char *s, int_t *SA, int_t *DA, int_t n, int_t K, int cs, int level, unsigned char separator);
+
+
 #endif

@@ -156,6 +156,30 @@ void putSuffix0_generalized_LCP(uint_t *SA, int_t *LCP,
 
 }
 
+void putSuffix0_generalized_DA(uint_t *SA, int_t *DA,
+  unsigned char *s, uint_t *bkt, 
+  uint_t n, unsigned int K, int_t n1, int cs, unsigned char separator) {
+  uint_t i, j;
+
+  // find the end of each bucket.
+  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
+
+  int_t tmp=bkt[separator]--;// shifts one position left of bkt[separator]
+  
+  // put the suffixes into their buckets.
+  for(i=n1-1; i>0; i--) {
+    j=SA[i]; SA[i]=0;
+    SA[bkt[chr(j)]]=j;
+    DA[bkt[chr(j)]--]=DA[i];
+  }
+
+ // SA[0]=n-1; // set the single sentinel suffix.
+
+  SA[tmp]=SA[0]-1;// insert the last separator at the end of bkt[separator]
+  DA[tmp]=tmp-1;
+
+}
+
 /*****************************************************************************/
 
 void induceSAl0(uint_t *SA,
@@ -178,6 +202,24 @@ void induceSAl0(uint_t *SA,
     }
 }
 
+void induceSAs0(uint_t *SA,
+  int_t *s, uint_t *bkt,
+  uint_t n, unsigned int K, int_t suffix, int cs) {
+  uint_t i, j;
+
+  // find the end of each bucket.
+  getBuckets_k(s, bkt, n, K, true, cs);
+
+  for(i=n-1; i>0; i--)
+    if(SA[i]>0) {
+      j=SA[i]-1;
+      if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
+        SA[bkt[chr(j)]]=j;
+        bkt[chr(j)]--;
+        if(!suffix) SA[i]=0;
+      }
+    }
+}
 /*****************************************************************************/
 
 void induceSAl0_generalized(uint_t *SA,
@@ -199,6 +241,27 @@ void induceSAl0_generalized(uint_t *SA,
       }
     }
 }
+
+void induceSAs0_generalized(uint_t *SA,
+  unsigned char *s, uint_t *bkt,
+  uint_t n, uint_t K, int_t suffix, int cs, unsigned char separator) {
+  uint_t i, j;
+
+  // find the end of each bucket.
+  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
+
+  for(i=n-1; i>0; i--)
+    if(SA[i]>0) {
+      j=SA[i]-1;
+      if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
+        if(chr(j)!=separator)
+	  SA[bkt[chr(j)]--]=j;
+        if(!suffix) SA[i]=0;
+      }
+    }
+}
+
+/*****************************************************************************/
 
 void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
   unsigned char *s, uint_t *bkt,
@@ -377,49 +440,6 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
 
 }
 
-/*****************************************************************************/
-
-void induceSAs0(uint_t *SA,
-  int_t *s, uint_t *bkt,
-  uint_t n, unsigned int K, int_t suffix, int cs) {
-  uint_t i, j;
-
-  // find the end of each bucket.
-  getBuckets_k(s, bkt, n, K, true, cs);
-
-  for(i=n-1; i>0; i--)
-    if(SA[i]>0) {
-      j=SA[i]-1;
-      if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
-        SA[bkt[chr(j)]]=j;
-        bkt[chr(j)]--;
-        if(!suffix) SA[i]=0;
-      }
-    }
-}
-
-/*****************************************************************************/
-
-void induceSAs0_generalized(uint_t *SA,
-  unsigned char *s, uint_t *bkt,
-  uint_t n, uint_t K, int_t suffix, int cs, unsigned char separator) {
-  uint_t i, j;
-
-  // find the end of each bucket.
-  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
-
-  for(i=n-1; i>0; i--)
-    if(SA[i]>0) {
-      j=SA[i]-1;
-      if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
-        if(chr(j)!=separator)
-	  SA[bkt[chr(j)]--]=j;
-        if(!suffix) SA[i]=0;
-      }
-    }
-}
-
-
 void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   unsigned char *s, uint_t *bkt,
   uint_t n, uint_t K, int cs, unsigned char separator) {
@@ -570,6 +590,50 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   free(last_occ);
   free(tmp);
   #endif
+}
+
+
+/*****************************************************************************/
+
+void induceSAl0_generalized_DA(uint_t *SA, int_t* DA,
+  unsigned char *s, uint_t *bkt,
+  uint_t n, unsigned int K, int cs, unsigned char separator) {
+  uint_t i, j;
+
+  // find the head of each bucket.
+  getBuckets_k((int_t*)s, bkt, n, K, false, cs);
+
+  bkt[0]++; // skip the virtual sentinel.
+  for(i=0; i<n; i++)
+    if(SA[i]>0) {
+      j=SA[i]-1;
+      if(chr(j)>=chr(j+1) ) {
+	    if(chr(j)!=separator){//gsa-is
+          SA[bkt[chr(j)]]=j;
+          DA[bkt[chr(j)]++]=DA[i];
+	    }
+      }
+    }
+}
+
+void induceSAs0_generalized_DA(uint_t *SA, int_t* DA,
+  unsigned char *s, uint_t *bkt,
+  uint_t n, uint_t K, int cs, unsigned char separator) {
+  uint_t i, j;
+
+  // find the end of each bucket.
+  getBuckets_k((int_t*)s, bkt, n, K, true, cs);
+
+  for(i=n-1; i>0; i--)
+    if(SA[i]>0) {
+      j=SA[i]-1;
+      if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
+        if(chr(j)!=separator){
+		  SA[bkt[chr(j)]]=j;
+		  DA[bkt[chr(j)]--]=DA[i];
+	    }
+      }
+    }
 }
 
 /*****************************************************************************/
@@ -1084,6 +1148,38 @@ void getSAlms(uint_t *SA,
   }
 }
 
+
+void getSAlms_DA(uint_t *SA, int_t* DA,
+  int_t *s, 
+  uint_t *s1, uint_t n, 
+  uint_t n1, int level, int cs, unsigned char separator) {
+  uint_t i, j, cur_t, succ_t;
+
+/**/
+  int_t k=0;
+  for(i=n-2; i>0; i--) if(chr(i)==separator)k++;
+  DA[n1-1]=k;
+/**/
+  
+  j=n1-1; s1[j--]=n-1;
+  succ_t=0; // s[n-2] must be L-type
+  for(i=n-2; i>0; i--) {
+	  
+	if(chr(i)==separator)k--;
+
+    cur_t=(chr(i-1)<chr(i) ||
+          (chr(i-1)==chr(i) && succ_t==1))?1:0;
+    if(cur_t==0 && succ_t==1){//LMS-suffix
+		s1[j]=i;
+		DA[j]=k;
+		j--;
+	}
+    succ_t=cur_t;
+  }
+  
+}
+
+
 /*****************************************************************************/
 
 int_t SACA_K(int_t *s, uint_t *SA,
@@ -1490,8 +1586,6 @@ int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   printf("\n\n");
   #endif
 
-/***************************************************************/
-
   uint_t *RA=s1;
   int_t *PLCP=LCP+m-n1;//PHI is stored in PLCP array
 
@@ -1603,6 +1697,275 @@ int_t gSACA_K_LCP(unsigned char *s, uint_t *SA, int_t *LCP,
   printf("LCP\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", LCP[i]);
+  printf("\n\n");
+  #endif
+  free(bkt);
+
+  #if DEPTH
+  printf("depth %" PRIdN ":\nname_ctr = %" PRIdN ", n1 =%" PRIdN ", n = %" PRIdN "\n", depth, name_ctr, n1, n);
+  time_stop(t_start, c_start);
+  #endif
+
+  #if PHASES
+  if(!level){
+      printf("phase 4:\n");
+      time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+return depth;
+}
+
+/*****************************************************************************/
+
+int_t gSACA_K_DA(unsigned char *s, uint_t *SA, int_t *DA,
+  uint_t n, unsigned int K,
+  int cs, int level, unsigned char separator) {
+  uint_t i;
+  uint_t *bkt=NULL;
+  uint_t m=n;
+  
+  #if PHASES
+  time_t t_start_phase = 0.0; 
+  clock_t c_start_phase = 0.0;
+  #endif
+
+  #if DEPTH
+  time_t t_start = time(NULL);
+  clock_t c_start =  clock();
+  #endif
+
+  #if PHASES
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  #endif
+  // stage 1: reduce the problem by at least 1/2.
+
+  bkt=(uint_t *)malloc(sizeof(int_t)*K);
+  putSubstr0_generalized(SA, s, bkt, n, K, cs, separator);
+
+  #if DEBUG
+  printf("bucket LMS-subs\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  #endif
+ 
+  induceSAl0_generalized(SA, s, bkt, n, K, false, cs, separator);
+
+  #if DEBUG
+  printf("L-type\n");
+  for(i=0; i<n; i++)
+	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
+        else printf("-1\t");
+  printf("\n");
+  #endif
+
+  induceSAs0_generalized(SA, s, bkt, n, K, false, cs, separator);
+
+  #if DEBUG
+  printf("S-type\n");
+  for(i=0; i<n; i++)
+	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
+        else printf("-1\t");
+  printf("\n");
+  #endif
+  
+  // insert separator suffixes in their buckets
+  // bkt[separator]=1; // gsa-is
+  for(i=n-3; i>0; i--)
+    if(chr(i)==separator)
+      SA[bkt[chr(i)]--]=i;
+
+  #if DEBUG
+  printf("S-type (separators)\n");
+  for(i=0; i<n; i++)
+	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
+        else printf("-1\t");
+  printf("\n");
+  #endif
+
+  // now, all the LMS-substrings are sorted and 
+  //   stored sparsely in SA.
+
+  // compact all the sorted substrings into
+  //   the first n1 items of SA.
+  // 2*n1 must be not larger than n.
+  uint_t n1=0;
+  for(i=0; i<n; i++) 
+    if((SA[i]>0))
+      SA[n1++]=SA[i];
+
+  uint_t *SA1=SA, *s1=SA+m-n1;
+  uint_t name_ctr;
+
+  #if DEBUG
+  printf("\nSA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n\n");
+  #endif
+
+  name_ctr=nameSubstr_generalized(SA,s,s1,n,m,n1,level,cs,separator);
+
+  #if DEBUG
+  printf("nameSubstr:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n\n");
+  #endif
+
+  #if PHASES
+	printf("phase 1:\n");
+	time_stop(t_start_phase, c_start_phase);
+  #endif
+
+  #if PHASES
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  #endif
+
+  // stage 2: solve the reduced problem.
+  int_t depth=1;
+  // recurse if names are not yet unique.
+  if(name_ctr<n1)
+    depth += SACA_K((int_t*)s1, SA1, 
+          n1, 0, m-n1, sizeof(int_t), level+1);
+  else // get the suffix array of s1 directly.
+    for(i=0; i<n1; i++) SA1[s1[i]]=i;
+
+  // stage 3: induce SA(S) from SA(S1).
+  #if DEBUG
+  printf("recursive:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n\n");
+  #endif
+
+/* FELIPE: depois da recursao, quando temos os sufixos da string 
+ * reduzida ordenada e lemos s1 e SA1 para pegar as posicoes
+ * de LMS para mapear de volta s1 nas posicoes de S, podemos atribuir
+ * os valores para DA[i]
+ * 
+ * depois induzimos o valor de DA, sempre que SA[i]-1 é induzido na 
+ * posicao SA[k], DA[k]=DA[i]
+ * 
+ * a corretude desse algoritmo vem do fato de que nunca induzimos um 
+ * sufixo que começa com $, entao, a indução caminha para traz em cada
+ * string T^i parando exatamente no separador de T^i-1 (ou no inicio
+ * da string se T^i=T^1;
+ *
+*/
+
+  int_t *d1=DA+m-n1;
+  
+  getSAlms_DA(SA, d1, (int_t*)s, s1, n, n1, level, cs, separator);
+
+  #if DEBUG
+  printf("getSAlms:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  printf("DA\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", DA[i]);
+  printf("\n\n");
+  #endif
+
+/**/
+  for(i=0; i<n1; i++) {DA[i]=d1[SA[i]]; SA[i]=s1[SA[i]];}
+  for(i=n1; i<n; i++) {SA[i]=0; DA[i]=-1;}
+/**/
+
+  #if DEBUG
+  printf("\nstage 3:\n\n");
+  printf("mapping back:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  printf("DA\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", DA[i]);
+  printf("\n\n");
+  #endif
+
+/**/
+  putSuffix0_generalized_DA(SA, DA, s, bkt, n, K, n1, cs, separator);
+//  putSuffix0_generalized(SA, s, bkt, n, K, n1, cs, separator);
+
+/**/
+  
+  #if PHASES
+  if(!level){
+	printf("phase 2:\n");
+	time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+
+  #if PHASES
+  if(!level){
+	t_start_phase = time(NULL);
+	c_start_phase =  clock();
+  }
+  #endif
+
+
+  #if DEBUG
+  printf("SA (mapped)\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  printf("DA\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", DA[i]);
+  printf("\n\n");
+  #endif
+
+/**/
+  induceSAl0_generalized_DA(SA, DA, s, bkt, n, K, cs, separator);
+/**/
+
+  #if DEBUG
+  printf("L-type\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  printf("DA\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", DA[i]);
+  printf("\n\n");
+  #endif
+
+  #if PHASES
+  if(!level){
+      printf("phase 3:\n");
+      time_stop(t_start_phase, c_start_phase);
+  }
+  #endif
+  
+  #if PHASES
+  if(!level){
+      t_start_phase = time(NULL);
+      c_start_phase =  clock();
+  }
+  #endif
+
+/**/
+  induceSAs0_generalized_DA(SA, DA, s, bkt, n, K, cs, separator);
+/**/
+
+  #if DEBUG
+  printf("S-type\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  printf("DA\n");
+  for(i=0; i<n; i++)
+        printf("%" PRIdN "\t", DA[i]);
   printf("\n\n");
   #endif
   free(bkt);

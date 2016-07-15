@@ -19,7 +19,7 @@
 
 #define END_MARKER '$'
 
-#define m64 0
+#define m64 1
 
 #if m64
 	typedef int64_t  int_t;

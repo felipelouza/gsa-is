@@ -126,7 +126,7 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 		}
 		for(j=0; j<m; j++){
 			//removes symbols > 255
-			if(R[i][j]+1<256) str[l++] = R[i][j]+1;
+			if(R[i][j]+1<256 && R[i][j]+1>0) str[l++] = R[i][j]+1;
 			else (*n)--;
 		}
 		str[l++] = 1; //add 1 as separator
