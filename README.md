@@ -86,7 +86,7 @@ make run OUPUT=1
 One can compare all algorithms:
 
 ```sh
-for i in {1..8}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPUTE=1 MODE=$i; done
+for i in {1..10}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPUTE=1 MODE=$i; done
 ```
 
 --
