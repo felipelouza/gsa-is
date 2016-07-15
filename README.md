@@ -59,7 +59,7 @@ make run LCP_COMPUTE=1
 
 **Document-array:**
 
-One can also compute the Document-array after the SA construction using an algorithm base on LF-array (Algorithm 7.30, [7, page 347]):
+One can also compute the Document-array after the SA construction using a slightly variation of Algorithm 7.30 from Ohlebusch's book [7, page 347]:
 
 ```sh
 make run DA_COMPUTE=1
