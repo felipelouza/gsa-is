@@ -169,7 +169,7 @@ clock_t c_start=0, c_total=0;
 	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 
 	//LCP array
-	if(LCP_COMPUTE && (MODE!=7 || MODE!=8)){
+	if(LCP_COMPUTE && (MODE!=7 && MODE!=8)){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			lcp_PHI_int((int_t*)str_int, SA, LCP, n, sizeof(int_t));
@@ -180,7 +180,7 @@ clock_t c_start=0, c_total=0;
 	}
 	
 	//Document array
-	if(DA_COMPUTE && (MODE!=9 || MODE!=10)){
+	if(DA_COMPUTE && (MODE!=9 && MODE!=10)){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			document_array_LF_int((int_t*)str_int, SA, DA, n, 256+k, sizeof(int_t), 1, k);
