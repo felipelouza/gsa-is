@@ -158,7 +158,7 @@ return 1;
 int lcp_array_write(int_t *LCP, int_t n, char* c_file, const char* ext){
 
         FILE *f_out;
-        char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+        char *c_out = malloc((strlen(c_file)+strlen(ext)+3)*sizeof(char));
         
         sprintf(c_out, "%s.%s", c_file, ext);
         f_out = file_open(c_out, "wb");
@@ -174,5 +174,30 @@ int lcp_array_write(int_t *LCP, int_t n, char* c_file, const char* ext){
 return 1;
 }
 
+
+/*******************************************************************/
+
+int_t lcp_array_read(int_t** LCP, char* c_file, const char* ext){
+
+        FILE *f_in;
+        char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+
+        sprintf(c_in, "%s.%s", c_file, ext);
+        f_in = file_open(c_in, "rb");
+
+	fseek(f_in, 0L, SEEK_END);
+	size_t size = ftell(f_in);
+	rewind(f_in);
+	
+	int_t n = size/sizeof(int_t);
+
+        *LCP = (int_t*) malloc(n*sizeof(int_t));
+        fread(*LCP, sizeof(int_t), n, f_in);
+
+        file_close(f_in);
+        free(c_in);
+
+return n;
+}
 
 /*******************************************************************/

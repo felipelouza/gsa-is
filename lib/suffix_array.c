@@ -7,7 +7,7 @@
 int suffix_array_write(int_t *SA, int_t n, char* c_file, const char* ext){
 
 	FILE *f_out;
-	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+	char *c_out = malloc((strlen(c_file)+strlen(ext)+3)*sizeof(char));
 	
 	sprintf(c_out, "%s.%s", c_file, ext);
 	f_out = file_open(c_out, "wb");
@@ -22,21 +22,27 @@ return 1;
 
 /*******************************************************************/
 
-int_t* suffix_array_read(int_t n, char* c_file, const char* ext){
+int_t suffix_array_read(int_t** SA, char* c_file, const char* ext){
 
         FILE *f_in;
-        char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+        char *c_in = malloc((strlen(c_file)+strlen(ext)+3)*sizeof(char));
 
         sprintf(c_in, "%s.%s", c_file, ext);
         f_in = file_open(c_in, "rb");
 
-        int_t *SA = (int_t*) malloc(n*sizeof(int_t));
-        fread(SA, sizeof(int_t), n, f_in);
+	fseek(f_in, 0L, SEEK_END);
+	size_t size = ftell(f_in);
+	rewind(f_in);
+	
+	int_t n = size/sizeof(int_t);
+
+        *SA = (int_t*) malloc(n*sizeof(int_t));
+        fread(*SA, sizeof(int_t), n, f_in);
 
         file_close(f_in);
         free(c_in);
 
-return SA;
+return n;
 }
 
 /*******************************************************************/

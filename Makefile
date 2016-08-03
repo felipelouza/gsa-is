@@ -38,6 +38,9 @@ all: compile
 clean:
 	\rm lib/*.o src/*.o external/*.o gsais -f 
 
+remove:
+	\rm $(DIR)*.str $(DIR)*.sa $(DIR)*.lcp $(DIR)*.da $(DIR)*.da_bit -f 
+
 compile: main.c ${LIBOBJ} 
 	$(CC) $(CFLAGS) $(LFLAGS) $(DEFINES) -o gsais main.c ${LIBOBJ}
 

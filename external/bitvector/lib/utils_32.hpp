@@ -1,26 +1,20 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <stdarg.h>
-#include <errno.h>
-#include <string.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <time.h>
-#include <stdint.h>
-#include <inttypes.h>
-#include <math.h>
-
-#ifndef UCHAR_SIZE
-#define UCHAR_SIZE 256
-#endif
-
-#define END_MARKER '$'
+#include <cstdarg>
+#include <cerrno>
+#include <cstring>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <climits>
+#include <ctime>
+#include <cstdint>
+#include <cinttypes>
+#include <cmath>
 
 #ifndef M64
-	#define M64 1
+	#define M64 0
 #endif
 
 #if M64
@@ -55,17 +49,6 @@ double time_stop(time_t t_time, clock_t c_clock);
 void die(const char* where);
 void dies(const char* where, char* format, ...);
 
-int_t print_int(int_t* A, int_t n);
-int_t print_char(char* A, int_t n);
-int_t min_range(int_t* A, int_t l, int_t r);
-
-
 /**********************************************************************/
-
-int_t* cat_int(unsigned char** R, int k, int_t *n);
-unsigned char* cat_char(unsigned char** R, int k, int_t *n);
-
-double log2(double i);
-void qsort2(void *array, size_t nitems, size_t size, int (*cmp)(void*,void*));
 
 #endif

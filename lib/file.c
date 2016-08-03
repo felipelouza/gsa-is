@@ -243,3 +243,85 @@ return c_buffer;
 }
 
 /*******************************************************************/
+
+int file_text_write(unsigned char *str, int_t n, char* c_file, const char* ext){
+
+	FILE *f_out;
+	char *c_out = (char*) malloc((strlen(c_file)+strlen(ext)+3)*sizeof(char));
+	
+	sprintf(c_out, "%s.%s", c_file, ext);
+	f_out = file_open(c_out, "wb");
+	
+	fwrite(str, sizeof(unsigned char), n, f_out);
+	
+	file_close(f_out);
+	free(c_out);
+
+return 1;
+}
+
+int file_text_int_write(int_t *str, int_t n, char* c_file, const char* ext){
+
+	FILE *f_out;
+	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+	
+	sprintf(c_out, "%s.%s", c_file, ext);
+	f_out = file_open(c_out, "wb");
+	
+	fwrite(str, sizeof(int_t), n, f_out);
+	
+	file_close(f_out);
+	free(c_out);
+
+return 1;
+}
+
+/*******************************************************************/
+
+int_t file_text_read(unsigned char** str, char* c_file, const char* ext){
+
+        FILE *f_in;
+        char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+
+        sprintf(c_in, "%s.%s", c_file, ext);
+        f_in = file_open(c_in, "rb");
+
+	fseek(f_in, 0L, SEEK_END);
+	size_t size = ftell(f_in);
+	rewind(f_in);
+
+	int_t n = size/sizeof(unsigned char);
+
+        *str = (unsigned char*) malloc(n*sizeof(unsigned char));
+        fread(*str, sizeof(unsigned char), n, f_in);
+
+        file_close(f_in);
+        free(c_in);
+
+return n;
+}
+
+int_t file_text_int_read(int_t** str_int, char* c_file, const char* ext){
+
+        FILE *f_in;
+        char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+
+        sprintf(c_in, "%s.%s", c_file, ext);
+        f_in = file_open(c_in, "rb");
+
+	fseek(f_in, 0L, SEEK_END);
+	size_t size = ftell(f_in);
+	rewind(f_in);
+
+	int_t n = size/sizeof(int_t);
+
+        *str_int = (int_t*) malloc(n*sizeof(int_t));
+        fread(*str_int, sizeof(int_t), n, f_in);
+
+        file_close(f_in);
+        free(c_in);
+
+return n;
+}
+
+/*******************************************************************/

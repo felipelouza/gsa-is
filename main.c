@@ -61,7 +61,7 @@ clock_t c_start=0, c_total=0;
 	R = (unsigned char**) file_load_multiple(c_file, k, &n);
 	if(!R){
 		fprintf(stderr, "Error: less than %d strings in %s\n", k, c_file);
-		return 0;
+		return 1;
 	}
 
 	unsigned char *str = NULL;
@@ -246,6 +246,9 @@ clock_t c_start=0, c_total=0;
 
 	// output
 	if(OUTPUT){
+		if(MODE==1||MODE==2) file_text_int_write(str_int, n, c_file, "str_int");
+		else file_text_write(str, n, c_file, "str");
+
 		suffix_array_write(SA, n, c_file, "sa");
 		if(LCP_COMPUTE) lcp_array_write(LCP, n, c_file, "lcp");
 		if(DA_COMPUTE) document_array_write(DA, n, c_file, "da");

@@ -2,7 +2,11 @@
 *.[oa]
 gsais
 *.swp
+*.swo
 *.sa
-utils_32.h
-utils_64.h
+*.da
+*.da_bit
+*.lcp
+*.str
+*.str_int
 *.sh
