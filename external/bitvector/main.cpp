@@ -104,7 +104,6 @@ clock_t c_start=0, c_total=0;
 		rank_support_v<1> b_rank(&b);
 	#endif
 
-return 0;
 
 	//4. malloc DA
 	int_t *DA = (int_t*) malloc(n*sizeof(int_t));
