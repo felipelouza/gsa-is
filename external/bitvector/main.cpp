@@ -94,7 +94,7 @@ clock_t c_start=0, c_total=0;
 	}
 
 	//2. free T
-	free(str);
+	//free(str);
 
 	//3. compute rank_structure
 	#if SDV	
@@ -115,13 +115,13 @@ clock_t c_start=0, c_total=0;
 
 	if(VALIDATE){
 
-		n = file_text_read(&str, c_file, "str");
+		//n = file_text_read(&str, c_file, "str");
 		if(!document_array_check(str, SA, DA, n, sizeof(char), 1, k)) printf("isNotDA!!\n");
 		else printf("isDA!!\n");
 		#if DEBUG
 			document_array_print(str, SA, DA, min(n,20), sizeof(char));
 		#endif
-		free(str);
+		//free(str);
 	}
 
 	if(OUTPUT){
@@ -135,6 +135,7 @@ clock_t c_start=0, c_total=0;
         fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
 
 
+	free(str);
 	free(SA);
 	free(DA);
 }
