@@ -73,16 +73,18 @@ clock_t c_start=0, c_total=0;
 	#if SDV	
 		std::vector<uint64_t> pos;
         	printf("sparse bitvector:\n");
+	#else
+		bit_vector b = bit_vector(n, 0);
 	#endif
 
 	//1. computes B[i]
-	bit_vector b = bit_vector(n, 0);
-	for(size_t i=0; i < b.size(); i++)
+	for(size_t i=0; i < (size_t) n; i++)
 		if(str[i]==1){
-			b[i] = 1; //separator==1
 			ones++;
 			#if SDV	
 				pos.emplace_back(i);
+			#else
+				b[i] = 1; //separator==1			
 			#endif
 		}
 
@@ -95,6 +97,8 @@ clock_t c_start=0, c_total=0;
 	#if SDV	
 		sd_vector_builder builder(n,ones);
 		for (auto i : pos) builder.set(i);
+
+		pos.clear();
 
 		sd_vector<> sdv(builder);
 	#endif
