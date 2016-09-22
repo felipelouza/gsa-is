@@ -71,8 +71,8 @@ clock_t c_start=0, c_total=0;
 	int_t ones=0;//counts the number of separators
 
 	#if SDV	
-		std::vector<uint64_t> pos;
         	printf("sparse bitvector:\n");
+		sd_vector_builder builder(n,k);
 	#else
 		bit_vector b = bit_vector(n, 0);
 	#endif
@@ -82,7 +82,7 @@ clock_t c_start=0, c_total=0;
 		if(str[i]==1){
 			ones++;
 			#if SDV	
-				pos.emplace_back(i);
+				builder.set(i); 
 			#else
 				b[i] = 1; //separator==1			
 			#endif
@@ -93,25 +93,18 @@ clock_t c_start=0, c_total=0;
 		return 1;
 	}
 
-
-	#if SDV	
-		sd_vector_builder builder(n,ones);
-		for (auto i : pos) builder.set(i);
-
-		pos.clear();
-
-		sd_vector<> sdv(builder);
-	#endif
-
 	//2. free T
 	free(str);
 
 	//3. compute rank_structure
 	#if SDV	
+		sd_vector<> sdv(builder);
 		rank_support_sd<1> b_rank(&sdv);
 	#else
 		rank_support_v<1> b_rank(&b);
 	#endif
+
+return 0;
 
 	//4. malloc DA
 	int_t *DA = (int_t*) malloc(n*sizeof(int_t));
