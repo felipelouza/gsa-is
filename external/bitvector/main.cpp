@@ -3,12 +3,17 @@
 #include <cstdlib>
 
 #include <sdsl/bit_vectors.hpp>
+#include <sdsl/sd_vector.hpp>
 
 #include "lib/utils.hpp"
 #include "lib/document_array.hpp"
 
 #ifndef DEBUG
         #define DEBUG   0
+#endif
+
+#ifndef SDV
+        #define SDV   0
 #endif
 
 using namespace std;
@@ -63,26 +68,52 @@ clock_t c_start=0, c_total=0;
 
 	time_start(&t_start, &c_start);
 
-	int_t w=0;//counts the number of separators
+	int_t ones=0;//counts the number of separators
+
+	#if SDV	
+		std::vector<uint64_t> pos;
+        	printf("sparse bitvector:\n");
+	#endif
 
 	//1. computes B[i]
 	bit_vector b = bit_vector(n, 0);
 	for(size_t i=0; i < b.size(); i++)
 		if(str[i]==1){
 			b[i] = 1; //separator==1
-			w++;
+			ones++;
+			#if SDV	
+				pos.emplace_back(i);
+			#endif
 		}
 
-	if(k!=w){
+	if(k!=ones){
 		fprintf(stderr, "## ERROR: N. of strings in <%s> differs from %" PRId32" ##\n", c_file, k);
 		return 1;
 	}
+
+
+	#if SDV	
+		sd_vector_builder builder(n,ones);
+		for (auto i : pos) builder.set(i);
+
+		sd_vector<> sdv(builder);
+	#endif
 
 	//2. free T
 	free(str);
 
 	//3. compute rank_structure
-	rank_support_v<1> b_rank(&b);
+//	rank_support_v<1> b_rank(&b);
+
+	#if SDV	
+		rank_support_sd<1> b_rank(&sdv);
+	#else
+		rank_support_v<1> b_rank(&b);
+	#endif
+
+
+
+
 
 	//4. malloc DA
 	int_t *DA = (int_t*) malloc(n*sizeof(int_t));
