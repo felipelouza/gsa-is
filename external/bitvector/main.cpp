@@ -103,24 +103,17 @@ clock_t c_start=0, c_total=0;
 	free(str);
 
 	//3. compute rank_structure
-//	rank_support_v<1> b_rank(&b);
-
 	#if SDV	
 		rank_support_sd<1> b_rank(&sdv);
 	#else
 		rank_support_v<1> b_rank(&b);
 	#endif
 
-
-
-
-
 	//4. malloc DA
 	int_t *DA = (int_t*) malloc(n*sizeof(int_t));
 
 	for(int_t i=0; i < n; i++)
 		DA[i] = b_rank(SA[i]);
-
 
 	/**/
 
