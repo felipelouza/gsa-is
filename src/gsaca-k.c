@@ -19,6 +19,7 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define BINARY 0 //binary search on stack operations
  
 #define STACK_SIZE 895 //to use 10Kb of working space
+#define STACK_SIZE_S 895 //to use 10Kb of working space
 
 typedef struct _pair{
   uint_t idx;
@@ -455,7 +456,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
   uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
-  t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE+1)*sizeof(t_pair_k));
+  t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_S+1)*sizeof(t_pair_k));
   int_t top = 0;
   //init
   stack_push_k(STACK, &top, n, -1);
@@ -510,12 +511,13 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
             int_t l=0;	
             while(chr(SA[bkt[chr(j)]+1]+l)==chr(SA[bkt[chr(j)]]+l))++l;
             LCP[bkt[chr(j)]+1]=l;
+            printf("l/s seam: %d\n", bkt[chr(j)]-1);
   	  }
   	}
     }
 
     if(LCP[i]<0) LCP[i]=0;
-
+//FELIPE
     #if RMQ == 1
       int_t k;
       for(k=0; k<K; k++) if(M[k]>LCP[i]) M[k] = LCP[i];
@@ -537,7 +539,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
       #endif
       stack_push_k(STACK, &top, i, lcp);
 
-      if(top>=STACK_SIZE){
+      if(top>=STACK_SIZE_S){
 
           int_t j;
           memcpy(tmp, last_occ, K*sizeof(uint_t));
@@ -546,7 +548,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
           int_t curr=0, end=1;
           STACK[top].idx=U_MAX;
 
-          for(j=K-1;j>=0; j--){
+	   for(j=K-1;j>=0; j--){
 
             if(STACK[end-1].idx > tmp[j]){
 
@@ -561,7 +563,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
               }
               curr = m;
             #else
-              while(STACK[curr].idx>tmp[j]) curr++;
+	      while(STACK[curr].idx>tmp[j]) curr++;
 	    #endif
 
               STACK[end].idx=STACK[curr].idx;
@@ -570,7 +572,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
             }
           } 
 
-          if(end>=STACK_SIZE){
+          if(end>=STACK_SIZE_S){
             fprintf(stderr,"ERROR: induceSAl0_LCP\n");
             exit(1);
           }

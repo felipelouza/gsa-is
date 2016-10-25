@@ -119,11 +119,11 @@ int lcp_array_check(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, u
 	for(i=1;i<n;i++) {
 		
 		j=SA[i-1]; k=SA[i];
-		for(h=0;j+h<n && k+h<n;h++) if(chr(j+h)!=chr(k+h) || (chr(j+h)==separator && chr(j+h)==separator)) break;
+		for(h=0;j+h<n && k+h<n;h++) if(chr(j+h)!=chr(k+h) || (chr(j+h)==separator && chr(k+h)==separator)) break;
 		
 		if(LCP[i]!=h) {
 			fprintf(stdout,"isNotLCP! Incorrect LCP value: LCP[%" PRIdN "]=%" PRIdN "!=%" PRIdN "\t(%" PRIdN ")\n", i, LCP[i],h, SA[i]);
-			return 0;
+	//		return 0;
 		}
 		sum+=LCP[i];
 		maximum=max(maximum, LCP[i]);
@@ -134,6 +134,48 @@ int lcp_array_check(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, u
 	
 return 1;
 }
+
+/*******************************************************************/
+int lcp_array_check_phi(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, unsigned char separator){
+        
+        uint_t i;
+        uint64_t sum=0;
+        int_t maximum=0;
+        int_t previous_lcp = 1;
+
+        uint_t *ISA = (uint_t* ) malloc(n * sizeof(uint_t));
+        find_inverse(SA, n, ISA);
+
+        for(i=1;i<n;i++) {
+
+                int_t k=ISA[i]; 
+               
+                if(k==0) continue;
+
+                int_t j=SA[ISA[i]-1];
+        
+                //j=SA[i-1]; k=SA[i];
+                int_t h=previous_lcp-1;
+                for(h=0;i+h<n && j+h<n;h++) if(chr(i+h)!=chr(j+h) || (chr(i+h)==separator && chr(j+h)==separator)) break;
+
+                if(LCP[k]!=h) {
+                        fprintf(stdout,"isNotLCP! Incorrect LCP value: LCP[%" PRIdN "]=%" PRIdN "!=%" PRIdN "\t(%" PRIdN ")\n", k, LCP[k],h, SA[i]);
+                        //return 0;
+                }
+                sum+=LCP[i];
+                maximum=max(maximum, LCP[i]);
+
+                previous_lcp = max(1,LCP[i]);
+        }
+
+        printf("LCP_mean = %.2lf\n", (double)sum/(double)n);
+        printf("LCP_max = %" PRIdN "\n", maximum);
+
+        free(ISA);
+
+return 1;
+}
+
 /*******************************************************************/
 
 int lcp_array_print(unsigned char *T, int_t *SA, int_t *LCP, size_t n, int cs){

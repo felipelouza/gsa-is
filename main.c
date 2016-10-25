@@ -196,6 +196,29 @@ clock_t c_start=0, c_total=0;
         printf("total:\n");
         fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
 
+//FELIPE
+if(LCP_COMPUTE){
+printf("\n--\n");
+int_t *LCP2 = (int_t*) malloc(n*sizeof(int_t));
+for(i=0; i<n; i++) LCP2[i]=0;
+
+time_start(&t_start, &c_start);
+
+lcp_PHI((unsigned char*)str, SA, LCP2, n, sizeof(char), 1);//separator=1
+
+
+for(i=0; i<n; i++)
+	if(LCP[i]!=LCP2[i])
+		fprintf(stdout,"isNotLCP! Incorrect LCP value: LCP[%" PRIdN "]=%" PRIdN "!=%" PRIdN "\t(%" PRIdN ")\n", i, LCP[i],LCP2[i], SA[i]);
+
+fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+printf("isLCP!!\n");
+
+printf("--\n\n");
+VALIDATE=0;
+}
+//FELIPE
+
 	#if DEBUG
 	if(MODE==1 || MODE==2)//sais or saca-k	
 		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str_int, SA, LCP, min(20,n), sizeof(int_t));	
@@ -210,7 +233,6 @@ clock_t c_start=0, c_total=0;
 	if(VALIDATE){
 
 		printf("## CHECK ##\n"); 
-
 		if(MODE==1 || MODE==2){//sais or saca-k	
 	        	if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_t), 0)) printf("isNotSorted!!\n");
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
