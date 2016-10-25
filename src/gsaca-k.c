@@ -454,9 +454,8 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   for(i=0;i<K;i++) M[i]=I_MAX;
   #elif RMQ == 2 
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
-  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
-  t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_S+1)*sizeof(t_pair_k));
+  t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_S+2)*sizeof(t_pair_k));
   int_t top = 0;
   //init
   stack_push_k(STACK, &top, n, -1);
@@ -541,6 +540,9 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
       if(top>=STACK_SIZE_S){
 
           int_t j;
+	  //FELIPE 1
+  	  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
+
           memcpy(tmp, last_occ, K*sizeof(uint_t));
           qsort(tmp, K, sizeof(uint_t), compare_k);
 
@@ -549,7 +551,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
 
 	   for(j=K-1;j>=0; j--){
 
-            if(STACK[end-1].idx > tmp[j]){
+            if(tmp[j] < STACK[end].idx){
 
             #if BINARY == 1 
               int_t a=curr-1, b=top-1;  
@@ -562,8 +564,13 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
               }
               curr = m;
             #else
-	      while(STACK[curr].idx>tmp[j]) curr++;
+	      //FELIPE 2
+	      //while(STACK[curr].idx>tmp[j]) curr++;
+	      while(tmp[j]< STACK[curr].idx && curr<STACK_SIZE_S) curr++;
 	    #endif
+
+	      //FELIPE 3
+	      if(curr>STACK_SIZE_S) break;
 
               STACK[end].idx=STACK[curr].idx;
               STACK[end].lcp=STACK[curr].lcp;
@@ -575,7 +582,10 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
             fprintf(stderr,"ERROR: induceSAl0_LCP\n");
             exit(1);
           }
-          top = end;
+	  //FELIPE 4
+          //top = end;
+          top = end+1;
+          free(tmp);
       }
       #endif
 
@@ -589,7 +599,6 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   #elif RMQ == 2
   free(STACK);
   free(last_occ);
-  free(tmp);
   #endif
 }
 
