@@ -429,7 +429,10 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
 
           #if RMQ_S == 1
   	    if(LCP[bkt[chr(j)]+1]>=0) 
-  	    LCP[bkt[chr(j)]+1]=M[chr(j)]+1;
+  	      LCP[bkt[chr(j)]+1]=M[chr(j)]+1;
+  	  
+	    if(LCP[bkt[chr(j)]]>0) 
+  	      LCP[bkt[chr(j)]]=I_MAX;
 
           #elif RMQ_S == 2
             int_t min = I_MAX, end = top-1; 
@@ -444,8 +447,6 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
               LCP[bkt[chr(j)]+1]=min+1;
           #endif
   
-  	  if(LCP[bkt[chr(j)]]>0) 
-  	    LCP[bkt[chr(j)]]=I_MAX;
 
           #if RMQ_S == 1
   	  M[chr(j)] = I_MAX;

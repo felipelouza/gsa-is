@@ -27,7 +27,6 @@
 	typedef int64_t  int_t;
 	typedef uint64_t uint_t;
 	#define PRIdN	 PRId64
-	#define PRIuN	 PRIu64
 	#define U_MAX 	 UINT64_MAX
 	#define I_MAX 	 INT64_MAX
 	#define I_MIN 	 INT64_MIN
@@ -35,7 +34,6 @@
 	typedef int32_t  int_t;
 	typedef uint32_t uint_t;
 	#define PRIdN	 PRId32
-	#define PRIuN	 PRIu32
 	#define U_MAX 	 UINT32_MAX
 	#define I_MAX	 INT32_MAX
 	#define I_MIN	 INT32_MIN
