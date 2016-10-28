@@ -18,7 +18,6 @@
 unsigned char mask[]={0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};  
 
 #define RMQ   2  //variants = (1, trivial) (2, using Gog's stack)
-#define BINARY 0 //binary search on stack operations
 
 #define STACK_SIZE 895 //to use 10Kb of working space
 
@@ -28,9 +27,9 @@ typedef struct _pair{
 } t_pair_sais;
 
 int compare (const void * a, const void * b){
-  const uint_t *ia = (const uint_t *)a; 
-  const uint_t *ib = (const uint_t *)b;
-  return *ia  - *ib; 
+  if(*(const uint_t *)a < *(const uint_t *)b) return -1;
+  if(*(const uint_t *)a > *(const uint_t *)b) return 1;
+return 0;
 }
 
 void stack_push_sais(t_pair_sais* STACK, int_t *top, uint_t idx, int_t lcp){
@@ -186,38 +185,12 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
         }
  
         int_t lcp=max(0,LCP[i]);
-        #if BINARY == 1 
-          int_t a=0, b=top-1;  
-          int_t m = (b-a)/2;
-
-          while(a<=b){
-            if(STACK[m].lcp==lcp){ break; }
-            if(STACK[m].lcp>lcp) b=m-1; 
-            else a=m+1;
-            m=a+(b-a)/2;
-          }
-          top = m;
-        #else
-          while(STACK[(top)-1].lcp>=lcp) (top)--;	
-        #endif
+        while(STACK[(top)-1].lcp>=lcp) (top)--;	
 
         stack_push_sais(STACK, &top, i+1, lcp);
         j = top-1;
 
-        #if BINARY == 1 
-          a=0, b=top-1;  
-          m = (b-a)/2;
-          while(a<=b){
-            if(STACK[m].idx==last){ m++; break;}
-            if(STACK[m].idx>last) b=m-1; 
-            else a=m+1;
-            m=a+(b-a)/2;
-          }
-          j = m-1;
-        #else
-          while(STACK[j].idx>last) j--;
-        #endif
-
+        while(STACK[j].idx>last) j--;
         min_lcp=STACK[(j+1)].lcp;
       #endif
 	  
@@ -252,20 +225,7 @@ void induceSAl_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
 
           if(STACK[end-1].idx < tmp[j]+1){
 
-      	    //search (can be binary)
-            #if BINARY == 1 
-              int_t a=curr-1, b=top-1;  
-              int_t m = (b-a)/2, last=tmp[j]+1;
-              while(a<=b){
-                if(STACK[m].idx==last){ break;}
-                if(STACK[m].idx>last) b=m-1; 
-                else a=m+1;
-                m=a+(b-a)/2;
-              }
-              curr = m;
-            #else
-              while(STACK[curr].idx<tmp[j]+1) curr++;
-	    #endif
+            while(STACK[curr].idx<tmp[j]+1) curr++;
 
             if(curr<top) {
               STACK[end].idx=STACK[curr].idx;
@@ -317,53 +277,42 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
 
   for(i=n-1; i>0; i--){
     if(SA[i]>0){//!=EMPTY) {
-	  j=SA[i]-1; 
-	  if(j>=0 && tget(j) && chr(j)!=separator){
-		  
-		   SA[bkt[chr(j)]]=j;
-         #if RMQ == 1
-  	    if(LCP[bkt[chr(j)]+1]>=0) 
-  	    LCP[bkt[chr(j)]+1]=M[chr(j)]+1;
-          #elif RMQ == 2
-            int_t min = I_MAX, end = top-1; 
+	 j=SA[i]-1; 
+	 if(j>=0 && tget(j) && chr(j)!=separator){
+	   SA[bkt[chr(j)]]=j;
+           #if RMQ == 1
+  	      if(LCP[bkt[chr(j)]+1]>=0) 
+  	        LCP[bkt[chr(j)]+1]=M[chr(j)]+1;
+
+  	      if(LCP[bkt[chr(j)]]>0) 
+  	        LCP[bkt[chr(j)]]=I_MAX;
+
+           #elif RMQ == 2
+             int_t min = I_MAX, end = top-1; 
   
-  	    int_t last=last_occ[chr(j)];
-            //search (can be binary)
-            #if BINARY == 1 
-              int_t a=0, b=top-1;  
-              int_t m = (b-a)/2;
-              while(a<=b){
-                if(STACK[m].idx==last){ break;}
-                if(STACK[m].idx<last) b=m-1; 
-                else a=m+1;
-                m=a+(b-a)/2;
-              }
-              end = m-1;
-            #else
-              while(STACK[end].idx<=last) end--;
-  	    #endif
+  	     int_t last=last_occ[chr(j)];
+             //search (can be binary)
+             while(STACK[end].idx<=last) end--;
   
-            min=STACK[(end+1)].lcp;
-            last_occ[chr(j)] = i;
+             min=STACK[(end+1)].lcp;
+             last_occ[chr(j)] = i;
   
-  	    if(LCP[bkt[chr(j)]+1]>=0) 
-              LCP[bkt[chr(j)]+1]=min+1;
-          #endif
+  	     if(LCP[bkt[chr(j)]+1]>=0) 
+               LCP[bkt[chr(j)]+1]=min+1;
+           #endif
   
-          #if RMQ == 1
-  	  if(LCP[bkt[chr(j)]]>0) 
-  	    LCP[bkt[chr(j)]]=I_MAX;
-  	  M[chr(j)] = I_MAX;
-          #endif
+           #if RMQ == 1
+  	   M[chr(j)] = I_MAX;
+           #endif
   
-          bkt[chr(j)]--;
+           bkt[chr(j)]--;
  
-  	    if(SA[bkt[chr(j)]]!=U_MAX) {//L/S-seam
-            int_t l=0;	
-            while(chr(SA[bkt[chr(j)]+1]+l)==chr(SA[bkt[chr(j)]]+l))++l;
-            LCP[bkt[chr(j)]+1]=l;
-  	    }		     
-	  }
+  	   if(SA[bkt[chr(j)]]!=U_MAX) {//L/S-seam
+             int_t l=0;	
+             while(chr(SA[bkt[chr(j)]+1]+l)==chr(SA[bkt[chr(j)]]+l))++l;
+             LCP[bkt[chr(j)]+1]=l;
+  	 }		     
+      }
     }
     if(LCP[i]<0) LCP[i]=0;
 
@@ -371,21 +320,10 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
       int_t k;
       for(k=0; k<K; k++) if(M[k]>LCP[i]) M[k] = LCP[i];
     #elif RMQ == 2
+
       int_t lcp=max(0,LCP[i]);
-      //search (can be binary)
-      #if BINARY == 1 
-        int_t a=0, b=top-1;  
-        int_t m = (b-a)/2;
-        while(a<=b){
-          if(STACK[m].lcp==lcp){ break; }
-          if(STACK[m].lcp>lcp) b=m-1; 
-          else a=m+1;
-          m=a+(b-a)/2;
-        }
-        top = m;
-      #else
-        while(STACK[(top)-1].lcp>=lcp) (top)--;
-      #endif
+
+      while(STACK[(top)-1].lcp>=lcp) (top)--;
       stack_push_sais(STACK, &top, i, lcp);
 
       if(top>=STACK_SIZE){
@@ -401,19 +339,7 @@ void induceSAs_generalized_LCP(unsigned char *t, int_t *SA, int_t *LCP, unsigned
 
             if(STACK[end-1].idx > tmp[j]){
 
-            #if BINARY == 1 
-              int_t a=curr-1, b=top-1;  
-              int_t m = (b-a)/2, last=tmp[j];
-              while(a<=b){
-                if(STACK[m].idx==last){ break;}
-                if(STACK[m].idx<last) b=m-1; 
-                else a=m+1;
-                m=a+(b-a)/2;
-              }
-              curr = m;
-            #else
               while(STACK[curr].idx>tmp[j]) curr++;
-	    #endif
 
               STACK[end].idx=STACK[curr].idx;
               STACK[end].lcp=STACK[curr].lcp;

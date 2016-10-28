@@ -196,34 +196,6 @@ clock_t c_start=0, c_total=0;
         printf("total:\n");
         fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
 
-//FELIPE
-if(LCP_COMPUTE){
-printf("\n--\n");
-int_t *LCP2 = (int_t*) malloc(n*sizeof(int_t));
-for(i=0; i<n; i++) LCP2[i]=0;
-
-time_start(&t_start, &c_start);
-
-lcp_PHI((unsigned char*)str, SA, LCP2, n, sizeof(char), 1);//separator=1
-
-
-for(i=0; i<n; i++)
-        if(LCP[i]!=LCP2[i]){
-                fprintf(stdout,"isNotLCP! Incorrect LCP value: LCP[%" PRIdN "]=%" PRIdN "!=%" PRIdN "\t(%" PRIdN ")\n", i, LCP[i],LCP2[i], SA[i]);
-
-                int j=0;
-                for(j=0;j<max(LCP[i],10);j++) fprintf(stdout, "%d|", str[SA[i-1]+j]-1);
-                fprintf(stdout, "\n");
-                for(j=0;j<max(LCP[i],10);j++) fprintf(stdout, "%d|", str[SA[i]+j]-1);
-                fprintf(stdout, "\n");
-        }
-fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
-printf("isLCP!!\n");
-
-printf("--\n\n");
-VALIDATE=0;
-}
-//FELIPE
 
 	#if DEBUG
 	if(MODE==1 || MODE==2)//sais or saca-k	

@@ -16,7 +16,7 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define DEPTH 0  // compute time and size of reduced problem for each recursion call
 #define PHASES 0 // compute time for each phase
 #define RMQ_L   2  //variants = (1, trivial) (2, using Gog's stack)
-#define RMQ_S   1  //variants = (1, trivial) (2, using Gog's stack)
+#define RMQ_S   2  //variants = (1, trivial) (2, using Gog's stack)
  
 #define STACK_SIZE_L 895 //to use 10Kb of working space
 #define STACK_SIZE_S 895 //to use 10Kb of working space
@@ -27,9 +27,9 @@ typedef struct _pair{
 } t_pair_k;
 
 int compare_k (const void * a, const void * b){
-  const uint_t *ia = (const uint_t *)a; 
-  const uint_t *ib = (const uint_t *)b;
-  return *ia  - *ib; 
+  if(*(const uint_t *)a < *(const uint_t *)b) return -1;
+  if(*(const uint_t *)a > *(const uint_t *)b) return 1;
+return 0;
 }
 
 void stack_push_k(t_pair_k* STACK, int_t *top, uint_t idx, int_t lcp){
@@ -487,8 +487,10 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
             if(tmp[j] < STACK[end-1].idx){
 
   	      while(STACK[curr].idx>tmp[j] && curr < top) curr++;
+	      if(curr>=top) break;
+//	      while(curr < top && STACK[curr].idx>tmp[j])
+//	      if(curr>top) break;
 
-	      if(curr>top) break;
 	      stack_push_k(STACK, &end, STACK[curr].idx, STACK[curr].lcp);
 	      curr++;
             }
@@ -1768,21 +1770,6 @@ int_t gSACA_K_DA(unsigned char *s, uint_t *SA, int_t *DA,
   printf("\n\n");
   #endif
 
-/* FELIPE: depois da recursao, quando temos os sufixos da string 
- * reduzida ordenada e lemos s1 e SA1 para pegar as posicoes
- * de LMS para mapear de volta s1 nas posicoes de S, podemos atribuir
- * os valores para DA[i]
- * 
- * depois induzimos o valor de DA, sempre que SA[i]-1 é induzido na 
- * posicao SA[k], DA[k]=DA[i]
- * 
- * a corretude desse algoritmo vem do fato de que nunca induzimos um 
- * sufixo que começa com $, entao, a indução caminha para traz em cada
- * string T^i parando exatamente no separador de T^i-1 (ou no inicio
- * da string se T^i=T^1;
- *
-*/
-
   int_t *d1=DA+m-n1;
   
   getSAlms_DA(SA, d1, (int_t*)s, s1, n, n1, level, cs, separator);
@@ -1819,7 +1806,6 @@ int_t gSACA_K_DA(unsigned char *s, uint_t *SA, int_t *DA,
 
 /**/
   putSuffix0_generalized_DA(SA, DA, s, bkt, n, K, n1, cs, separator);
-//  putSuffix0_generalized(SA, s, bkt, n, K, n1, cs, separator);
 
 /**/
   
