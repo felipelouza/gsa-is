@@ -177,6 +177,39 @@ return 1;
 }
 
 /*******************************************************************/
+int lcp_array_check_lcp(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int cs, unsigned char separator){
+	
+	uint_t i;
+	uint64_t sum=0;
+	int_t maximum=0;
+
+	int_t *LCP2 = (int_t*) malloc(n*sizeof(int_t));
+	for(i=0; i<n; i++) LCP2[i]=0;
+
+	time_t t_start=0;
+	clock_t c_start=0;
+
+	time_start(&t_start, &c_start);
+	lcp_PHI(T, SA, LCP2, n, sizeof(char), 1);//separator=1
+	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+
+	for(i=0; i<n; i++){
+	        if(LCP[i]!=LCP2[i]){
+			fprintf(stdout,"isNotLCP! Incorrect LCP value: LCP[%" PRIdN "]=%" PRIdN "!=%" PRIdN "\t(%" PRIdN ")\n", i, LCP[i],LCP2[i], SA[i]);
+	        }
+
+		sum+=LCP[i];
+		maximum=max(maximum, LCP[i]);
+	}
+	
+	printf("LCP_mean = %.2lf\n", (double)sum/(double)n);
+	printf("LCP_max = %" PRIdN "\n", maximum);
+	
+return 1;
+}
+
+
+/*******************************************************************/
 
 int lcp_array_print(unsigned char *T, int_t *SA, int_t *LCP, size_t n, int cs){
 
