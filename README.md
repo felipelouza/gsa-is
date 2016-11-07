@@ -8,13 +8,6 @@ the order among all suffixes, and improving their practical performance
 Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
 other algorithms in the experiments.
 
-**New**: gSAIS+LCP and gSACA-K+LCP extends the algorithms gSAIS and gSACA-K to
-also compute the LCP-array. The new algorithms are based on the algorithms by
-Fischer [5] and by Louza et. al [6].
-
-**New**: gSAIS+DA and gSACA-K+DA extends the algorithms gSAIS and gSACA-K to
-also compute the Document array (DA). 
-
 --
 ##run:
 
@@ -114,7 +107,7 @@ for i in {1..10}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMP
 
 **Collections:**
 
-| Collection | size (GB)  |      d     |        n       |    n/d    | available at |
+| Collection | size (GB)  |      d     |        N       |    N/d    | available at |
 |------------|:----------:|-----------:|---------------:|----------:|:-------------|
 | Revision   |    0.39    |     20,433 |    419,437,293 |    20,527 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
 | Page       |    3.74    |      1,000 |  4,019,585,128 | 4,019,585 | http://jltsiren.kapsi.fi/data/fiwiki.bz2 |
