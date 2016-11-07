@@ -204,6 +204,10 @@ int lcp_array_check_lcp(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int c
 	
 	printf("LCP_mean = %.2lf\n", (double)sum/(double)n);
 	printf("LCP_max = %" PRIdN "\n", maximum);
+
+	fprintf(stderr, "%.2lf\t %" PRIdN "\n", (double)sum/(double)n, maximum);
+
+	free(LCP2);
 	
 return 1;
 }

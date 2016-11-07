@@ -374,9 +374,10 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
 
             while(STACK[curr].idx<tmp[j]+1) curr++;
 
-	    if(curr>top) break;
-	    stack_push_k(STACK, &end, STACK[curr].idx, STACK[curr].lcp);
-	    curr++;
+            if(curr<top){
+	      stack_push_k(STACK, &end, STACK[curr].idx, STACK[curr].lcp);
+	      curr++;
+            }
 	  }
         }
  
@@ -488,9 +489,6 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
 
   	      while(STACK[curr].idx>tmp[j] && curr < top) curr++;
 	      if(curr>=top) break;
-//	      while(curr < top && STACK[curr].idx>tmp[j])
-//	      if(curr>top) break;
-
 	      stack_push_k(STACK, &end, STACK[curr].idx, STACK[curr].lcp);
 	      curr++;
             }
