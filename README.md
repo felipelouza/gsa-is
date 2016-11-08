@@ -61,10 +61,10 @@ MODE parameter:
 * 8:  gSACA-K+LCP
 
 ```sh
-make run MODE=7
+make run MODE=8
 ```
 
-One can also compute the LCP-array after the SA construction using Phi-algorithm [4]:
+One can compute LCP after SA construction using Phi-algorithm [4]:
 
 ```sh
 make run MODE=6 LCP_COMPUTE=1
@@ -79,13 +79,17 @@ MODE parameter:
 * 9:  gSAIS+DA
 * 10: gSACA-K+DA
 
-One can compute the Document-array (DA) after the SA construction using a variation of Algorithm 7.30 from Ohlebusch's book [7, page 347]:
+```sh
+make run MODE=10
+```
+
+One can compute DA after SA construction using a variation of Algorithm 7.30 from Ohlebusch's book [7, page 347]:
 
 ```sh
 make run MODE=6 DA_COMPUTE=1
 ```
 
-Alternatively, one can compute DA by using a bitvector solution in external/bitvector/main.cpp, implemented using sdsl-lite v.2 (https://github.com/simongog/sdsl-lite). 
+Alternatively, one can compute DA by using a bitvector solution in external/bitvector/main.cpp, implemented using (sdsl-lite v.2)[https://github.com/simongog/sdsl-lite]. 
 
 ```sh
 cd external/bitvector/
