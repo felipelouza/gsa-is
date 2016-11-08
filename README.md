@@ -2,7 +2,10 @@
 
 This code is an implementation of gSAIS and gSACA-K [1], which extend the
 linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
-generalized suffix array for a collection of strings.
+generalized suffix array for a collection of strings, maintaining their
+theoretical bounds and improving their practical performance.
+
+--
 
 Moreover, we show how these algorithms can be modified to also compute the
 longest common prefix (LCP) array and the document array (DA) as a byproduct,
