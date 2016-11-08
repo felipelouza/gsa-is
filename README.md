@@ -89,7 +89,7 @@ One can compute DA after SA construction using a variation of Algorithm 7.30 fro
 make run MODE=6 DA_COMPUTE=1
 ```
 
-Alternatively, one can compute DA by using a bitvector solution in external/bitvector/main.cpp, implemented using (sdsl-lite v.2)[https://github.com/simongog/sdsl-lite]. 
+Alternatively, DA can be computed with a bitvector in external/bitvector/main.cpp, implemented using [sdsl-lite v.2](https://github.com/simongog/sdsl-lite). 
 
 ```sh
 cd external/bitvector/
