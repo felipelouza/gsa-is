@@ -134,11 +134,11 @@ clock_t c_start=0, c_total=0;
         printf("total:\n");
         fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
 
-
 	free(str);
 	free(SA);
 	free(DA);
-	free(str);
+
+return 0;
 }
 
 /***********************************************************************/

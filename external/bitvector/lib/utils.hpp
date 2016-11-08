@@ -14,7 +14,7 @@
 #include <cmath>
 
 #ifndef M64
-	#define M64 1
+	#define M64 0
 #endif
 
 #if M64

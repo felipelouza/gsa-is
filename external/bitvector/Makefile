@@ -44,7 +44,7 @@ compile: document_array utils main.cpp ${LIBOBJ}
 	$(MY_CXX) $(CXX_FLAGS) $(LIBOBJ) $(DEFINES) main.cpp $(CCLIB) -o main
 
 run: 
-	../../gsais $(DIR) $(INPUT) $(K) 6 0 0 0 1
+	../../gsais $(DIR) $(INPUT) $(K) 6 0 0 $(CHECK) 1
 	./main $(DIR) $(INPUT) $(K) $(CHECK) $(OUTPUT)
 
 clean:

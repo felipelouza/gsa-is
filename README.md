@@ -2,11 +2,18 @@
 
 This code is an implementation of gSAIS and gSACA-K [1], which extend the
 linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
-generalized suffix array, maintaining their theoretical bounds, respecting 
-the order among all suffixes, and improving their practical performance
+generalized suffix array for a collection of strings.
 
-Overall, gSACA-K's time-space trade-off is Pareto optimal compared to the all
-other algorithms in the experiments.
+Moreover, we show how these algorithms can be modified to also compute the
+longest common prefix (LCP) array and the document array (DA) as a byproduct,
+with the same theoretical bounds.
+
+--
+
+Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are optimal for strings
+from constant alphabets. Experimental results have shown that our algorithms
+are fast with a very small memory footprint.
+
 
 --
 ##run:
@@ -15,11 +22,11 @@ To run a test type:
 
 ```sh
 make
-make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6 LCP_COMPUTE=1
+make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6
 ```
 
-One can change to 32 bits integers (when n < 2^31) in lib/utils.h, setting m64
-to 0.
+One can change to 64 bits integers (when n > 2^31) in lib/utils.h, setting m64
+to 1.
 
 --
 
@@ -33,10 +40,6 @@ MODE parameter specifies which algorithm is called by main.c:
 * 4:  SACA-K 
 * 5:  gSAIS
 * 6:  gSACA-K
-* 7:  gSAIS+LCP
-* 8:  gSACA-K+LCP
-* 9:  gSAIS+DA
-* 10: gSACA-K+DA
 
 SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
@@ -44,19 +47,43 @@ SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
 **LCP-array:**
 
+MODE parameter:
+
+* 7:  gSAIS+LCP
+* 8:  gSACA-K+LCP
+
 One can also compute the LCP-array after the SA construction using Phi-algorithm [4]:
 
 ```sh
-make run LCP_COMPUTE=1
+make run MODE=6 LCP_COMPUTE=1
 ```
+
+--
 
 **Document-array:**
 
-One can also compute the Document-array after the SA construction using a slightly variation of Algorithm 7.30 from Ohlebusch's book [7, page 347]:
+MODE parameter:
+
+* 9:  gSAIS+DA
+* 10: gSACA-K+DA
+
+One can compute the Document-array (DA) after the SA construction using a variation of Algorithm 7.30 from Ohlebusch's book [7, page 347]:
 
 ```sh
-make run DA_COMPUTE=1
+make run MODE=6 DA_COMPUTE=1
 ```
+
+Alternatively, one can compute DA by using a bitvector solution in external/bitvector/main.cpp, implemented using sdsl-lite v.2 (https://github.com/simongog/sdsl-lite). 
+
+```sh
+cd external/bitvector/
+make
+make run MODE=6 SDV=0
+```
+
+SDV=1 uses a sparse bitvector.
+
+--
 
 **Validate:**
 
@@ -68,7 +95,7 @@ make run CHECK=1
 
 **Output:**
 
-One can output the GSA (and the LCP) produced as .sa (or .sa_lcp):
+One can output SA (LCP and DA) as $DIR$INPUT.sa (.lcp and .da):
 
 ```sh
 make run OUPUT=1
