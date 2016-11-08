@@ -31,6 +31,11 @@ make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6
 One can change to 64 bits integers (when n > 2^31) in lib/utils.h, setting m64
 to 1.
 
+```sh
+make clean
+make 
+```
+
 --
 
 **Settings:**
@@ -54,6 +59,10 @@ MODE parameter:
 
 * 7:  gSAIS+LCP
 * 8:  gSACA-K+LCP
+
+```sh
+make run MODE=7
+```
 
 One can also compute the LCP-array after the SA construction using Phi-algorithm [4]:
 
