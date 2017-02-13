@@ -33,6 +33,7 @@ LIBOBJ = \
 	src/gsais.o\
 	src/gsaca-k.o
 
+
 all: compile
 
 clean:
@@ -40,6 +41,9 @@ clean:
 
 remove:
 	\rm $(DIR)*.str $(DIR)*.sa $(DIR)*.lcp $(DIR)*.da $(DIR)*.da_bit -f 
+
+#lib: lib/file.o lib/utils.o
+#	$(CC) $(DEFINES) -c lib/utils.c -o lib/utils.o 
 
 compile: main.c ${LIBOBJ} 
 	$(CC) $(CFLAGS) $(LFLAGS) $(DEFINES) -o gsais main.c ${LIBOBJ}

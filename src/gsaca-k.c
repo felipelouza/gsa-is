@@ -295,7 +295,7 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
   #if DEBUG
   printf("inducing..\n");
   for(i=0; i<n; i++)
-        printf("%" PRIuN "\t", SA[i]+1);
+        printf("%" PRIdN "\t", SA[i]+1);
   printf("\n");
   printf("LCP\n");
   for(i=0; i<n; i++)

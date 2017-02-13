@@ -1,5 +1,10 @@
 #include "utils.h"
 
+#ifndef DEBUG
+        #define DEBUG   1
+#endif
+
+
 /**********************************************************************/
 
 void time_start(time_t *t_time, clock_t *c_clock){
@@ -117,8 +122,17 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 	int_t l=0;
 	unsigned char *str = (unsigned char*) malloc((*n)*sizeof(unsigned char));
 
+	#if DEBUG
+		int_t longest = 0;
+		int Sigma[256];
+		for(i=0; i<255; i++); Sigma[i]=0;
+	#endif
+
 	for(i=0; i<k; i++){
 		int_t m = strlen((char*)R[i]);
+		#if DEBUG
+			if(m>longest) longest=m;
+		#endif
 		//removes empty strings
 		if(m==0){
 			(*n)--;
@@ -126,7 +140,12 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 		}
 		for(j=0; j<m; j++){
 			//removes symbols > 255
-			if(R[i][j]+1<256 && R[i][j]+1>0) str[l++] = R[i][j]+1;
+			if(R[i][j]+1<256 && R[i][j]+1>0){
+				str[l++] = R[i][j]+1;
+				#if DEBUG
+					Sigma[R[i][j]]++;
+				#endif
+			}
 			else (*n)--;
 		}
 		str[l++] = 1; //add 1 as separator
@@ -138,6 +157,14 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 		printf("N = %" PRIdN "\n", l);
 	}
 	*n = l;
+
+	#if DEBUG
+		int count=0;
+		for(i=0; i<255; i++) if(Sigma[i]) count++;
+		printf("Sigma = %d\n", count);
+		printf("Longest = %" PRIdN "\n", longest);
+	#endif
+
 
 return str;
 }
