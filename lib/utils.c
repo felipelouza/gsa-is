@@ -125,7 +125,7 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 	#if DEBUG
 		int_t longest = 0;
 		int Sigma[256];
-		for(i=0; i<255; i++); Sigma[i]=0;
+		for(i=0; i<255; i++) Sigma[i]=0;
 	#endif
 
 	for(i=0; i<k; i++){
