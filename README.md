@@ -1,15 +1,15 @@
 #gsa-is
 
-This code is an implementation of gSAIS and gSACA-K [1][2], which extend the
-linear-time suffix sorting algorithms SAIS [3] and SACA-K [4] to compute the
+This code is an implementation of gSAIS and gSACA-K [1], which extend the
+linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
 generalized suffix array for a collection of strings, maintaining their
 theoretical bounds and improving their practical performance.
 
 --
 
-News: we show how gSAIS and gSACA-K can be modified to also compute the
+Moreover, we show how gSAIS and gSACA-K can be modified to also compute the
 longest common prefix (LCP) array and the document array (DA) as a byproduct,
-with the same theoretical bounds.
+with the same theoretical bounds [3].
 
 --
 
@@ -130,11 +130,11 @@ for i in {1..10}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMP
 
 \[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016, [IEEE](http://ieeexplore.ieee.org/document/7786148/).
 
-\[2\] Louza, F. A., Gog, S., and Telles, G. P., Inducing enhanced suffix arrays for string collections. Submitted to a journal, pages 1–34.
+\[2\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
 
-\[3\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+\[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
-\[4\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
+\[4\] Louza, F. A., Gog, S., and Telles, G. P., Inducing enhanced suffix arrays for string collections. Submitted to a journal, pages 1–34.
 
 \[5\] Kärkkäinen, J., Manzini, G., & Puglisi, S. J. (2009). Permuted Longest-Common-Prefix Array. In G. Kucherov & E. Ukkonen (Eds.), Proc. CPM (Vol. 5577, pp. 181–192).
 
