@@ -2,7 +2,7 @@
 
 This code is an implementation of gSAIS and gSACA-K [1], which extend the
 linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
-**suffix array** for a string collection, maintaining their
+**suffix array** for a **string collection**, maintaining their
 theoretical bounds and improving their practical performance.
 
 --
@@ -13,7 +13,7 @@ with the same theoretical bounds.
 
 --
 
-Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are optimal for strings
+Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are **optimal** for strings
 from constant alphabets. Experimental results have shown that our algorithms
 are fast with a very small memory footprint.
 
