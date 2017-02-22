@@ -1,7 +1,7 @@
 /* 
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
- * 21/06/2016
+ * 07/06/2016
  */
 
 /* 
@@ -11,8 +11,9 @@
  * Our version of SA-IS, called gSAIS, maintain the theoretical bounds of the
  * original algorithm to construct the generalized suffix array.
  * 
- * New algorith gSA-IS+LCP extends gSAIS to also compute the LCP-array
- * 
+ * News:
+ * - gSA-IS+LCP extends gSAIS to also compute the LCP-array
+ * - gSA-IS+DA extends gSAIS to also compute the document-array
  */
 
 #ifndef GSAIS_H

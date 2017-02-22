@@ -1,11 +1,11 @@
 /*
- * Induced Suffix Sorting and LCP array construction for String Collections
+ * Induced suffix sorting, LCP and document arrays construction for string collections
  *
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
  * 
  * version 1.3
- * 06/07/2016
+ * 07/06/2016
  *
  */
 

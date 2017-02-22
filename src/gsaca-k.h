@@ -1,7 +1,7 @@
 /* 
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
- * 21/06/2016
+ * 07/06/2016
  */
 
 /* 
@@ -11,8 +11,9 @@
  * Our version of SACA-K, called gSACA-K, maintain the theoretical bounds of the
  * original algorithm to construct the generalized suffix array.
  *
- * New algorith gSACA-K+LCP extends gSAIS to also compute the LCP-array
- * 
+ * News:
+ * - gSACA-K+LCP extends gSAIS to also compute the LCP-array
+ * - gSACA-K+DA extends gSAIS to also compute the document-array
  */
 
 #ifndef GSACA_K_H
