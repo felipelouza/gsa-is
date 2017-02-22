@@ -1,8 +1,4 @@
-#gsa-is
-
-Here we have detailed experimental results presented in [2].
-
-##experiments:
+#experiments:
 
 
 **Collections:**
