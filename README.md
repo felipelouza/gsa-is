@@ -7,9 +7,9 @@ theoretical bounds and improving their practical performance.
 
 --
 
-Moreover, we show how gSAIS and gSACA-K can be modified to also compute the
+Moreover, we show in [4] how to modify gSAIS and gSACA-K to also compute the
 longest common prefix (LCP) array and the document array (DA) as a byproduct,
-with the same theoretical bounds [3].
+with the same theoretical bounds.
 
 --
 
