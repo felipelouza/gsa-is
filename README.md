@@ -1,4 +1,4 @@
-#gsa-is
+# gsa-is
 
 This code is an implementation of gSAIS and gSACA-K [1], which extend the
 linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
@@ -18,8 +18,7 @@ from constant alphabets. Experimental results have shown that our algorithms
 are fast with a very small memory footprint.
 
 
---
-##run:
+## run
 
 To run a test type:
 
@@ -126,7 +125,7 @@ for i in {1..10}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMP
 ```
 
 --
-##references
+## References
 
 \[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016, [IEEE](http://ieeexplore.ieee.org/document/7786148/).
 
