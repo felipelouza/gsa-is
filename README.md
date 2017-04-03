@@ -1,141 +1,124 @@
 # gsa-is
 
-This code is an implementation of gSAIS and gSACA-K [1], which extend the
-linear-time suffix sorting algorithms SAIS [2] and SACA-K [3] to compute the
-**suffix array** for a **string collection**, maintaining their
-theoretical bounds and improving their practical performance.
+
+gSACA-K is an optimal **suffix array** construction algorithm for **string collections** from constant alphabets.
 
 --
 
-Moreover, we show in [4] how to modify gSAIS and gSACA-K to also compute the
-**LCP-array** (LCP) and the **document array** (DA) as a byproduct,
-with the same theoretical bounds.
+gSACA-K \[1, 2\] extends the optimal suffix sorting algorithm SACA-K \[3\] to compute the **suffix array** for a **string collection** in linear time using O(\sigma \log n) bits of additional space (workspace). In practice, gSACA-K uses 10KB of additional space for strings from ASCII alphabet.
+
+Moreover, gSACA-K can also compute the **LCP-array** (LCP) and the **document array** (DA) as a byproduct, with the same theoretical bounds.
 
 --
 
-Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are **optimal** for strings
-from constant alphabets. Experimental results have shown that our algorithms
-are fast with a very small memory footprint.
+Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are **optimal** for strings from constant alphabets. Experimental results have shown that our algorithms are fast with a very small memory footprint.
 
 
-## run
+## Build requirements
 
-To run a test type:
+An ANSI C Compiler (e.g. GNU GCC)
 
-```sh
-make
-make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6
+
+## API
+
+```c
+/** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
+ *
+ *  @param s    input string
+ *  @param SA   suffix array 
+ *  @param LCP  LCP array 
+ *  @param DA   Document array
+ *  @param n    string length
+ * 
+ *  @return depth of the recursive calls.
+ */
+int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
+
+/** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
+ *
+ *  @param s    input string
+ *  @param SA   suffix array 
+ *  @param LCP  LCP array 
+ *  @param DA   Document array
+ *  @param n    string length
+ *  @param K    alphabet size
+ * 
+ *  @return depth of the recursive calls.
+ */
+int gsacak_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
 ```
 
-One can change to 64 bits integers (when n > 2^31) in lib/utils.h, setting m64
-to 1.
+## Example
+
+**Compilation:**
 
 ```sh
-make clean
-make 
+gcc -c sacak-lcp.c experiments/external/malloc_count.c
+gcc test.c -o test sacak-lcp.o malloc_count.o -ldl
 ```
 
---
+**Run a test:**
 
-**Settings:**
-
-MODE parameter specifies which algorithm is called by main.c:
-
-* 1:  SAIS\* 
-* 2:  SACA-K\* 
-* 3:  SAIS  
-* 4:  SACA-K 
-* 5:  gSAIS
-* 6:  gSACA-K
-
-SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
-
---
-
-**LCP-array:**
-
-MODE parameter:
-
-* 7:  gSAIS+LCP
-* 8:  gSACA-K+LCP
-
-```sh
-make run MODE=8
-```
-
-One can compute LCP after SA construction using Phi-algorithm [5]:
-
-```sh
-make run MODE=6 LCP_COMPUTE=1
-```
-
---
-
-**Document-array:**
-
-MODE parameter:
-
-* 9:  gSAIS+DA
-* 10: gSACA-K+DA
-
-```sh
-make run MODE=10
-```
-
-One can compute DA after SA construction using a variation of Algorithm 7.30 from Ohlebusch's book [6, page 347]:
-
-```sh
-make run MODE=6 DA_COMPUTE=1
-```
-
-Alternatively, DA can be computed with a bitvector in external/bitvector/main.cpp, implemented using [sdsl-lite v.2](https://github.com/simongog/sdsl-lite). 
-
-```sh
-cd external/bitvector/
-make
-make run MODE=6 SDV=0
-```
-
-SDV=1 uses a sparse bitvector.
-
---
-
-**Validate:**
-
-One can check if the output produced is correct:
-
-```sh
-make run CHECK=1
+```c
+./test banana anaba anan
 ```
 
 **Output:**
 
-One can output SA (LCP and DA) as $DIR$INPUT.sa (.lcp and .da):
-
-```sh
-make run OUPUT=1
+```c
+sizeof(int_t) = 4 bytes
+sum = 18
+Text = banana$anaba$anan$#
+i	SA	DA	LCP	BWT	suffixes
+0	18	3	0	$	#
+1	6	0	0	a	$anaba$anan$#
+2	12	1	0	a	$anan$#
+3	17	2	0	n	$#
+4	5	0	0	n	a$anaba$anan$#
+5	11	1	1	b	a$anan$#
+6	9	1	1	n	aba$anan$#
+7	15	2	1	n	an$#
+8	3	0	2	n	ana$anaba$anan$#
+9	7	1	3	$	anaba$anan$#
+10	13	2	3	$	anan$#
+11	1	0	4	b	anana$anaba$anan$#
+12	10	1	0	a	ba$anan$#
+13	0	0	2	#	banana$anaba$anan$#
+14	16	2	0	a	n$#
+15	4	0	1	a	na$anaba$anan$#
+16	8	1	2	a	naba$anan$#
+17	14	2	2	a	nan$#
+18	2	0	3	a	nana$anaba$anan$#
+malloc_count ### exiting, total: 17,804, peak: 9,604, current: 0
 ```
 
-**Compare:**
+**Strings larger than n=2^20:**
 
-One can compare all algorithms:
+One can change to 64 bits integers adding -DM64=1 in the compilation.
 
-```sh
-for i in {1..10}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPUTE=1 DA_COMPUTE=1 MODE=$i; done
-```
+
+## Citation
+
+Please, if you use this tool in an academic setting cite the following paper:
+
+    @article{LouzaGT17b,
+     author    = {Felipe Alves da Louza and Simon Gog and Guilherme P. Telles},
+     title     = {Inducing enhanced suffix arrays for string collections},
+     journal   = {Theor. Comput. Sci.},
+     volume    = {to appear},
+     pages     = {},
+     year      = {2017},
+     url       = {},
+     doi       = {},
+    }
+    
 
 --
 ## References
 
 \[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016, [IEEE](http://ieeexplore.ieee.org/document/7786148/).
 
-\[2\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+\[2\] Louza, F. A., Gog, S., and Telles, G. P., Inducing enhanced suffix arrays for string collections. Theor. Comput. Sci., pages 1–34.
 
 \[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
-
-\[4\] Louza, F. A., Gog, S., and Telles, G. P., Inducing enhanced suffix arrays for string collections. Submitted to a journal, pages 1–34.
-
-\[5\] Kärkkäinen, J., Manzini, G., & Puglisi, S. J. (2009). Permuted Longest-Common-Prefix Array. In G. Kucherov & E. Ukkonen (Eds.), Proc. CPM (Vol. 5577, pp. 181–192).
-
-\[6\] Ohlebusch, E., Bioinformatics Algorithms: Sequence Analysis, Genome Rearrangements, and Phylogenetic Reconstruction. Oldenbusch Verlag, 2013.
 

@@ -31,7 +31,7 @@ LIBOBJ = \
 	lib/document_array.o\
 	external/malloc_count/malloc_count.o\
 	src/gsais.o\
-	src/gsaca-k.o
+	../gsacak.o
 
 
 all: compile

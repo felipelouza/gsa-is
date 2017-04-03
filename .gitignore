@@ -12,4 +12,5 @@ gsais
 *.str_int
 *.sh
 *.out
+test
 tests*

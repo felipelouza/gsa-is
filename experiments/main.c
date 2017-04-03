@@ -19,7 +19,7 @@
 #include "lib/document_array.h"
 #include "external/malloc_count/malloc_count.h"
 #include "src/gsais.h"
-#include "src/gsaca-k.h"
+#include "../gsacak.h"
 
 #ifndef DEBUG
         #define DEBUG   0
@@ -128,7 +128,8 @@ clock_t c_start=0, c_total=0;
 			break;
 
 		case 2: printf("## SACA_K (int) ##\n"); 
-			depth = SACA_K((int_t*)str_int, (uint_t*)SA, n, 256+k, n, sizeof(int_t), 0);
+			//depth = SACA_K((int_t*)str_int, (uint_t*)SA, n, 256+k, n, sizeof(int_t), 0);
+			depth = sacak_int((int_t*)str_int, (uint_t*)SA, n, 256+k);
 			break;
 		
 		case 3: printf("## SAIS (char) ##\n");
@@ -136,7 +137,8 @@ clock_t c_start=0, c_total=0;
 			break;
 
 		case 4: printf("## SACA_K (char) ##\n"); 
-			depth = SACA_K((int_t*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0);
+			//depth = SACA_K((int_t*)str, (uint_t*)SA, n, 256, n, sizeof(char), 0);
+			depth = sacak(str, (uint_t*)SA, n);
 			break;
 	
 		case 5: printf("## gSAIS ##\n"); 
@@ -144,7 +146,8 @@ clock_t c_start=0, c_total=0;
 			break;
 
  		case 6: printf("## gSACA_K ##\n"); 
-			depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, sizeof(char), 0, 1);//separator=1
+			//depth = gSACA_K((unsigned char*)str, (uint_t*)SA, n, 256, sizeof(char), 0, 1);//separator=1
+			depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, NULL, n);
 			break;
 
  		case 7: printf("## gSAIS+LCP ##\n"); 
@@ -152,7 +155,8 @@ clock_t c_start=0, c_total=0;
 			break;
 
  		case 8: printf("## gSACA_K+LCP ##\n"); 
-			depth = gSACA_K_LCP((unsigned char*)str, (uint_t*)SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
+			//depth = gSACA_K_LCP((unsigned char*)str, (uint_t*)SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
+			depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, NULL, n);
 			break;
 
  		case 9: printf("## gSAIS+DA ##\n"); 
@@ -160,7 +164,8 @@ clock_t c_start=0, c_total=0;
 			break;
 
  		case 10: printf("## gSACA_K+DA ##\n"); 
-			depth = gSACA_K_DA((unsigned char*)str, (uint_t*)SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
+			//depth = gSACA_K_DA((unsigned char*)str, (uint_t*)SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
+			depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
 			break;
 
 		default: break;
