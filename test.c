@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
 			Text[sum-1]=1;//separator
 		}
 		Text[n-1]=0;
-		printf("n = %d\n", n);
+		printf("N = %d\n", n);
 	}
 	else{
 		unsigned char *S[3] = {"banana", "anaba", "anan"};
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
 			Text[sum-1]=1;//separator
 		}
 		Text[n-1]=0;
-		printf("n = %d\n", n);
+		printf("N = %d\n", n);
 	}	
 
 	int i, j;

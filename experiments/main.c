@@ -18,7 +18,7 @@
 #include "lib/lcp_array.h"
 #include "lib/document_array.h"
 #include "external/malloc_count/malloc_count.h"
-#include "src/gsais.h"
+#include "../gsais.h"
 #include "../gsacak.h"
 
 #ifndef DEBUG
@@ -51,9 +51,9 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[7], "%u", &VALIDATE);
 	sscanf(argv[8], "%u", &OUTPUT);
 
-	if(MODE==7 || MODE==8 || MODE==11) LCP_COMPUTE=1;
-	if(MODE==9 || MODE==10 || MODE==11) DA_COMPUTE=1;
-	if(MODE>11) return 1;
+	if(MODE==7 || MODE==8  || MODE==11 || MODE==12) LCP_COMPUTE=1;
+	if(MODE==9 || MODE==10 || MODE==11 || MODE==12) DA_COMPUTE=1;
+	if(MODE>12) return 1;
 
 	file_chdir(c_dir);
 
@@ -124,7 +124,8 @@ clock_t c_start=0, c_total=0;
 
 	switch(MODE){
 		case 1: printf("## SAIS (int) ##\n");
-			depth = SAIS((int_t*)str_int, SA, n, 256+k, sizeof(int_t), 0);
+			//depth = SAIS((int_t*)str_int, SA, n, 256+k, sizeof(int_t), 0);
+			depth = sais_int((int_t*)str_int, (uint_t*)SA, n, 256+k);
 			break;
 
 		case 2: printf("## SACA_K (int) ##\n"); 
@@ -133,7 +134,8 @@ clock_t c_start=0, c_total=0;
 			break;
 		
 		case 3: printf("## SAIS (char) ##\n");
-			depth = SAIS((int_t*)str, SA, n, 256, sizeof(char), 0);
+			//depth = SAIS((int_t*)str, SA, n, 256, sizeof(char), 0);
+			depth = sais(str, (uint_t*)SA, n);
 			break;
 
 		case 4: printf("## SACA_K (char) ##\n"); 
@@ -142,7 +144,8 @@ clock_t c_start=0, c_total=0;
 			break;
 	
 		case 5: printf("## gSAIS ##\n"); 
-			depth = gSAIS((unsigned char*)str, SA, n, 256, sizeof(char), 0, 1);//separator=1
+			//depth = gSAIS((unsigned char*)str, SA, n, 256, sizeof(char), 0, 1);//separator=1
+			depth = gsais((unsigned char*)str, (uint_t*)SA, NULL, NULL, n);
 			break;
 
  		case 6: printf("## gSACA_K ##\n"); 
@@ -151,7 +154,8 @@ clock_t c_start=0, c_total=0;
 			break;
 
  		case 7: printf("## gSAIS+LCP ##\n"); 
-			depth = gSAIS_LCP((unsigned char*)str, SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
+			//depth = gSAIS_LCP((unsigned char*)str, SA, LCP, n, 256, sizeof(char), 0, 1);//separator=1
+			depth = gsais((unsigned char*)str, (uint_t*)SA, LCP, NULL, n);
 			break;
 
  		case 8: printf("## gSACA_K+LCP ##\n"); 
@@ -160,14 +164,20 @@ clock_t c_start=0, c_total=0;
 			break;
 
  		case 9: printf("## gSAIS+DA ##\n"); 
-			depth = gSAIS_DA((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
+			//depth = gSAIS_DA((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
+			depth = gsais((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
 			break;
 
  		case 10: printf("## gSACA_K+DA ##\n"); 
 			//depth = gSACA_K_DA((unsigned char*)str, (uint_t*)SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
 			depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
 			break;
- 		case 11: printf("## gSACA_K+LCP+DA ##\n"); 
+			
+ 		case 11: printf("## gSAIS+LCP+DA ##\n"); 
+			depth = gsais((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
+			break;
+			
+ 		case 12: printf("## gSACA_K+LCP+DA ##\n"); 
 			depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
 			break;
 
@@ -177,7 +187,7 @@ clock_t c_start=0, c_total=0;
 	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 
 	//LCP array
-	if(LCP_COMPUTE && (MODE!=7 && MODE!=8 && MODE!=11)){
+	if(LCP_COMPUTE && (MODE!=7 && MODE!=8 && MODE!=11 && MODE!=12)){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			lcp_PHI_int((int_t*)str_int, SA, LCP, n, sizeof(int_t));
@@ -188,7 +198,7 @@ clock_t c_start=0, c_total=0;
 	}
 	
 	//Document array
-	if(DA_COMPUTE && (MODE!=9 && MODE!=10 && MODE!=11)){
+	if(DA_COMPUTE && (MODE!=9 && MODE!=10 && MODE!=11 && MODE!=12)){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			document_array_LF_int((int_t*)str_int, SA, DA, n, 256+k, sizeof(int_t), 1, k);

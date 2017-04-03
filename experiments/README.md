@@ -17,7 +17,9 @@ make
 
 --
 
-**Settings:**
+**Settings**
+
+**SA:**
 
 MODE parameter specifies which algorithm is called by main.c:
 
@@ -32,7 +34,7 @@ SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
 --
 
-**LCP-array:**
+**SA and LCP:**
 
 MODE parameter:
 
@@ -51,7 +53,7 @@ make run MODE=6 LCP_COMPUTE=1
 
 --
 
-**Document-array:**
+**SA and DA:**
 
 MODE parameter:
 
@@ -77,6 +79,20 @@ make run MODE=6 SDV=0
 ```
 
 SDV=1 uses a sparse bitvector.
+
+--
+
+**SA, LCP and DA:**
+
+MODE parameter:
+
+* 11:  gSAIS+LCP+DA
+* 12:  gSACA-K+LCP+DA
+
+```sh
+make run MODE=11
+make run MODE=12
+```
 
 --
 

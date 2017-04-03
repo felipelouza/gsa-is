@@ -30,7 +30,7 @@ LIBOBJ = \
 	lib/lcp_array.o\
 	lib/document_array.o\
 	external/malloc_count/malloc_count.o\
-	src/gsais.o\
+	../gsais.o\
 	../gsacak.o
 
 

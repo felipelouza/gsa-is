@@ -12,6 +12,7 @@
  * original algorithm to construct the generalized suffix array.
  *
  * Our algorithm gSACA-K can also computes the LCP-array and the Document-array
+ * with no additional costs.
  * 
  * gsacak(s, SA, NULL, NULL, n) //computes only SA
  * gsacak(s, SA, LCP,  NULL, n) //computes SA and LCP

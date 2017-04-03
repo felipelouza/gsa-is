@@ -22,7 +22,7 @@ An ANSI C Compiler (e.g. GNU GCC)
 
 ## API
 
-**gsacak.h**
+**gsacak.h** (the same for gsais.h)
 
 ```c
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
@@ -66,8 +66,8 @@ int gsacak_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k)
 **Compilation:**
 
 ```sh
-gcc -c sacak-lcp.c experiments/external/malloc_count.c
-gcc test.c -o test sacak-lcp.o malloc_count.o -ldl
+gcc -c gsacak.c experiments/external/malloc_count/malloc_count.c
+gcc test.c -o test gsacak.o malloc_count.o -ldl
 ```
 
 **Run a test:**
@@ -80,7 +80,7 @@ gcc test.c -o test sacak-lcp.o malloc_count.o -ldl
 
 ```c
 sizeof(int_t) = 4 bytes
-sum = 18
+N = 18
 Text = banana$anaba$anan$#
 i	SA	DA	LCP	BWT	suffixes
 0	18	3	0	$	#
@@ -136,7 +136,7 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 \[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016, [IEEE](http://ieeexplore.ieee.org/document/7786148/).
 
-\[2\] Louza, F. A., Gog, S., and Telles, G. P., Inducing enhanced suffix arrays for string collections. Theor. Comput. Sci., pages 1–34.
+\[2\] Louza, F. A., Gog, S., Telles, G. P., Inducing enhanced suffix arrays for string collections. Theor. Comput. Sci., (to appear), pages 1-34.
 
 \[3\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
 
