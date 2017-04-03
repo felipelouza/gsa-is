@@ -1,17 +1,13 @@
 # gsa-is
 
 
-gSACA-K is an optimal **suffix array** construction algorithm for **string collections** from constant alphabets.
+gSACA-K is an optimal suffix array construction algorithm for string collections from constant alphabets.
 
---
+## Introduction
 
-gSACA-K \[1, 2\] extends the optimal suffix sorting algorithm SACA-K \[3\] to compute the **suffix array** for a **string collection** in linear time using O(\sigma \log n) bits of additional space (workspace). In practice, gSACA-K uses 10KB of additional space for strings from ASCII alphabet.
+gSACA-K \[1, 2\] extends the optimal suffix sorting algorithm SACA-K \[3\] to compute the suffix array for a string collection in linear time using O(\sigma \log n) bits of additional space (workspace). 
 
-Moreover, gSACA-K can also compute the **LCP-array** (LCP) and the **document array** (DA) as a byproduct, with the same theoretical bounds.
-
---
-
-Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are **optimal** for strings from constant alphabets. Experimental results have shown that our algorithms are fast with a very small memory footprint.
+Moreover, gSACA-K can also compute the LCP-array (LCP) and the document array (DA) as a byproduct, with the same theoretical bounds.
 
 
 ## Build requirements
