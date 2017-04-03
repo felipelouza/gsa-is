@@ -54,10 +54,10 @@ int gsacak_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k)
 ## Options
 
 ```c
- int gacak(s, SA, NULL, NULL, n) //computes only SA
- int gacak(s, SA, LCP,  NULL, n) //computes SA and LCP
- int gacak(s, SA, NULL, DA,   n) //computes SA and DA
- int gacak(s, SA, LCP,  DA,   n) //computes SA, LCP and DA
+ int gsacak(s, SA, NULL, NULL, n) //computes only SA
+ int gsacak(s, SA, LCP,  NULL, n) //computes SA and LCP
+ int gsacak(s, SA, NULL, DA,   n) //computes SA and DA
+ int gsacak(s, SA, LCP,  DA,   n) //computes SA, LCP and DA
 ```
 
 
