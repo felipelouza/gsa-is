@@ -102,8 +102,13 @@ i	SA	DA	LCP	BWT	suffixes
 16	8	1	2	a	naba$anan$#
 17	14	2	2	a	nan$#
 18	2	0	3	a	nana$anaba$anan$#
-malloc_count ### exiting, total: 17,804, peak: 9,604, current: 0
+malloc_count ### exiting, total: 19,703, peak: 10,487, current: 0
 ```
+**Remark:**
+
+The peak memory 10,487 is exactly 10KB + 247 bytes.
+10KB is the workspace and 247 (13\*19 bytes) bytes is the space used by the concatenated string s and the arrays SA, LCP and DA (13\*n bytes)
+
 
 **Strings larger than n=2^20:**
 

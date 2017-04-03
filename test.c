@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
 			sum += strlen((argv[i-1]))+1;
 		}
 		n = sum+1;
-		Text = malloc(n*sizeof(unsigned char*));
+		Text = malloc(n*sizeof(unsigned char));
 		sum=0;
 		for(i=2; i<= argc; i++){
 			sscanf(argv[i-1], "%s", &Text[sum]);
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
 			Text[sum-1]=1;//separator
 		}
 		Text[n-1]=0;
-		printf("sum = %d\n", sum);
+		printf("n = %d\n", n);
 	}
 	else{
 		unsigned char *S[3] = {"banana", "anaba", "anan"};
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
 			sum += strlen((S[i]))+1;
 		}
 		n = sum+1;
-		Text = malloc(n*sizeof(unsigned char*));
+		Text = malloc(n*sizeof(unsigned char));
 		sum=0;
 		for(i=0; i< 3; i++){
 			sscanf(S[i], "%s", &Text[sum]);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
 			Text[sum-1]=1;//separator
 		}
 		Text[n-1]=0;
-		printf("sum = %d\n", sum);
+		printf("n = %d\n", n);
 	}	
 
 	int i, j;

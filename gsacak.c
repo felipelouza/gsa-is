@@ -15,8 +15,8 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define RMQ_L   2  //variants = (1, trivial) (2, using Gog's stack)
 #define RMQ_S   2  //variants = (1, trivial) (2, using Gog's stack)
  
-#define STACK_SIZE_L 895 //to use 10Kb of working space
-#define STACK_SIZE_S 895 //to use 10Kb of working space
+#define STACK_SIZE_L 894 //to use 10Kb of working space
+#define STACK_SIZE_S 894 //to use 10Kb of working space
 
 typedef struct _pair{
   uint_t idx;
@@ -310,6 +310,7 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
   }
   #elif RMQ_L == 2
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
+  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
   t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_L+2)*sizeof(t_pair_k));
   int_t top = 0;
@@ -387,7 +388,6 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
       if(top>STACK_SIZE_L){//if stack is full
 
         int_t j;
-        uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
         memcpy(tmp, last_occ, K*sizeof(uint_t));
         qsort(tmp, K, sizeof(uint_t), compare_k);
        
@@ -411,7 +411,6 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
           exit(1);
         }
 
-	free(tmp);
         top = end;
       }
       #endif
@@ -422,6 +421,7 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
   #elif RMQ_L == 2
   free(STACK);
   free(last_occ);
+  free(tmp);
   #endif
 
 }
@@ -439,6 +439,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   for(i=0;i<K;i++) M[i]=I_MAX;
   #elif RMQ_S == 2 
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
+  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
   t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_S+2)*sizeof(t_pair_k));
   int_t top = 0;
@@ -502,7 +503,6 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
       if(top>=STACK_SIZE_S){
 
           int_t j;
-  	  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
           memcpy(tmp, last_occ, K*sizeof(uint_t));
           qsort(tmp, K, sizeof(uint_t), compare_k);
 
@@ -524,7 +524,6 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
             exit(1);
           }
           top = end;
-          free(tmp);
       }
       #endif
 
@@ -538,6 +537,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
   #elif RMQ_S == 2
   free(STACK);
   free(last_occ);
+  free(tmp);
   #endif
 }
 
@@ -608,6 +608,7 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
   }
   #elif RMQ_L == 2
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
+  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
   t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_L+2)*sizeof(t_pair_k));
   int_t top = 0;
@@ -686,7 +687,6 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
       if(top>STACK_SIZE_L){//if stack is full
 
         int_t j;
-        uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
         memcpy(tmp, last_occ, K*sizeof(uint_t));
         qsort(tmp, K, sizeof(uint_t), compare_k);
        
@@ -710,7 +710,6 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
           exit(1);
         }
 
-	free(tmp);
         top = end;
       }
       #endif
@@ -721,6 +720,7 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
   #elif RMQ_L == 2
   free(STACK);
   free(last_occ);
+  free(tmp);
   #endif
 
 }
@@ -738,6 +738,7 @@ void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_t* DA,
   for(i=0;i<K;i++) M[i]=I_MAX;
   #elif RMQ_S == 2 
   uint_t* last_occ = (uint_t*) malloc(K*sizeof(uint_t));
+  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
 
   t_pair_k* STACK = (t_pair_k*) malloc((STACK_SIZE_S+2)*sizeof(t_pair_k));
   int_t top = 0;
@@ -802,7 +803,6 @@ void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_t* DA,
       if(top>=STACK_SIZE_S){
 
           int_t j;
-  	  uint_t* tmp = (uint_t*) malloc(K*sizeof(uint_t));
           memcpy(tmp, last_occ, K*sizeof(uint_t));
           qsort(tmp, K, sizeof(uint_t), compare_k);
 
@@ -824,7 +824,6 @@ void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_t* DA,
             exit(1);
           }
           top = end;
-          free(tmp);
       }
       #endif
 
@@ -838,6 +837,7 @@ void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_t* DA,
   #elif RMQ_S == 2
   free(STACK);
   free(last_occ);
+  free(tmp);
   #endif
 }
 
