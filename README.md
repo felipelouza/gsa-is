@@ -1,21 +1,28 @@
 # gsa-is
 
-
-gSACA-K is an optimal suffix array construction algorithm for string collections from constant alphabets.
+gSAIS and gSACA-K are suffix array construction algorithms for string collections. 
 
 ## Introduction
 
-gSACA-K \[1, 2\] extends the optimal suffix sorting algorithm SACA-K \[3\] to compute the suffix array for a string collection in linear time using O(\sigma \log n) bits of additional space (workspace). 
+gSAIS and gSACA-K [1, 2] extend the linear-time suffix sorting algorithms SAIS
+[3] and SACA-K [4] to compute the suffix array for a string collection,
+maintaining their theoretical bounds and improving their practical performance.
 
-Moreover, gSACA-K can also compute the LCP-array (LCP) and the document array (DA) as a byproduct, with the same theoretical bounds.
+Moreover, gSAIS and gSACA-K can also compute the LCP-array (LCP) and the
+document array (DA) as a byproduct, with the same theoretical bounds.
+
+Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are optimal for strings
+from constant alphabets. Experimental results have shown that our algorithms
+are fast with a very small memory footprint.
 
 
 ## Build requirements
 
 An ANSI C Compiler (e.g. GNU GCC)
 
-
 ## API
+
+**gsacak.h**
 
 ```c
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
@@ -43,6 +50,16 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
  */
 int gsacak_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
 ```
+
+## Options
+
+```c
+ int gacak(s, SA, NULL, NULL, n) //computes only SA
+ int gacak(s, SA, LCP,  NULL, n) //computes SA and LCP
+ int gacak(s, SA, NULL, DA,   n) //computes SA and DA
+ int gacak(s, SA, LCP,  DA,   n) //computes SA, LCP and DA
+```
+
 
 ## Example
 
@@ -105,7 +122,7 @@ Please, if you use this tool in an academic setting cite the following paper:
      pages     = {},
      year      = {2017},
      url       = {},
-     doi       = {},
+     doi       = {10.1016/j.tcs.2017.03.039},
     }
     
 
@@ -116,5 +133,7 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 \[2\] Louza, F. A., Gog, S., and Telles, G. P., Inducing enhanced suffix arrays for string collections. Theor. Comput. Sci., pages 1–34.
 
-\[3\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
+\[3\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
+
+\[4\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
