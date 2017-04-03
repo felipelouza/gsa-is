@@ -15,6 +15,7 @@
  * 
  * gacak(s, SA, NULL, NULL, n) //computes only SA
  * gacak(s, SA, LCP,  NULL, n) //computes SA and LCP
+ * gacak(s, SA, NULL, DA,   n) //computes SA and DA
  * gacak(s, SA, LCP,  DA,   n) //computes SA, LCP and DA
  * 
  */
