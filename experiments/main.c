@@ -51,9 +51,9 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[7], "%u", &VALIDATE);
 	sscanf(argv[8], "%u", &OUTPUT);
 
-	if(MODE==7 || MODE==8) LCP_COMPUTE=1;
-	if(MODE==9 || MODE==10) DA_COMPUTE=1;
-	if(MODE>10) return 1;
+	if(MODE==7 || MODE==8 || MODE==11) LCP_COMPUTE=1;
+	if(MODE==9 || MODE==10 || MODE==11) DA_COMPUTE=1;
+	if(MODE>11) return 1;
 
 	file_chdir(c_dir);
 
@@ -167,6 +167,9 @@ clock_t c_start=0, c_total=0;
 			//depth = gSACA_K_DA((unsigned char*)str, (uint_t*)SA, DA, n, 256, sizeof(char), 0, 1);//separator=1
 			depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
 			break;
+ 		case 11: printf("## gSACA_K+LCP+DA ##\n"); 
+			depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
+			break;
 
 		default: break;
 	}
@@ -174,7 +177,7 @@ clock_t c_start=0, c_total=0;
 	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 
 	//LCP array
-	if(LCP_COMPUTE && (MODE!=7 && MODE!=8)){
+	if(LCP_COMPUTE && (MODE!=7 && MODE!=8 && MODE!=11)){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			lcp_PHI_int((int_t*)str_int, SA, LCP, n, sizeof(int_t));
@@ -185,7 +188,7 @@ clock_t c_start=0, c_total=0;
 	}
 	
 	//Document array
-	if(DA_COMPUTE && (MODE!=9 && MODE!=10)){
+	if(DA_COMPUTE && (MODE!=9 && MODE!=10 && MODE!=11)){
 		time_start(&t_start, &c_start);
 		if(MODE==1 || MODE==2)
 			document_array_LF_int((int_t*)str_int, SA, DA, n, 256+k, sizeof(int_t), 1, k);
@@ -217,33 +220,33 @@ clock_t c_start=0, c_total=0;
 
 		printf("## CHECK ##\n"); 
 		if(MODE==1 || MODE==2){//sais or saca-k	
-	        	if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_t), 0)) printf("isNotSorted!!\n");
+	        	if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_t), 0)) fprintf(stderr,"isNotSorted!!\n");
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
 		else if(MODE==3 || MODE==4){
-	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) printf("isNotSorted!!\n");//compares until the sentinel=0
+	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) fprintf(stderr,"isNotSorted!!\n");//compares until the sentinel=0
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
 		else if(MODE>=5){
-	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) printf("isNotSorted!!\n");//compares until the separator=1
+	        	if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) fprintf(stderr,"isNotSorted!!\n");//compares until the separator=1
 		        else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
 		}
 
 		if(LCP_COMPUTE){
 			if(MODE==1 || MODE==2)//sais or saca-k	
-	                	if(!lcp_array_check((unsigned char*)str_int, SA, LCP, n, sizeof(int_t), 1)) printf("isNotLCP!!\n");
+	                	if(!lcp_array_check((unsigned char*)str_int, SA, LCP, n, sizeof(int_t), 1)) fprintf(stderr,"isNotLCP!!\n");
 	        	        else printf("isLCP!!\n");
 			else
-	                	if(!lcp_array_check((unsigned char*)str, SA, LCP, n, sizeof(char), 1)) printf("isNotLCP!!\n");
+	                	if(!lcp_array_check((unsigned char*)str, SA, LCP, n, sizeof(char), 1)) fprintf(stderr,"isNotLCP!!\n");
 	        	        else printf("isLCP!!\n");
 		}
 
 		if(DA_COMPUTE){
 			if(MODE==1 || MODE==2)//sais or saca-k	
-			        if(!document_array_check_int(str_int, SA, DA, n, sizeof(int_t), k)) printf("isNotDA!!\n");
+			        if(!document_array_check_int(str_int, SA, DA, n, sizeof(int_t), k)) fprintf(stderr, "isNotDA!!\n");
 			        else printf("isDA!!\n");
 			else
-			        if(!document_array_check(str, SA, DA, n, sizeof(char), 1, k)) printf("isNotDA!!\n");
+			        if(!document_array_check(str, SA, DA, n, sizeof(char), 1, k)) fprintf(stderr, "isNotDA!!\n");
 			        else printf("isDA!!\n");
 		}
 	}
