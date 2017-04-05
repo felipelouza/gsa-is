@@ -7,12 +7,11 @@ make
 make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6
 ```
 
-One can change to 64 bits integers (when n > 2^31) in lib/utils.h, setting m64
-to 1.
+One can change to 64 bits integers (when n > 2^31) setting M64 to 1.
 
 ```sh
 make clean
-make 
+make M64=1
 ```
 
 --
