@@ -17,10 +17,6 @@ DA_COMPUTE = 0
 CHECK	= 1
 OUTPUT	= 0
 
-DEBUG	= 0
-
-DEFINES = -DDEBUG=$(DEBUG)
-
 ##
 
 LIBOBJ = \
@@ -33,11 +29,21 @@ LIBOBJ = \
 	../gsais.o\
 	../gsacak.o
 
+##
+DEBUG = 0
+STDERR = 1
+M64 = 0
+##
+
+DEFINES = -DDEBUG=$(DEBUG) -DSTDERR=$(STDERR) -DM64=$(M64)
+
+CFLAGS += $(DEFINES)
+
 
 all: compile
 
 clean:
-	\rm lib/*.o src/*.o external/*.o gsais -f 
+	\rm lib/*.o ../*.o external/*.o gsais -f 
 
 remove:
 	\rm $(DIR)*.str $(DIR)*.sa $(DIR)*.lcp $(DIR)*.da $(DIR)*.da_bit -f 
@@ -46,7 +52,7 @@ remove:
 #	$(CC) $(DEFINES) -c lib/utils.c -o lib/utils.o 
 
 compile: main.c ${LIBOBJ} 
-	$(CC) $(CFLAGS) $(LFLAGS) $(DEFINES) -o gsais main.c ${LIBOBJ}
+	$(CC) $(CFLAGS) $(LFLAGS) -o gsais main.c ${LIBOBJ}
 
 run:
 	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(CHECK) $(OUTPUT)

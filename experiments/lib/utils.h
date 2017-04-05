@@ -39,9 +39,6 @@
 	#define I_MIN	 INT32_MIN
 #endif
 
-typedef uint32_t int_text;
-
-
 /**********************************************************************/
 
 #define swap(a,b) do { typeof(a) aux_a_b = (a); (a) = (b); (b) = aux_a_b; } while (0)
