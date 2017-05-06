@@ -123,10 +123,10 @@ Please, if you use this tool in an academic setting cite the following paper:
      author    = {Felipe Alves da Louza and Simon Gog and Guilherme P. Telles},
      title     = {Inducing enhanced suffix arrays for string collections},
      journal   = {Theor. Comput. Sci.},
-     volume    = {to appear},
-     pages     = {},
+     volume    = {678},
+     pages     = {22--39},
      year      = {2017},
-     url       = {},
+     url       = {http://www.sciencedirect.com/science/article/pii/S0304397517302621},
      doi       = {10.1016/j.tcs.2017.03.039},
     }
     
@@ -136,7 +136,7 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 \[1\] Louza, F. A., Gog, S., Telles, G. P., Induced Suffix Sorting for String Collections. In Proc. DCC, pp. 43-58, 2016, [IEEE](http://ieeexplore.ieee.org/document/7786148/).
 
-\[2\] Louza, F. A., Gog, S., Telles, G. P., Inducing enhanced suffix arrays for string collections. Theor. Comput. Sci., (to appear), pages 1-34.
+\[2\] Louza, F. A., Gog, S., Telles, G. P., Inducing enhanced suffix arrays for string collections. Theor. Comput. Sci., vol. 678, pp. 22-39, 2017, [Elsevier](http://www.sciencedirect.com/science/article/pii/S0304397517302621).
 
 \[3\] Nong G., Zhang S., Chan W. H., Two efficient algorithms for linear time suffix array construction, IEEE Trans. Comput., vol. 60, no. 10, pp. 1471–1484, 2011
 
