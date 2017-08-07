@@ -252,6 +252,9 @@ int file_text_write(unsigned char *str, int_t n, char* c_file, const char* ext){
 	sprintf(c_out, "%s.%s", c_file, ext);
 	f_out = file_open(c_out, "wb");
 	
+	int i;
+	for(i=0; i<n;i++) if(str[i]) str[i]--;
+
 	fwrite(str, sizeof(unsigned char), n, f_out);
 	
 	file_close(f_out);
@@ -323,5 +326,49 @@ int_t file_text_int_read(int_t** str_int, char* c_file, const char* ext){
 
 return n;
 }
+
+/*******************************************************************/
+
+int file_bwt_write(unsigned char *str, int_t *SA, int_t n, char* c_file, const char* ext){
+
+	FILE *f_out;
+	char *c_out = (char*) malloc((strlen(c_file)+strlen(ext)+3)*sizeof(char));
+	
+	sprintf(c_out, "%s.%s", c_file, ext);
+	f_out = file_open(c_out, "wb");
+	
+	int i;
+	for(i=0; i<n;i++){
+		char j = (SA[i])? str[SA[i]-1]:'#';
+		if(j==0) j = '$';
+		fwrite(&j, sizeof(unsigned char), 1, f_out);
+	}
+	
+	file_close(f_out);
+	free(c_out);
+
+return 1;
+}
+
+int file_bwt_int_write(int_t *str, int_t *SA, int_t n, char* c_file, const char* ext){
+
+	FILE *f_out;
+	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+	
+	sprintf(c_out, "%s.%s", c_file, ext);
+	f_out = file_open(c_out, "wb");
+	
+	int i;
+	for(i=0; i<n;i++){
+		int_t j = (SA[i])? str[SA[i]-1]:0;
+		fwrite(&j, sizeof(int_t), 1, f_out);
+	}
+
+	file_close(f_out);
+	free(c_out);
+
+return 1;
+}
+
 
 /*******************************************************************/

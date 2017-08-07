@@ -33,11 +33,11 @@
 
 int main(int argc, char** argv){
 
-int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0, DA_COMPUTE=0;
+int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0, DA_COMPUTE=0, BWT_COMPUTE=0;
 time_t t_start=0, t_total=0;
 clock_t c_start=0, c_total=0;
 
-	if(argc!=9){
+	if(argc!=10){
 		dies(__func__,"argc!=9");
 	}
 
@@ -52,8 +52,9 @@ clock_t c_start=0, c_total=0;
 	sscanf(argv[4], "%u", &MODE);
 	sscanf(argv[5], "%u", &LCP_COMPUTE);
 	sscanf(argv[6], "%u", &DA_COMPUTE);
-	sscanf(argv[7], "%u", &VALIDATE);
-	sscanf(argv[8], "%u", &OUTPUT);
+	sscanf(argv[7], "%u", &BWT_COMPUTE);
+	sscanf(argv[8], "%u", &VALIDATE);
+	sscanf(argv[9], "%u", &OUTPUT);
 
 	if(MODE==7 || MODE==8  || MODE==11 || MODE==12) LCP_COMPUTE=1;
 	if(MODE==9 || MODE==10 || MODE==11 || MODE==12) DA_COMPUTE=1;
@@ -296,6 +297,11 @@ clock_t c_start=0, c_total=0;
 	if(OUTPUT){
 		if(MODE==1||MODE==2) file_text_int_write(str_int, n, c_file, "str_int");
 		else file_text_write(str, n, c_file, "str");
+
+		if(BWT_COMPUTE){ 
+			if(MODE==1||MODE==2) file_bwt_int_write(str_int, SA, n, c_file, "bwt");
+			else file_bwt_write(str, SA, n, c_file, "bwt");
+		}
 
 		suffix_array_write(SA, n, c_file, "sa");
 		if(LCP_COMPUTE) lcp_array_write(LCP, n, c_file, "lcp");

@@ -14,7 +14,8 @@ K	= 10000
 MODE 	= 6
 LCP_COMPUTE = 0
 DA_COMPUTE = 0
-CHECK	= 1
+BWT_COMPUTE = 0
+CHECK	= 0
 OUTPUT	= 0
 
 ##
@@ -31,7 +32,7 @@ LIBOBJ = \
 
 ##
 DEBUG = 0
-STDERR = 1
+STDERR = 0
 M64 = 0
 ##
 
@@ -55,7 +56,7 @@ compile: main.c ${LIBOBJ}
 	$(CC) $(CFLAGS) $(LFLAGS) -o gsais main.c ${LIBOBJ}
 
 run:
-	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(CHECK) $(OUTPUT)
+	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(BWT_COMPUTE) $(CHECK) $(OUTPUT)
 
 valgrind:
-	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(CHECK) $(OUTPUT)
+	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(BWT_COMPUTE) $(CHECK) $(OUTPUT)
