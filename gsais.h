@@ -74,7 +74,7 @@ int sais_int(int_t *s, uint_t *SA, uint_t n, uint_t k);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *  @param s	input string
+ *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
  *  @param SA 	suffix array 
  *  @param LCP 	LCP array 
  *  @param DA 	Document array
@@ -86,7 +86,7 @@ int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *  @param s	input string
+ *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
  *  @param SA 	suffix array 
  *  @param LCP 	LCP array 
  *  @param DA 	Document array
