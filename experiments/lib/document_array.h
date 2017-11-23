@@ -8,6 +8,9 @@
 #include "utils.h"
 #include "file.h"
 
+#ifndef DEBUG
+        #define DEBUG 0
+#endif
 
 int document_array_LF(unsigned char* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k);
 int document_array_LF_int(int_t* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k);

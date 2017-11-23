@@ -12,7 +12,6 @@
 #define false 0 
 #define true 1  
 
-#define DEBUG 0
 #define DEPTH 0	 // compute time and size of reduced problem for each recursion call
 #define PHASES 0 // compute time for each phase
 

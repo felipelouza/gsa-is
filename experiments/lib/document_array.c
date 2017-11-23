@@ -1,7 +1,5 @@
 #include "document_array.h"
 
-#define DEBUG   0
-
 #define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
 
 /*******************************************************************/
