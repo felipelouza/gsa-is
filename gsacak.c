@@ -1296,13 +1296,14 @@ uint_t nameSubstr_generalized_LCP(uint_t *SA, int_t *LCP,
     len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
     if(len!=pre_len) diff=true;
     else{
-      for(d=0; d<len; d++)
+      for(d=0; d<len; d++){
         if(pos+d==n-1 || pre_pos+d==n-1 ||
            chr(pos+d)!=chr(pre_pos+d) ||
            (chr(pos+d)==separator && chr(pre_pos+d)==separator)){
           diff=true; break;
         }
-	LCP[i]=d;
+      }
+      LCP[i]=d;
     }
 
     if(diff) {

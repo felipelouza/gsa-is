@@ -1091,7 +1091,7 @@ int_t gSAIS_LCP(uint_t *s, int_t *SA, int_t *LCP, int_t n, int_t K, int cs, unsi
 
     int_t pos=SA[i]; int diff=false;
     int_t d;
-    for(d=0; d<n; d++)
+    for(d=0; d<n; d++){
       if(prev==-1 || pos+d==n-1 || prev+d==n-1 ||
          chr(pos+d)!=chr(prev+d) ||
          (chr(pos+d)==separator && chr(prev+d)==separator) || // $_i < $_j iff i < j
@@ -1100,10 +1100,11 @@ int_t gSAIS_LCP(uint_t *s, int_t *SA, int_t *LCP, int_t n, int_t K, int cs, unsi
       { 
 	diff=true; break;
       }
-      else
-        if(d>0 && (isLMS(pos+d) || isLMS(prev+d)))
-          break;
-	LCP[i]=d;
+      else{
+        if(d>0 && (isLMS(pos+d) || isLMS(prev+d)))break;
+      }
+    }
+    LCP[i]=d;
 	
     if(diff){
       name++; 
@@ -1581,7 +1582,7 @@ int_t gSAIS_LCP_DA(uint_t *s, int_t *SA, int_t *LCP, int_t *DA, int_t n, int_t K
 
     int_t pos=SA[i]; int diff=false;
     int_t d;
-    for(d=0; d<n; d++)
+    for(d=0; d<n; d++){
       if(prev==-1 || pos+d==n-1 || prev+d==n-1 ||
          chr(pos+d)!=chr(prev+d) ||
          (chr(pos+d)==separator && chr(prev+d)==separator) || // $_i < $_j iff i < j
@@ -1590,10 +1591,11 @@ int_t gSAIS_LCP_DA(uint_t *s, int_t *SA, int_t *LCP, int_t *DA, int_t n, int_t K
       { 
 	diff=true; break;
       }
-      else
-        if(d>0 && (isLMS(pos+d) || isLMS(prev+d)))
-          break;
-	LCP[i]=d;
+      else{
+        if(d>0 && (isLMS(pos+d) || isLMS(prev+d))) break;
+      }
+    }
+    LCP[i]=d;
 	
     if(diff){
       name++; 
