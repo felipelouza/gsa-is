@@ -191,7 +191,7 @@ char** load_multiple_fasta(FILE* f_in, int k, int_t *n){
 			}
 
 			if(p+len>nalloc){
-				nalloc += 128;
+				nalloc += len+128;
 				c_buffer[i] = realloc(c_buffer[i], sizeof(char) * nalloc);
 			}
 
