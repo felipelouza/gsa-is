@@ -142,8 +142,8 @@ char** load_multiple_fastq(FILE* f_in, int k, int_t *n){
 
 		len = 0; buf = NULL;
 		ssize_t size = getline(&buf, &len, f_in); // @'s line
-    if (size <= 1)
-    return 0;
+		free(buf);
+    if (size <= 1) return 0;
 
 		len = 0; c_buffer[i] = NULL;
 		size = getline(&c_buffer[i], &len, f_in); // read line
@@ -153,8 +153,9 @@ char** load_multiple_fastq(FILE* f_in, int k, int_t *n){
 
 		len = 0; buf = NULL;
 		getline(&buf, &len, f_in); // +'s line
+		free(buf);
+		len = 0; buf = NULL;
 		getline(&buf, &len, f_in); // @'s line
-
 		free(buf);
 	}
 
@@ -168,7 +169,6 @@ char** load_multiple_fasta(FILE* f_in, int k, int_t *n){
 
 	char *buf = NULL;
 	size_t len = 0;
-
 	getline(&buf, &len, f_in);// first sequence
 	free(buf);
 
@@ -198,6 +198,8 @@ char** load_multiple_fasta(FILE* f_in, int k, int_t *n){
 			strcpy(&c_buffer[i][p], buf);
 			p+=strlen(buf)-1;
 			
+			free(buf);
+			len = 0; buf = NULL;
 		}
 
 		free(buf);
