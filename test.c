@@ -32,6 +32,7 @@ int main(int argc, char *argv[]){
 	}
 	else{
 		unsigned char *S[3] = {"banana", "anaba", "anan"};
+		//unsigned char *S[3] = {"a", "", "c"};
 		int i, sum=0;
 		for(i=0; i< 3; i++){
 			sum += strlen((S[i]))+1;

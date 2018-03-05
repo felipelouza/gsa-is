@@ -18,6 +18,8 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define STACK_SIZE_L 894 //to use 10Kb of working space
 #define STACK_SIZE_S 894 //to use 10Kb of working space
 
+#define EMPTY_STRING 1 //check if there is an empty string in the input collection
+
 typedef struct _pair{
   uint_t idx;
   int_t lcp;
@@ -2499,6 +2501,11 @@ int sacak_int(int_t *s, uint_t *SA, uint_t n, uint_t k){
 
 int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
   if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
+
+  #if EMPTY_STRING
+    int i;
+    for(i=0; i<n-1; i++) if(s[i]==1 && s[i+1]==1) return -2; 
+  #endif  
 
   if((LCP == NULL) && (DA == NULL))
 	return gSACA_K((uint_t*)s, SA, n, 256, sizeof(char), 1, 0);
