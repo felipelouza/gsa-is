@@ -18,7 +18,7 @@ const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1);
 #define STACK_SIZE_L 894 //to use 10Kb of working space
 #define STACK_SIZE_S 894 //to use 10Kb of working space
 
-#define EMPTY_STRING 1 //check if there is an empty string in the input collection
+#define EMPTY_STRING 0 //check if there is an empty string in the input collection
 
 typedef struct _pair{
   uint_t idx;
