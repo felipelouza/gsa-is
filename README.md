@@ -110,7 +110,7 @@ The peak memory 10,487 is exactly 10KB + 247 bytes.
 10KB is the workspace and 247 (13\*19 bytes) bytes is the space used by the concatenated string s and the arrays SA, LCP and DA (13\*n bytes)
 
 
-**Strings larger than n=2^20:**
+**Strings larger than n=2^31 (2GB):**
 
 One can change to 64 bits integers adding -DM64=1 in the compilation.
 
@@ -120,7 +120,7 @@ One can change to 64 bits integers adding -DM64=1 in the compilation.
 Please, if you use this tool in an academic setting cite the following paper:
 
     @article{LouzaGT17b,
-     author    = {Felipe Alves da Louza and Simon Gog and Guilherme P. Telles},
+     author    = {Felipe A. Louza and Simon Gog and Guilherme P. Telles},
      title     = {Inducing enhanced suffix arrays for string collections},
      journal   = {Theor. Comput. Sci.},
      volume    = {678},
