@@ -31,7 +31,7 @@ MODE parameter specifies which algorithm is called by main.c:
 
 SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
-The type of array s[0..n-1] for integer alphabets can be defined here: ()[link]
+The type of array s[0..n-1] for integer alphabets can be defined here: [utils.h](https://github.com/felipelouza/gsa-is/blob/master/experiments/lib/utils.h#L42), [gsais.h](https://github.com/felipelouza/gsa-is/blob/master/gsais.h#L60) and [gsacak.h](https://github.com/felipelouza/gsa-is/blob/master/gsacak.h#L60)
 
 --
 
