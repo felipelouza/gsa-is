@@ -46,9 +46,9 @@
 #if M64 && LARGE_ALPHABET	//8N bytes for s[0..n-1]
 		typedef int64_t int_text;
 		#define PRIdT	PRId64
-#else											//2N bytes for s[0..n-1]
-		typedef int16_t	int_text;
-		#define PRIdT	PRId16
+#else											//4N bytes for s[0..n-1]
+		typedef int32_t	int_text;
+		#define PRIdT	PRId32
 #endif
 
 /**********************************************************************/
