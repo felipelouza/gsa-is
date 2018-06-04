@@ -24,19 +24,31 @@
 #endif
 
 #if M64
-	typedef int64_t  int_t;
-	typedef uint64_t uint_t;
-	#define PRIdN	 PRId64
-	#define U_MAX 	 UINT64_MAX
-	#define I_MAX 	 INT64_MAX
-	#define I_MIN 	 INT64_MIN
+	typedef int64_t		int_t;
+	typedef uint64_t	uint_t;
+	#define PRIdN			PRId64
+	#define U_MAX			UINT64_MAX
+	#define I_MAX			INT64_MAX
+	#define I_MIN			INT64_MIN
 #else
-	typedef int32_t  int_t;
-	typedef uint32_t uint_t;
-	#define PRIdN	 PRId32
-	#define U_MAX 	 UINT32_MAX
-	#define I_MAX	 INT32_MAX
-	#define I_MIN	 INT32_MIN
+	typedef int32_t		int_t;
+	typedef uint32_t	uint_t;
+	#define PRIdN			PRId32
+	#define U_MAX			UINT32_MAX
+	#define I_MAX			INT32_MAX
+	#define I_MIN			INT32_MIN
+#endif
+
+#ifndef LARGE_ALPHABET
+	#define LARGE_ALPHABET 0
+#endif
+
+#if M64 && LARGE_ALPHABET	//8N bytes for s[0..n-1]
+		typedef int64_t int_text;
+		#define PRIdT	PRId64
+#else											//2N bytes for s[0..n-1]
+		typedef int16_t	int_text;
+		#define PRIdT	PRId16
 #endif
 
 /**********************************************************************/
@@ -59,7 +71,7 @@ int_t min_range(int_t* A, int_t l, int_t r);
 
 /**********************************************************************/
 
-int_t* cat_int(unsigned char** R, int k, int_t *n);
+int_text* cat_int(unsigned char** R, int k, int_t *n);
 unsigned char* cat_char(unsigned char** R, int k, int_t *n);
 
 double log2(double i);

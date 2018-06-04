@@ -7,7 +7,7 @@ make
 make run DIR=dataset INPUT=input-10000.txt K=10000 MODE=6
 ```
 
-One can change to 64 bits integers (when n > 2^31) setting M64 to 1.
+It is possible to change to 64 bits integers (when n > 2^31), setting M64 to 1.
 
 ```sh
 make clean
@@ -31,6 +31,8 @@ MODE parameter specifies which algorithm is called by main.c:
 
 SAIS\* and SACA-K\* are versions that receive an integer alphabet as input.
 
+The type of array s[0..n-1] for integer alphabets can be defined here: ()[link]
+
 --
 
 **SA and LCP:**
@@ -44,7 +46,7 @@ MODE parameter:
 make run MODE=8
 ```
 
-One can compute LCP after SA construction using Phi-algorithm [5]:
+LCP-array can be computed after SA construction using Phi-algorithm [5]:
 
 ```sh
 make run MODE=6 LCP_COMPUTE=1
@@ -63,7 +65,7 @@ MODE parameter:
 make run MODE=10
 ```
 
-One can compute DA after SA construction using a variation of Algorithm 7.30 from Ohlebusch's book [6, page 347]:
+DA can be computed after SA construction using a variation of Algorithm 7.30 from Ohlebusch's book [6, page 347]:
 
 ```sh
 make run MODE=6 DA_COMPUTE=1
@@ -97,7 +99,7 @@ make run MODE=12
 
 **Validate:**
 
-One can check if the output produced is correct:
+It is possible to check if the output produced is correct:
 
 ```sh
 make run CHECK=1
@@ -105,7 +107,7 @@ make run CHECK=1
 
 **Output:**
 
-One can output SA (LCP and DA) as $DIR$INPUT.sa (.lcp and .da):
+SA (LCP and DA) can be written as $DIR$INPUT.sa (.lcp and .da):
 
 ```sh
 make run OUPUT=1
@@ -113,7 +115,7 @@ make run OUPUT=1
 
 **Compare:**
 
-One can compare all algorithms:
+All algorithms can be compared:
 
 ```sh
 for i in {1..10}; do make run DIR=dataset INPUT=input-10000.txt K=10000 LCP_COMPUTE=1 DA_COMPUTE=1 MODE=$i; done

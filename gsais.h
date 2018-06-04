@@ -57,6 +57,18 @@
         #define I_MIN    INT32_MIN
 #endif
  
+#ifndef LARGE_ALPHABET
+	#define LARGE_ALPHABET 0
+#endif
+
+#if M64 && LARGE_ALPHABET	//8N bytes for s[0..n-1]
+		typedef int64_t int_text;
+		#define PRIdT	PRId64
+#else											//2N bytes for s[0..n-1]
+		typedef int16_t	int_text;
+		#define PRIdT	PRId16
+#endif
+
 /** @brief computes the suffix array of string s[0..n-1] 
  *
  *  @param s	input string with s[n-1]=0
@@ -69,7 +81,7 @@ int sais(unsigned char *s, uint_t *SA, uint_t n);
 /** @brief computes the suffix array of string s[0..n-1]
  *  @param k	alphabet size
  */
-int sais_int(int_t *s, uint_t *SA, uint_t n, uint_t k);
+int sais_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
 
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
@@ -95,6 +107,6 @@ int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
  * 
  *  @return depth of the recursive calls.
  */
-int gsais_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
+int gsais_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
 
 #endif

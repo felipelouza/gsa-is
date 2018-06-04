@@ -1,7 +1,8 @@
 #include "gsais.h"
 
-#define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:((unsigned char *)s)[i])
-
+//#if M64 && LARGE_ALPHABET==0
+#define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:(cs==sizeof(int_text)?((int_text*)s)[i]:((unsigned char *)s)[i]))
+//#define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:((unsigned char *)s)[i])
 
 #define tget(i) ( (t[(i)/8]&mask[(i)%8]) ? 1 : 0 )
 #define tset(i, b) t[(i)/8]=(b) ? (mask[(i)%8]|t[(i)/8]) : ((~mask[(i)%8])&t[(i)/8])
@@ -1737,9 +1738,9 @@ int sais(unsigned char *s, uint_t *SA, uint_t n){
   return SAIS((int_t*)s, (int_t *)SA, n, 256, sizeof(char), 0);
 }
 
-int sais_int(int_t *s, uint_t *SA, uint_t n, uint_t k){
+int sais_int(int_text *s, uint_t *SA, uint_t n, uint_t k){
   if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
-  return SAIS((int_t*)s, (int_t *)SA, n, k, sizeof(int_t), 0);
+  return SAIS((int_t*)s, (int_t *)SA, n, k, sizeof(int_text), 0);
 }
 
 int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
@@ -1755,17 +1756,17 @@ int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
 	return gSAIS_LCP_DA((uint_t*)s, (int_t *)SA, LCP, DA, n, 256, sizeof(char), 1, 0);
 }
 
-int gsais_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k){
+int gsais_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k){
   if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
   
   if((LCP == NULL) && (DA == NULL))
-	return gSAIS((uint_t*)s, (int_t *)SA, n, k, sizeof(int_t), 1, 0);
+	return gSAIS((uint_t*)s, (int_t *)SA, n, k, sizeof(int_text), 1, 0);
   else if (DA == NULL)
-	return gSAIS_LCP((uint_t*)s, (int_t *)SA, LCP, n, k, sizeof(int_t), 1, 0);
+	return gSAIS_LCP((uint_t*)s, (int_t *)SA, LCP, n, k, sizeof(int_text), 1, 0);
   else if (LCP == NULL)
-	return gSAIS_DA((uint_t*)s, (int_t *)SA, DA, n, k, sizeof(int_t), 1, 0);
+	return gSAIS_DA((uint_t*)s, (int_t *)SA, DA, n, k, sizeof(int_text), 1, 0);
   else
-	return gSAIS_LCP_DA((uint_t*)s, (int_t *)SA, LCP, DA, n, k, sizeof(int_t), 1, 0);
+	return gSAIS_LCP_DA((uint_t*)s, (int_t *)SA, LCP, DA, n, k, sizeof(int_text), 1, 0);
 }
 
 /*****************************************************************************/

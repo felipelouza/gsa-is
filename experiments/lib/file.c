@@ -265,7 +265,7 @@ int file_text_write(unsigned char *str, int_t n, char* c_file, const char* ext){
 return 1;
 }
 
-int file_text_int_write(int_t *str, int_t n, char* c_file, const char* ext){
+int file_text_int_write(int_text *str, int_t n, char* c_file, const char* ext){
 
 	FILE *f_out;
 	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
@@ -273,7 +273,7 @@ int file_text_int_write(int_t *str, int_t n, char* c_file, const char* ext){
 	sprintf(c_out, "%s.%s", c_file, ext);
 	f_out = file_open(c_out, "wb");
 	
-	fwrite(str, sizeof(int_t), n, f_out);
+	fwrite(str, sizeof(int_text), n, f_out);
 	
 	file_close(f_out);
 	free(c_out);
@@ -306,7 +306,7 @@ int_t file_text_read(unsigned char** str, char* c_file, const char* ext){
 return n;
 }
 
-int_t file_text_int_read(int_t** str_int, char* c_file, const char* ext){
+int_t file_text_int_read(int_text** str_int, char* c_file, const char* ext){
 
 	FILE *f_in;
 	char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
@@ -320,8 +320,8 @@ int_t file_text_int_read(int_t** str_int, char* c_file, const char* ext){
 
 	int_t n = size/sizeof(int_t);
 
-	*str_int = (int_t*) malloc(n*sizeof(int_t));
-	fread(*str_int, sizeof(int_t), n, f_in);
+	*str_int = (int_text*) malloc(n*sizeof(int_text));
+	fread(*str_int, sizeof(int_text), n, f_in);
 	
 	file_close(f_in);
 	free(c_in);
@@ -352,7 +352,7 @@ int file_bwt_write(unsigned char *str, int_t *SA, int_t n, char* c_file, const c
 return 1;
 }
 
-int file_bwt_int_write(int_t *str, int_t *SA, int_t n, char* c_file, const char* ext){
+int file_bwt_int_write(int_text *str_int, int_t *SA, int_t n, char* c_file, const char* ext){
 
 	FILE *f_out;
 	char *c_out = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
@@ -362,8 +362,8 @@ int file_bwt_int_write(int_t *str, int_t *SA, int_t n, char* c_file, const char*
 	
 	int i;
 	for(i=0; i<n;i++){
-		int_t j = (SA[i])? str[SA[i]-1]:0;
-		fwrite(&j, sizeof(int_t), 1, f_out);
+		int_t j = (SA[i])? str_int[SA[i]-1]:0;
+		fwrite(&j, sizeof(int_text), 1, f_out);
 	}
 
 	file_close(f_out);

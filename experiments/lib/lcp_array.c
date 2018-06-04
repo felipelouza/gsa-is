@@ -1,6 +1,6 @@
 #include "lcp_array.h"
 
-#define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
+#define chr(i) (cs==sizeof(int_text)?((int_text*)T)[i]:((unsigned char *)T)[i])
 
 /*******************************************************************/
 
@@ -80,7 +80,7 @@ return 0;
 
 /*******************************************************************/
 
-int lcp_PHI_int(int_t* T, int_t* SA, int_t* LCP, uint_t n, int cs){
+int lcp_PHI_int(int_text* T, int_t* SA, int_t* LCP, uint_t n, int cs){
 
 	uint_t* PLCP = (uint_t*) malloc(n * sizeof(uint_t));;
 
@@ -190,7 +190,13 @@ int lcp_array_check_lcp(unsigned char *T, int_t *SA, int_t *LCP, uint_t n, int c
 	clock_t c_start=0;
 
 	time_start(&t_start, &c_start);
-	lcp_PHI(T, SA, LCP2, n, sizeof(char), 1);//separator=1
+	
+	if(cs==sizeof(char))
+		lcp_PHI(T, SA, LCP2, n, sizeof(char), 1);//separator=1
+	else
+		lcp_PHI_int((int_text*)T, SA, LCP2, n, cs);
+		
+
 	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 
 	for(i=0; i<n; i++){
@@ -225,7 +231,7 @@ int lcp_array_print(unsigned char *T, int_t *SA, int_t *LCP, size_t n, int cs){
 
                 int_t j=SA[i];
                 for(j=SA[i]; (j<SA[i]+min(10,LCP[i]+10)); j++)
-                        printf("%" PRIdN " ", chr(j));
+                        printf("%" PRIdT " ", chr(j));
                 printf("\n");
         }
 

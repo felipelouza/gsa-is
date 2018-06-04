@@ -1,6 +1,6 @@
 #include "document_array.h"
 
-#define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
+#define chr(i) (cs==sizeof(int_text)?((int_text*)T)[i]:((unsigned char *)T)[i])
 
 /*******************************************************************/
 int check_LF_array(int_t* SA, int_t* LF, uint_t n, unsigned char separator){
@@ -97,7 +97,7 @@ return 0;
 }
 
 /*******************************************************************/
-int compute_LF_array_int(int_t* T, int_t* SA, int_t* LF, uint_t n, unsigned int SIGMA, int cs, uint_t k){
+int compute_LF_array_int(int_text* T, int_t* SA, int_t* LF, uint_t n, unsigned int SIGMA, int cs, uint_t k){
 
 	uint_t i, sum=0;
 	int_t c; 
@@ -125,7 +125,7 @@ return 0;
 
 /*******************************************************************/
 
-int document_array_LF_int(int_t* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
+int document_array_LF_int(int_text* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
 
 	uint_t tmp, i, j, count=k;
 	compute_LF_array_int(T, SA, DA, n, SIGMA, cs, k);
@@ -179,7 +179,7 @@ return 1;
 
 /*******************************************************************/
 
-int document_array_check_int(int_t *T, int_t *SA, int_t *DA, uint_t n, int cs, uint_t k){
+int document_array_check_int(int_text *T, int_t *SA, int_t *DA, uint_t n, int cs, uint_t k){
 
 	uint_t i, count=k;
 	int_t* R = (int_t*) malloc(n*sizeof(int_t));
@@ -212,7 +212,7 @@ int document_array_print(unsigned char *T, int_t *SA, int_t *DA, size_t n, int c
 
                 int_t j=SA[i];
                 for(j=SA[i]; (j<SA[i]+10); j++)
-                        printf("%" PRIdN " ", chr(j));
+                        printf("%" PRIdT " ", chr(j));
                 printf("\n");
         }
 

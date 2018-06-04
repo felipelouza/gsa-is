@@ -84,13 +84,13 @@ int_t min_range(int_t* A, int_t l, int_t r){
 return min;
 }
 /*******************************************************************/
-int_t* cat_int(unsigned char** R, int k, int_t *n){
+int_text* cat_int(unsigned char** R, int k, int_t *n){
 
 	(*n)++; //add 0 at the end
 
 	int_t i, j;
 	int_t l=0;
-	int_t *str_int = (int_t*) malloc((*n)*sizeof(int_t));
+	int_text *str_int = (int_text*) malloc((*n)*sizeof(int_text));
 
 	for(i=0; i<k; i++){
 		int_t m = strlen((char*)R[i]);
@@ -106,7 +106,7 @@ int_t* cat_int(unsigned char** R, int k, int_t *n){
 	
 	str_int[l++]=0;
         if(*n>l){
-		str_int = (int_t*) realloc(str_int, (l)*sizeof(int_t));
+		str_int = (int_text*) realloc(str_int, (l)*sizeof(int_text));
 		printf("N = %" PRIdN "\n", l);
 	}
 	*n = l;

@@ -1,6 +1,6 @@
 #include "suffix_array.h"
 
-#define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
+#define chr(i) (cs==sizeof(int_text)?((int_text*)T)[i]:((unsigned char *)T)[i])
 
 /*******************************************************************/
 
@@ -56,7 +56,7 @@ int_t i;
 	
 		int_t j=SA[i];
 		for(j=SA[i]; (j<SA[i]+5); j++)
-			printf("%" PRIdN " ", chr(j));
+			printf("%" PRIdT " ", chr(j));
 		printf("\n");
 	}
 
@@ -101,7 +101,7 @@ int_t suffix_array_check(unsigned char *T, int_t *SA,  size_t n, int cs, unsigne
 			printf("#%" PRIdN ") %" PRIdN ", %" PRIdN "&\n", i, SA[i], SA[i+1]);
 
 			for(j=SA[i], k=SA[i+1]; (j<SA[i]+5); j++, k++)
-				printf("%" PRIdN " | %" PRIdN "\n", chr(j), chr(k));
+				printf("%" PRIdT " | %" PRIdT "\n", chr(j), chr(k));
 			printf("\n");
 
 			return 0;

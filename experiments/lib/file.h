@@ -26,13 +26,13 @@ char* file_load(FILE* f_in) ;
 char** file_load_multiple(char* c_file, int k, int_t* n) ;
 
 int file_text_write(unsigned char *str, int_t n, char* c_file, const char* ext);
-int file_text_int_write(int_t *str_int, int_t n, char* c_file, const char* ext);
+int file_text_int_write(int_text *str_int, int_t n, char* c_file, const char* ext);
 
 int_t file_text_read(unsigned char** str, char* c_file, const char* ext);
-int_t file_text_int_read(int_t** str, char* c_file, const char* ext);
+int_t file_text_int_read(int_text** str, char* c_file, const char* ext);
 
 int file_bwt_write(unsigned char *str, int_t *SA, int_t n, char* c_file, const char* ext);
-int file_bwt_int_write(int_t *str_int, int_t *SA, int_t n, char* c_file, const char* ext);
+int file_bwt_int_write(int_text *str_int, int_t *SA, int_t n, char* c_file, const char* ext);
 
 /*******************************************************************/
 
