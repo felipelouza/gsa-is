@@ -21,6 +21,8 @@
  * 
  */
 
+/******************************************************************************/
+
 #ifndef GSACAK_H
 #define GSACAK_H
 
@@ -57,17 +59,13 @@
 	#define I_MIN	INT32_MIN
 #endif
 
-#ifndef LARGE_ALPHABET
-	#define LARGE_ALPHABET 0
-#endif
+/*! @brief for integer alphabets define text array
+ *	@constraint sizeof(int_t) >= sizeof(int_text) 
+ */
+typedef int32_t	int_text;	//4N bytes for s[0..n-1]
+#define PRIdT	PRId32
 
-#if M64 && LARGE_ALPHABET		//8N bytes for s[0..n-1]
-	typedef int64_t int_text;
-	#define PRIdT	PRId64
-#else		//4N bytes for s[0..n-1]
-	typedef int32_t	int_text;
-	#define PRIdT	PRId32
-#endif
+/******************************************************************************/
 
 /** @brief computes the suffix array of string s[0..n-1] 
  *
@@ -83,6 +81,7 @@ int sacak(unsigned char *s, uint_t *SA, uint_t n);
  */
 int sacak_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
 
+/******************************************************************************/
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
@@ -108,5 +107,7 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
  *	@return depth of the recursive calls.
  */
 int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
+
+/******************************************************************************/
 
 #endif
