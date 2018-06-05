@@ -97,8 +97,8 @@ char* file_load(FILE* f_in) {
  	char *c_buffer = (char*) malloc((size+1)*sizeof(char));
 	strncpy(c_buffer, c_aux, size);
 
-	c_buffer[size-1] = END_MARKER;
-	c_buffer[size] = '\0';
+	c_buffer[size-1] = 1; //END_MARKER;
+	c_buffer[size] = 0; //'\0';
 
 	free(c_aux);
 

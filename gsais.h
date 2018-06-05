@@ -60,11 +60,11 @@
 #endif
  
 
-/*! @brief for integer alphabets define text array
+/*! @option type of s[0,n-1] for integer alphabets 
  *	@constraint sizeof(int_t) >= sizeof(int_text) 
  */
-typedef int32_t	int_text;	//4N bytes for s[0..n-1]
-#define PRIdT	PRId32
+typedef uint32_t	int_text;	//4N bytes for s[0..n-1]
+#define PRIdT	PRIu32
 
 /******************************************************************************/
 
