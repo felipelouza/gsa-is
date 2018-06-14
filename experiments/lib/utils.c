@@ -105,7 +105,7 @@ int_text* cat_int(unsigned char** R, int k, int_t *n){
 	}
 	
 	str_int[l++]=0;
-        if(*n>l){
+  if(*n>l){
 		str_int = (int_text*) realloc(str_int, (l)*sizeof(int_text));
 		printf("N = %" PRIdN "\n", l);
 	}
@@ -152,8 +152,8 @@ unsigned char* cat_char(unsigned char** R, int k, int_t *n){
 	}
 
 	str[l++]=0;
-        if(*n>l){
-		str = (unsigned char*) realloc(str, (l)*sizeof(unsigned char));
+  if(*n>l){
+		str = (unsigned char*) realloc(str, (l+1)*sizeof(unsigned char));
 		printf("N = %" PRIdN "\n", l);
 	}
 	*n = l;

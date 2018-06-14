@@ -51,8 +51,8 @@
 	#define I_MAX	INT64_MAX
 	#define I_MIN	INT64_MIN
 #else
-	typedef int32_t	int_t;
-	typedef uint32_t	uint_t;
+	typedef int32_t int_t;
+	typedef uint32_t uint_t;
 	#define PRIdN	PRId32
 	#define U_MAX	UINT32_MAX
 	#define I_MAX	INT32_MAX
@@ -60,24 +60,26 @@
 #endif
 
 /*! @option type of s[0,n-1] for integer alphabets 
- *	@constraint sizeof(int_t) >= sizeof(int_text) 
+ *
+ *  @constraint sizeof(int_t) >= sizeof(int_text) 
  */
-typedef uint32_t	int_text;	//4N bytes for s[0..n-1]
+typedef uint32_t int_text;	//4N bytes for s[0..n-1]
 #define PRIdT	PRIu32
 
 /******************************************************************************/
 
 /** @brief computes the suffix array of string s[0..n-1] 
  *
- *	@param s	input string with s[n-1]=0
- *	@param SA		suffix array 
- *	@param n	string length
- *	@return -1 if an error occured, otherwise the depth of the recursive calls.
+ *  @param s	input string with s[n-1]=0
+ *  @param SA		suffix array 
+ *  @param n	string length
+ *  @return -1 if an error occured, otherwise the depth of the recursive calls.
  */
 int sacak(unsigned char *s, uint_t *SA, uint_t n);
 
 /** @brief computes the suffix array of string s[0..n-1]
- *	@param k	alphabet size
+ *
+ *  @param k	alphabet size
  */
 int sacak_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
 
@@ -85,26 +87,20 @@ int sacak_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *	@param s		input concatenated string, using separators s[i]=1 and with s[n-1]=0
- *	@param SA		suffix array 
- *	@param LCP	LCP array 
- *	@param DA		Document array
- *	@param n	string length
- * 
- *	@return depth of the recursive calls.
+ *  @param s		input concatenated string, using separators s[i]=1 and with s[n-1]=0
+ *  @param SA		suffix array 
+ *  @param LCP	LCP array 
+ *  @param DA		Document array
+ *  @param n	string length
+ *  
+ *  @return depth of the recursive calls.
  */
 int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *	@param s		input concatenated string, using separators s[i]=1 and with s[n-1]=0
- *	@param SA		suffix array 
- *	@param LCP	LCP array 
- *	@param DA		Document array
- *	@param n	string length
- *	@param K	alphabet size
- * 
- *	@return depth of the recursive calls.
+ *  @param s    input concatenated string, with s[n-1]=0
+ *  @param K	alphabet size
  */
 int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
 

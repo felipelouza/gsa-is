@@ -5,10 +5,7 @@
 const uint_t EMPTY_k=((uint_t)1)<<(sizeof(uint_t)*8-1); 
 
 // get s[i] at a certain level
-
-//#if M64 && LARGE_ALPHABET==0
 #define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:(cs==sizeof(int_text)?((int_text*)s)[i]:((unsigned char *)s)[i]))
-//define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:((unsigned char *)s)[i])
 
 #define true 1
 #define false 0
@@ -638,7 +635,7 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
 
       if(LCP[i]==I_MIN){ //is a L/S-seam position
   	  int_t l=0;
-	  if(SA[bkt[chr(SA[i])]-1]<n-1)	
+		  if(SA[bkt[chr(SA[i])]-1]<n-1)	
    	    while(chr(SA[i]+l)==chr(SA[bkt[chr(SA[i])]-1]+l))++l;
   	  LCP[i]=l;
       }
@@ -755,44 +752,44 @@ void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_t* DA,
     if(SA[i]>0) {
       j=SA[i]-1;
       if(chr(j)<=chr(j+1) && bkt[chr(j)]<i)// induce S-type
-        if(chr(j)!=separator){
-	  SA[bkt[chr(j)]]=j;
-      DA[bkt[chr(j)]]=DA[i];
+      if(chr(j)!=separator){
+	    SA[bkt[chr(j)]]=j;
+        DA[bkt[chr(j)]]=DA[i];
       
-          #if RMQ_S == 1
+        #if RMQ_S == 1
   	    if(LCP[bkt[chr(j)]+1]>=0) 
   	      LCP[bkt[chr(j)]+1]=M[chr(j)]+1;
-  	  
+
 	    if(LCP[bkt[chr(j)]]>0) 
   	      LCP[bkt[chr(j)]]=I_MAX;
 
-          #elif RMQ_S == 2
-            int_t min = I_MAX, end = top-1; 
+        #elif RMQ_S == 2
+          int_t min = I_MAX, end = top-1; 
   
-  	    int_t last=last_occ[chr(j)];
-            while(STACK[end].idx<=last) end--;
+          int_t last=last_occ[chr(j)];
+          while(STACK[end].idx<=last) end--;
   
-            min=STACK[(end+1)].lcp;
-            last_occ[chr(j)] = i;
+          min=STACK[(end+1)].lcp;
+          last_occ[chr(j)] = i;
   
-  	    if(LCP[bkt[chr(j)]+1]>=0) 
-              LCP[bkt[chr(j)]+1]=min+1;
-          #endif
+  	      if(LCP[bkt[chr(j)]+1]>=0) 
+            LCP[bkt[chr(j)]+1]=min+1;
+        #endif
   
 
-          #if RMQ_S == 1
-  	  M[chr(j)] = I_MAX;
-          #endif
+        #if RMQ_S == 1
+          M[chr(j)] = I_MAX;
+        #endif
   
-          bkt[chr(j)]--;
+        bkt[chr(j)]--;
  
-  	  if(SA[bkt[chr(j)]]!=U_MAX) {//L/S-seam
-            int_t l=0;	
-            while(chr(SA[bkt[chr(j)]+1]+l)==chr(SA[bkt[chr(j)]]+l))++l;
-            LCP[bkt[chr(j)]+1]=l;
-  	  }
-  	}
-     }
+        if(SA[bkt[chr(j)]]!=U_MAX) {//L/S-seam
+              int_t l=0;	
+              while(chr(SA[bkt[chr(j)]+1]+l)==chr(SA[bkt[chr(j)]]+l))++l;
+              LCP[bkt[chr(j)]+1]=l;
+        }
+      }
+    }
 
     if(LCP[i]<0) LCP[i]=0;
     #if RMQ_S == 1
@@ -2505,8 +2502,10 @@ int sacak_int(int_text *s, uint_t *SA, uint_t n, uint_t k){
 int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
   if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
 
+  int i;
+  for(i=0; i<n; i++) SA[i]=LCP[i]=DA[i]=0;
+
   #if EMPTY_STRING
-    int i;
     for(i=0; i<n-1; i++) if(s[i]==1 && s[i+1]==1) return -2; 
   #endif  
 
@@ -2523,6 +2522,9 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
 int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k){
   if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
   
+  int i;
+  for(i=0; i<n; i++) SA[i]=LCP[i]=DA[i]=0;
+
   if((LCP == NULL) && (DA == NULL))
 	return gSACA_K((uint_t*)s, SA, n, k, sizeof(int_text), 1, 0);
   else if (DA == NULL)

@@ -142,3 +142,6 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 \[4\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
+## Thanks:
+
+Thanks to Giovanni Manzini by helpful suggestions and debugging.

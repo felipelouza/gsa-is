@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS += -Wall 
+CFLAGS += -Wall
 #CFLAGS += -g -O0
 CFLAGS += -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts 
 
@@ -59,4 +59,4 @@ run:
 	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(BWT_COMPUTE) $(CHECK) $(OUTPUT)
 
 valgrind:
-	valgrind --tool=memcheck --leak-check=full --track-origins=yes ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(BWT_COMPUTE) $(CHECK) $(OUTPUT)
+	valgrind -q --tool=memcheck --leak-check=full --track-origins=yes --show-leak-kinds=all ./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(BWT_COMPUTE) $(CHECK) $(OUTPUT)

@@ -1,8 +1,7 @@
 #include "gsais.h"
 
-//#if M64 && LARGE_ALPHABET==0
+// get s[i] at a certain level
 #define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:(cs==sizeof(int_text)?((int_text*)s)[i]:((unsigned char *)s)[i]))
-//#define chr(i) (cs==sizeof(int_t)?((int_t*)s)[i]:((unsigned char *)s)[i])
 
 #define tget(i) ( (t[(i)/8]&mask[(i)%8]) ? 1 : 0 )
 #define tset(i, b) t[(i)/8]=(b) ? (mask[(i)%8]|t[(i)/8]) : ((~mask[(i)%8])&t[(i)/8])
