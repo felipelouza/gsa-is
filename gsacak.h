@@ -16,8 +16,8 @@
  * 
  * gsacak(s, SA, NULL, NULL, n) //computes only SA
  * gsacak(s, SA, LCP,  NULL, n) //computes SA and LCP
- * gsacak(s, SA, NULL, DA,	 n) //computes SA and DA
- * gsacak(s, SA, LCP,  DA,	 n) //computes SA, LCP and DA
+ * gsacak(s, SA, NULL, DA, n)   //computes SA and DA
+ * gsacak(s, SA, LCP,  DA, n)   //computes SA, LCP and DA
  * 
  */
 
@@ -45,7 +45,7 @@
 
 #if M64
 	typedef int64_t	int_t;
-	typedef uint64_t	uint_t;
+	typedef uint64_t uint_t;
 	#define PRIdN	PRId64
 	#define U_MAX	UINT64_MAX
 	#define I_MAX	INT64_MAX

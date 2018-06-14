@@ -39,7 +39,7 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
+ *  @param s    input concatenated string, with s[n-1]=0
  *  @param SA   suffix array 
  *  @param LCP  LCP array 
  *  @param DA   Document array
@@ -48,7 +48,7 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
  * 
  *  @return depth of the recursive calls.
  */
-int gsacak_int(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
+int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
 ```
 
 ## Options
@@ -112,8 +112,11 @@ The peak memory 10,487 is exactly 10KB + 247 bytes.
 
 **Strings larger than n=2^31 (2GB):**
 
-One can change to 64 bits integers adding -DM64=1 in the compilation.
+One can change to 64 bits integers adding -DM64=1 in the compilation or by changing M64 to 1 here: [link](https://github.com/felipelouza/gsa-is/blob/master/gsacak.h#L43).
 
+**Integer strings:**
+
+One can set the size (in bytes) of s\[0..n-1\] for integer alphabets: [link](https://github.com/felipelouza/gsa-is/blob/master/gsacak.h#L66)
 
 ## Citation
 
@@ -142,6 +145,6 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 \[4\] Nong, G., Practical linear-time O(1)-workspace suffix sorting for constant alphabets, ACM Trans. Inform. Syst., vol. 31, no. 3, pp. 1–15, 2013
 
-## Thanks:
+## Thanks
 
 Thanks to Giovanni Manzini by helpful suggestions and debugging.
