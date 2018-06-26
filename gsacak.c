@@ -2500,10 +2500,12 @@ int sacak_int(int_text *s, uint_t *SA, uint_t n, uint_t k){
 }
 
 int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
-  if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
 
-  int i;
-  for(i=0; i<n; i++) SA[i]=LCP[i]=DA[i]=0;
+  if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
+	int i;
+	for(i=0; i<n; i++) SA[i]=0;
+	if(LCP!=NULL) for(i=0; i<n; i++) LCP[i]=0;
+	if(DA!=NULL) for(i=0; i<n; i++) DA[i]=0;
 
   #if EMPTY_STRING
     for(i=0; i<n-1; i++) if(s[i]==1 && s[i+1]==1) return -2; 
@@ -2520,12 +2522,14 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
 }
 
 int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k){
-  if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
-  
-  int i;
-  for(i=0; i<n; i++) SA[i]=LCP[i]=DA[i]=0;
 
-  if((LCP == NULL) && (DA == NULL))
+	if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
+	int i;
+	for(i=0; i<n; i++) SA[i]=0;
+	if(LCP!=NULL) for(i=0; i<n; i++) LCP[i]=0;
+	if(DA!=NULL) for(i=0; i<n; i++) DA[i]=0;
+
+	if((LCP == NULL) && (DA == NULL))
 	return gSACA_K((uint_t*)s, SA, n, k, sizeof(int_text), 1, 0);
   else if (DA == NULL)
 	return gSACA_K_LCP((uint_t*)s, SA, LCP, n, k, sizeof(int_text), 1, 0);
