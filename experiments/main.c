@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <time.h>
+#include <assert.h>
+
 
 #include "lib/file.h"
 #include "lib/suffix_array.h"
@@ -98,8 +100,11 @@ clock_t c_start=0, c_total=0;
 	printf("sizeof(int) = %zu bytes\n", sizeof(int_t));
 
 	if(MODE==1 || MODE==2){//sais or saca-k (int)	
-		printf("sizeof(int_text) = %zu bytes\n", sizeof(int_text));
+		printf("sizeof(int_text) = %zu byte(s)\n", sizeof(int_text));
 	}
+
+	if(DA_COMPUTE)
+		printf("sizeof(int_da) = %zu byte(s)\n", sizeof(int_da));
 
 	#if DEBUG
 		printf("R:\n");
@@ -113,19 +118,22 @@ clock_t c_start=0, c_total=0;
 	free(R);
 
 	int_t *SA = (int_t*) malloc(n*sizeof(int_t));
+	assert(SA);
 	for(i=0; i<n; i++) SA[i]=0;
 	int_t depth=0;
 
 	int_t *LCP = NULL;	
 	if(LCP_COMPUTE){
 		LCP = (int_t*) malloc(n*sizeof(int_t));
+		assert(LCP);
 		for(i=0; i<n; i++) LCP[i]=0;
 	}
 
-	int_t *DA = NULL;	
+	int_da *DA = NULL;	
 	if(DA_COMPUTE){
-		DA = (int_t*) malloc(n*sizeof(int_t));
-			for(i=0; i<n; i++) DA[i]=-1;
+		DA = (int_da*) malloc(n*sizeof(int_da));
+		assert(DA);
+		for(i=0; i<n; i++) DA[i]=-1;
 	}
 
 	time_start(&t_total, &c_total);

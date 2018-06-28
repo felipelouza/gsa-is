@@ -156,7 +156,7 @@ void putSuffix0_generalized_LCP(uint_t *SA, int_t *LCP,
 
 }
 
-void putSuffix0_generalized_DA(uint_t *SA, int_t *DA,
+void putSuffix0_generalized_DA(uint_t *SA, int_da *DA,
   uint_t *s, uint_t *bkt, 
   uint_t n, unsigned int K, int_t n1, int cs, uint_t separator) {
   uint_t i, j;
@@ -176,12 +176,12 @@ void putSuffix0_generalized_DA(uint_t *SA, int_t *DA,
  // SA[0]=n-1; // set the single sentinel suffix.
 
   SA[tmp]=SA[0]-1;// insert the last separator at the end of bkt[separator]
-  DA[tmp]=tmp-1;
+  DA[tmp]= (int_da) tmp-1;
 
 }
 
 
-void putSuffix0_generalized_LCP_DA(uint_t *SA, int_t *LCP,  int_t *DA, 
+void putSuffix0_generalized_LCP_DA(uint_t *SA, int_t *LCP,  int_da *DA, 
   uint_t *s, uint_t *bkt, 
   uint_t n, unsigned int K, int_t n1, int cs, uint_t separator) {
   uint_t i, j;
@@ -205,7 +205,7 @@ void putSuffix0_generalized_LCP_DA(uint_t *SA, int_t *LCP,  int_t *DA,
  // SA[0]=n-1; // set the single sentinel suffix.
 
   SA[tmp]=SA[0]-1;// insert the last separator at the end of bkt[separator]
-  DA[tmp]=tmp-1;
+  DA[tmp]= (int_da) tmp-1;
 }
 
 /*****************************************************************************/
@@ -546,7 +546,7 @@ void induceSAs0_generalized_LCP(uint_t *SA, int_t* LCP,
 
 /*****************************************************************************/
 
-void induceSAl0_generalized_DA(uint_t *SA, int_t* DA,
+void induceSAl0_generalized_DA(uint_t *SA, int_da* DA,
   uint_t *s, uint_t *bkt,
   uint_t n, unsigned int K, int cs, uint_t separator) {
   uint_t i, j;
@@ -567,7 +567,7 @@ void induceSAl0_generalized_DA(uint_t *SA, int_t* DA,
     }
 }
 
-void induceSAs0_generalized_DA(uint_t *SA, int_t* DA,
+void induceSAs0_generalized_DA(uint_t *SA, int_da* DA,
   uint_t *s, uint_t *bkt,
   uint_t n, uint_t K, int cs, uint_t separator) {
   uint_t i, j;
@@ -589,7 +589,7 @@ void induceSAs0_generalized_DA(uint_t *SA, int_t* DA,
 
 /*****************************************************************************/
 
-void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
+void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_da *DA,
   uint_t *s, uint_t *bkt,
   uint_t n, unsigned int K, int cs, uint_t separator) {
   uint_t i, j;
@@ -666,24 +666,23 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
       if(SA[i]>0) {
         j=SA[i]-1;
         if(chr(j)>=chr(j+1))
-  	if(chr(j)!=separator){//gsa-is
+					if(chr(j)!=separator){//gsa-is
             SA[bkt[chr(j)]]=j;
             DA[bkt[chr(j)]]=DA[i];
 
             #if RMQ_L == 1
-  	      LCP[bkt[chr(j)]]+=M[chr(j)]+1;
-    	      M[chr(j)] = I_MAX;
+							LCP[bkt[chr(j)]]+=M[chr(j)]+1;
+	    	      M[chr(j)] = I_MAX;
             #elif RMQ_L == 2
-  	      LCP[bkt[chr(j)]]+=min_lcp+1; 
+				      LCP[bkt[chr(j)]]+=min_lcp+1; 
             #endif
   
             bkt[chr(j)]++;
-	}
+				}
       	if(bkt[chr(SA[i])]-1<i){ //if is LMS-type
-	  if(chr(SA[i])!=separator)
-	  SA[i]=U_MAX;
+					if(chr(SA[i])!=separator)
+					SA[i]=U_MAX;
         }
-
       }
       #if RMQ_L == 2
       if(top>STACK_SIZE_L){//if stack is full
@@ -727,7 +726,7 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_t *DA,
 
 }
 
-void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_t* DA,
+void induceSAs0_generalized_LCP_DA(uint_t *SA, int_t* LCP, int_da* DA,
   uint_t *s, uint_t *bkt,
   uint_t n, uint_t K, int cs, uint_t separator) {
   uint_t i, j;
@@ -1359,7 +1358,7 @@ void getSAlms(uint_t *SA,
 }
 
 
-void getSAlms_DA(uint_t *SA, int_t* DA,
+void getSAlms_DA(uint_t *SA, int_da* DA,
   int_t *s, 
   uint_t *s1, uint_t n, 
   uint_t n1, int level, int cs, uint_t separator) {
@@ -1368,7 +1367,7 @@ void getSAlms_DA(uint_t *SA, int_t* DA,
 /**/
   int_t k=0;
   for(i=n-2; i>0; i--) if(chr(i)==separator)k++;
-  DA[n1-1]=k;
+  DA[n1-1]=(int_da) k;
 /**/
   
   j=n1-1; s1[j--]=n-1;
@@ -1928,7 +1927,7 @@ return depth;
 
 /*****************************************************************************/
 
-int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_t *DA,
+int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   uint_t n, unsigned int K,
   int cs, uint_t separator, int level) {
   uint_t i;
@@ -2054,7 +2053,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_t *DA,
   printf("\n\n");
   #endif
 
-  int_t *d1=DA+m-n1;
+  int_da *d1=DA+m-n1;
   
   getSAlms_DA(SA, d1, (int_t*)s, s1, n, n1, level, cs, separator);
 
@@ -2181,7 +2180,7 @@ return depth;
 
 /*****************************************************************************/
 
-int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA,
+int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
   uint_t n, unsigned int K,
   int cs, uint_t separator, int level) {
   uint_t i;
@@ -2319,7 +2318,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_t *DA,
   printf("\n\n");
   #endif
 
-  int_t *d1=DA+m-n1;
+  int_da *d1=DA+m-n1;
   
   getSAlms_DA(SA, d1, (int_t*)s, s1, n, n1, level, cs, separator);
 
@@ -2499,7 +2498,7 @@ int sacak_int(int_text *s, uint_t *SA, uint_t n, uint_t k){
   return SACA_K((int_t*)s, (uint_t*)SA, n, k, n, sizeof(int_text), 0);
 }
 
-int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
+int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n){
 
   if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
 	int i;
@@ -2521,7 +2520,7 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n){
 	return gSACA_K_LCP_DA((uint_t*)s, SA, LCP, DA, n, 256, sizeof(char), 1, 0);
 }
 
-int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k){
+int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n, uint_t k){
 
 	if((s == NULL) || (SA == NULL) || (n < 0)) return -1;
 	int i;

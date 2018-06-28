@@ -118,6 +118,10 @@ One can change to 64 bits integers adding -DM64=1 in the compilation or by chang
 
 One can set the size (in bytes) of s\[0..n-1\] for integer alphabets: [link](https://github.com/felipelouza/gsa-is/blob/master/gsacak.h#L66)
 
+**Document array:**
+
+One can set the size (in bytes) of DA\[0..n-1\]: [link](https://github.com/felipelouza/gsa-is/blob/master/gsacak.h#L71)
+
 ## Citation
 
 Please, if you use this tool in an academic setting cite the following paper:
@@ -147,4 +151,4 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 ## Thanks
 
-Thanks to Giovanni Manzini by helpful suggestions and debugging.
+Thanks to [Giovanni Manzini](https://github.com/giovmanz) and [Giovanna Rosone](https://github.com/giovannarosone) by helpful suggestions and debugging.

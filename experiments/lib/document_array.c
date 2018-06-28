@@ -69,13 +69,17 @@ return 0;
 
 /*******************************************************************/
 
-int document_array_LF(unsigned char* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
+int document_array_LF(unsigned char* T, int_t* SA, int_da* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
 
-	uint_t tmp, i, j, count=k;
-	compute_LF_array(T, SA, DA, n, SIGMA, cs, separator, k);
+	uint_t  i, j, tmp;
+	int_da count=k;
+
+	int_t* LF = (int_t*) malloc(n*sizeof(int_t));
+	for(i=0; i<n;i++) LF[i]=-1;
+	compute_LF_array(T, SA, LF, n, SIGMA, cs, separator, k);
 
 	#if DEBUG
-	if(!check_LF_array(SA, DA, n, separator)) printf("isNotLF!!\n");
+	if(!check_LF_array(SA, LF, n, separator)) printf("isNotLF!!\n");
 	else printf("isLF!!\n");
 	#endif
 
@@ -83,11 +87,13 @@ int document_array_LF(unsigned char* T, int_t* SA, int_t* DA, uint_t n, unsigned
 	j=0;
 	for (i=0; i<n; i++){
 
-		tmp = DA[j];
+		tmp = LF[j];
 		if(chr(SA[j])==separator) count--;
 		DA[j]=count;
 		j=tmp;
 	}
+
+	free(LF);
 
 	#if DEBUG
 	document_array_print(T, SA, DA, min(20,n), cs);
@@ -125,25 +131,30 @@ return 0;
 
 /*******************************************************************/
 
-int document_array_LF_int(int_text* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
+int document_array_LF_int(int_text* T, int_t* SA, int_da* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
 
-	uint_t tmp, i, j, count=k;
-	compute_LF_array_int(T, SA, DA, n, SIGMA, cs, k);
+	uint_t i, j, tmp;
+	int_da count=k;
+	int_t* LF = (int_t*) malloc(n*sizeof(int_t)); //if int_da == int_t, LF = DA;
+	for(i=0; i<n;i++) LF[i]=-1;
+	compute_LF_array_int(T, SA, LF, n, SIGMA, cs, k);
 
 	#if DEBUG
-	if(!check_LF_array(SA, DA, n, separator)) printf("isNotLF!!\n");
+	if(!check_LF_array(SA, LF, n, separator)) printf("isNotLF!!\n");
 	else printf("isLF!!\n");
 	#endif
 
 	j=0;
 	for (i=0; i<n; i++){
 
-		tmp = DA[j];
+		tmp = LF[j];
 		if(chr(SA[j])<k) count--;
 		DA[j]=count;
 		j=tmp;
 	}
 	DA[0]=k;
+
+	free(LF);
 
 	#if DEBUG
 	document_array_print((unsigned char*)T, SA, DA, min(20,n), cs);
@@ -154,10 +165,11 @@ return 0;
 
 /*******************************************************************/
 
-int document_array_check(unsigned char *T, int_t *SA, int_t *DA, uint_t n, int cs, unsigned char separator, uint_t k){
+int document_array_check(unsigned char *T, int_t *SA, int_da *DA, uint_t n, int cs, unsigned char separator, uint_t k){
 
-	uint_t i, count=k;
-	int_t* R = (int_t*) malloc(n*sizeof(int_t));
+	uint_t i;
+	int_da count=k;
+	int_da* R = (int_da*) malloc(n*sizeof(int_da));
 
 	for(i=n-1; i>0;i--){
 		if(chr(i)==separator) count--;
@@ -179,10 +191,11 @@ return 1;
 
 /*******************************************************************/
 
-int document_array_check_int(int_text *T, int_t *SA, int_t *DA, uint_t n, int cs, uint_t k){
+int document_array_check_int(int_text *T, int_t *SA, int_da *DA, uint_t n, int cs, uint_t k){
 
-	uint_t i, count=k;
-	int_t* R = (int_t*) malloc(n*sizeof(int_t));
+	uint_t i;
+	int_da count=k;
+	int_da* R = (int_da*) malloc(n*sizeof(int_da));
 
 	for(i=n-1; i>0;i--){
 		if(chr(i)<k) count--;
@@ -203,25 +216,23 @@ return 1;
 }
 /*******************************************************************/
 
-int document_array_print(unsigned char *T, int_t *SA, int_t *DA, size_t n, int cs){
+int document_array_print(unsigned char *T, int_t *SA, int_da *DA, size_t n, int cs){
 
 	int_t i;
-        for(i=0; i<n; i++){
+  for(i=0; i<n; i++){
 
-                printf("%" PRIdN ") %" PRIdN "\t %" PRIdN "  \t", i, SA[i], DA[i]);
-
-                int_t j=SA[i];
-                for(j=SA[i]; (j<SA[i]+10); j++)
-                        printf("%" PRIdT " ", chr(j));
-                printf("\n");
-        }
+		printf("%" PRIdN ") %" PRIdN "\t %" PRIdN "  \t", i, SA[i], DA[i]);
+		int_t j=SA[i];
+		for(j=SA[i]; (j<SA[i]+10); j++) printf("%" PRIdT " ", chr(j));
+	  printf("\n");
+  }
 
 return 1;
 }
 
 /*******************************************************************/ 
 
-int document_array_write(int_t *DA, int_t n, char* c_file, const char* ext){
+int document_array_write(int_da *DA, int_t n, char* c_file, const char* ext){
 
         FILE *f_out;
         char *c_out = malloc((strlen(c_file)+strlen(ext)+3)*sizeof(char));
@@ -229,10 +240,10 @@ int document_array_write(int_t *DA, int_t n, char* c_file, const char* ext){
         sprintf(c_out, "%s.%s", c_file, ext);
         f_out = file_open(c_out, "wb");
         
-	int_t i;
-	for(i=0; i<n; i++){//writes DA 
-	        fwrite(&DA[i], sizeof(int_t), 1, f_out);
-	}
+				int_t i;
+				for(i=0; i<n; i++){//writes DA 
+	        fwrite(&DA[i], sizeof(int_da), 1, f_out);
+				}
 
         file_close(f_out);
         free(c_out);
@@ -243,7 +254,7 @@ return 1;
 
 /*******************************************************************/
 
-int_t document_array_read(int_t** DA, char* c_file, const char* ext){
+int_t document_array_read(int_da** DA, char* c_file, const char* ext){
 
         FILE *f_in;
         char *c_in = malloc((strlen(c_file)+strlen(ext))*sizeof(char));
@@ -251,14 +262,14 @@ int_t document_array_read(int_t** DA, char* c_file, const char* ext){
         sprintf(c_in, "%s.%s", c_file, ext);
         f_in = file_open(c_in, "rb");
 
-	fseek(f_in, 0L, SEEK_END);
-	size_t size = ftell(f_in);
-	rewind(f_in);
-	
-	int_t n = size/sizeof(int_t);
+				fseek(f_in, 0L, SEEK_END);
+				size_t size = ftell(f_in);
+				rewind(f_in);
+				
+				int_t n = size/sizeof(int_da);
 
-        *DA = (int_t*) malloc(n*sizeof(int_t));
-        fread(*DA, sizeof(int_t), n, f_in);
+        *DA = (int_da*) malloc(n*sizeof(int_da));
+        fread(*DA, sizeof(int_da), n, f_in);
 
         file_close(f_in);
         free(c_in);

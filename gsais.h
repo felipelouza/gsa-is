@@ -66,6 +66,10 @@
 typedef uint32_t int_text;	//4N bytes for s[0..n-1]
 #define PRIdT	PRIu32
 
+/*! @option type for array DA
+ */
+typedef int_t int_da;
+
 /******************************************************************************/
 
 /** @brief computes the suffix array of string s[0..n-1] 
@@ -95,14 +99,14 @@ int sais_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
  *  
  *  @return depth of the recursive calls.
  */
-int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
+int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
  *  @param s    input concatenated string, with s[n-1]=0
  *  @param K	alphabet size
  */
-int gsais_int(int_text *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n, uint_t k);
+int gsais_int(int_text *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n, uint_t k);
 
 /******************************************************************************/
 

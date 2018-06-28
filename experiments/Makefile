@@ -3,7 +3,7 @@ CFLAGS += -Wall
 #CFLAGS += -g -O0
 CFLAGS += -D_FILE_OFFSET_BITS=64 -m64 -O3 -fomit-frame-pointer -Wno-char-subscripts 
 
-LFLAGS = -lm -lrt -ldl
+LFLAGS = -lm -ldl
 
 DIR = dataset/
 INPUT = input-10000.txt
@@ -53,7 +53,7 @@ remove:
 #	$(CC) $(DEFINES) -c lib/utils.c -o lib/utils.o 
 
 compile: main.c ${LIBOBJ} 
-	$(CC) $(CFLAGS) $(LFLAGS) -o gsais main.c ${LIBOBJ}
+	$(CC) -o gsais main.c ${LIBOBJ} $(CFLAGS) $(LFLAGS) 
 
 run:
 	./gsais $(DIR) $(INPUT) $(K) $(MODE) $(LCP_COMPUTE) $(DA_COMPUTE) $(BWT_COMPUTE) $(CHECK) $(OUTPUT)

@@ -39,6 +39,10 @@
 typedef uint32_t	int_text;	//4N bytes for s[0..n-1]
 #define PRIdT	PRIu32
 
+/*! @option type for array DA
+ */
+typedef int_t int_da;
+
 /**********************************************************************/
 
 #define swap(a,b) do { typeof(a) aux_a_b = (a); (a) = (b); (b) = aux_a_b; } while (0)
