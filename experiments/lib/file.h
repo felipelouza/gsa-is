@@ -23,7 +23,7 @@ int file_write(FILE* f_out, uint_t array);
 uint_t file_read(FILE* f_in);
 
 char* file_load(FILE* f_in) ;
-char** file_load_multiple(char* c_file, int k, int_t* n) ;
+char** file_load_multiple(char* c_file, int k, size_t* n) ;
 
 int file_text_write(unsigned char *str, int_t n, char* c_file, const char* ext);
 int file_text_int_write(int_text *str_int, int_t n, char* c_file, const char* ext);

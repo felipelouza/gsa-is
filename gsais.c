@@ -1405,7 +1405,7 @@ int_t gSAIS_DA(uint_t *s, int_t *SA, int_da *DA, int_t n, int_t K, int cs, unsig
   #endif
   
   for(i=0; i<n1; i++) {DA[i]=d1[SA[i]]; SA1[i]=s1[SA1[i]];} // get index in s1
-  for(i=n1; i<n; i++) {SA[i]=EMPTY;DA[i]=-1;} // init SA[n1..n-1]
+  for(i=n1; i<n; i++) {SA[i]=EMPTY;DA[i]=0;} // init SA[n1..n-1]
 
   #if DEBUG
   printf("\nstage 3:\n\n");
@@ -1673,7 +1673,7 @@ int_t gSAIS_LCP_DA(uint_t *s, int_t *SA, int_t *LCP, int_da *DA, int_t n, int_t 
 /**/
 
   for(i=0; i<n1; i++) {DA[i]=d1[SA[i]]; SA1[i]=s1[SA1[i]];} // get index in s1
-  for(i=n1; i<n; i++) {SA[i]=U_MAX; DA[i]=-1;} //EMPTY; // init SA[n1..n-1]
+  for(i=n1; i<n; i++) {SA[i]=U_MAX; DA[i]=0;} //EMPTY; // init SA[n1..n-1]
 /**/
   for(i=n1;i<n;i++) LCP[i]=0;
 /**/

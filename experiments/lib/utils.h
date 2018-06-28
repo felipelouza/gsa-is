@@ -41,7 +41,7 @@ typedef uint32_t	int_text;	//4N bytes for s[0..n-1]
 
 /*! @option type for array DA
  */
-typedef int_t int_da;
+typedef uint_t int_da;
 
 /**********************************************************************/
 

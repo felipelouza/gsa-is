@@ -31,6 +31,8 @@
 				#define DEBUG		0
 #endif
 
+#define WORD (size_t)(pow(256,sizeof(int_t))/2.0)
+
 /*******************************************************************/
 
 int main(int argc, char** argv){
@@ -45,12 +47,12 @@ clock_t c_start=0, c_total=0;
 
 	unsigned char **R;
 	int_t i, n=0;
-	int		k;
+	int_t	k;
 
 	char* c_dir = argv[1];
 	char* c_file = argv[2];
 
-	sscanf(argv[3], "%d", &k);
+	sscanf(argv[3], "%"PRIdN"", &k);
 	sscanf(argv[4], "%u", &MODE);
 	sscanf(argv[5], "%u", &LCP_COMPUTE);
 	sscanf(argv[6], "%u", &DA_COMPUTE);
@@ -64,13 +66,21 @@ clock_t c_start=0, c_total=0;
 
 	file_chdir(c_dir);
 
+	size_t size=0;
 	//disk access
-	R = (unsigned char**) file_load_multiple(c_file, k, &n);
+	R = (unsigned char**) file_load_multiple(c_file, k, &size);
 	if(!R){
-		fprintf(stderr, "Error: less than %d strings in %s\n", k, c_file);
+		fprintf(stderr, "Error: less than %" PRIdN " strings in %s\n", k, c_file);
 		return 1;
 	}
 
+	if(size>WORD){
+    fprintf(stderr, "ERROR: N larger than %.1lf GB (%.1lf GB)\n", WORD/pow(2,30), (double)n/pow(2,30));
+    if(sizeof(int_t)<8) fprintf(stderr, "Please, compile with -DM64=1\n");
+		return 0;
+	}
+
+	n = (int_t) size;
 	unsigned char *str = NULL;
 	int_text  *str_int = NULL;
 	
@@ -95,7 +105,7 @@ clock_t c_start=0, c_total=0;
 		#endif
 	}
 
-	printf("K = %" PRId32 "\n", k);
+	printf("K = %" PRIdN "\n", k);
 	printf("N = %" PRIdN "\n", n+1);
 	printf("sizeof(int) = %zu bytes\n", sizeof(int_t));
 
@@ -103,8 +113,18 @@ clock_t c_start=0, c_total=0;
 		printf("sizeof(int_text) = %zu byte(s)\n", sizeof(int_text));
 	}
 
-	if(DA_COMPUTE)
+	if(DA_COMPUTE){
 		printf("sizeof(int_da) = %zu byte(s)\n", sizeof(int_da));
+
+		if(k>=(size_t)(pow(256,sizeof(int_da)))){
+			int word=0;
+			if(k<pow(256,sizeof(2))) word = 2; //bytes
+			else if (k<pow(256,sizeof(4))) word = 4; 
+			else word = 8; 
+			fprintf(stderr, "ERROR: typeof(int_da) must be at least %d bytes\n", word);
+			return 0;
+		}
+	}
 
 	#if DEBUG
 		printf("R:\n");

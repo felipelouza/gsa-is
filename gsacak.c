@@ -2071,7 +2071,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
 
 /**/
   for(i=0; i<n1; i++) {DA[i]=d1[SA[i]]; SA[i]=s1[SA[i]];}
-  for(i=n1; i<n; i++) {SA[i]=0; DA[i]=-1;}
+  for(i=n1; i<n; i++) {SA[i]=0; DA[i]=0;}
 /**/
 
   #if DEBUG
@@ -2366,7 +2366,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
   #endif
 
   for(i=0; i<n1; i++) {DA[i]=d1[SA[i]]; SA[i]=s1[SA[i]];}
-  for(i=n1; i<n; i++) {SA[i]=U_MAX; DA[i]=-1;}
+  for(i=n1; i<n; i++) {SA[i]=U_MAX; DA[i]=0;}
   for(i=n1;i<n;i++) LCP[i]=0;
 
 //DA  for(i=n1; i<n; i++) {SA[i]=0; DA[i]=-1;}

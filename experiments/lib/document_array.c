@@ -221,7 +221,7 @@ int document_array_print(unsigned char *T, int_t *SA, int_da *DA, size_t n, int 
 	int_t i;
   for(i=0; i<n; i++){
 
-		printf("%" PRIdN ") %" PRIdN "\t %" PRIdN "  \t", i, SA[i], DA[i]);
+		printf("%" PRIdN ") %" PRIdN "\t %" PRIdN "  \t", i, SA[i], (int_t) DA[i]);
 		int_t j=SA[i];
 		for(j=SA[i]; (j<SA[i]+10); j++) printf("%" PRIdT " ", chr(j));
 	  printf("\n");
