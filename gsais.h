@@ -85,7 +85,7 @@ int sais(unsigned char *s, uint_t *SA, uint_t n);
 
 /** @brief computes the suffix array of string s[0..n-1]
  *
- *  @param k	alphabet size
+ *  @param k	alphabet size+1 (0 is reserved)
  */
 int sais_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
 
@@ -111,7 +111,7 @@ int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n);
  *  @param LCP	LCP array 
  *  @param DA		Document array
  *  @param n		String length
- *  @param K		Alphabet size
+ *  @param k    alphabet size+2 (0 and 1 are reserved)
  *
  *  @return depth of the recursive calls.
  */

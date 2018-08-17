@@ -1,3 +1,5 @@
+// vim: noai:ts=2:sw=2
+
 #include "gsais.h"
 
 // get s[i] at a certain level

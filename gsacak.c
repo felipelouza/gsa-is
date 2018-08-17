@@ -1,3 +1,5 @@
+// vim: noai:ts=2:sw=2
+
 #include "gsacak.h"
 
 // set only the highest bit as 1, i.e. 1000...

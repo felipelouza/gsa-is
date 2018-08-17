@@ -38,14 +38,14 @@ An ANSI C Compiler (e.g. GNU GCC)
  */
 int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
 
-/** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
+/** @brief Computes the suffix array SA (LCP, DA) of T^cat (integer) in s[0..n-1]
  *
  *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
  *  @param SA   Suffix array 
  *  @param LCP  LCP array 
  *  @param DA   Document array
  *  @param n    string length
- *  @param K    alphabet size
+ *  @param k    alphabet size+2 (0 and 1 are reserved)
  * 
  *  @return depth of the recursive calls.
  */
