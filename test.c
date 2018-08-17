@@ -5,15 +5,21 @@
 #include "gsacak.h"
 #include "experiments/external/malloc_count/malloc_count.h" //memory counter
 
+#ifndef DEBUG
+	#define DEBUG 0
+#endif
+
 int main(int argc, char *argv[]){
 
-	printf("sizeof(int_t) = %zu bytes\n", sizeof(int_t));
+	#if DEBUG
+		printf("sizeof(int_t) = %zu bytes\n", sizeof(int_t));
+	#endif
+
 	unsigned char *Text;
 	uint_t n=0;
 
 	// intput data
 	if(argc>=2){
-
 		//concatenate all strings s_1, s_2, .., s_d in s_1$s_2$..%s_d$#
 		int i = 2, sum=0;
 		for(; i<= argc; i++){
@@ -31,33 +37,18 @@ int main(int argc, char *argv[]){
 		printf("N = %d\n", n);
 	}
 	else{
-		unsigned char *S[3] = {"banana", "anaba", "anan"};
-		//unsigned char *S[3] = {"a", "", "c"};
-		int i, sum=0;
-		for(i=0; i< 3; i++){
-			sum += strlen((S[i]))+1;
-		}
-		n = sum+1;
-		Text = malloc(n*sizeof(unsigned char));
-		sum=0;
-		for(i=0; i< 3; i++){
-			sscanf(S[i], "%s", &Text[sum]);
-			sum += strlen((S[i]))+1;
-			Text[sum-1]=1;//separator
-		}
-		Text[n-1]=0;
-		printf("N = %d\n", n);
+		fprintf(stderr, "Please, insert at least one string.\n");
+		exit(-1);
 	}	
 
 	int i, j;
-	printf("Text = ");
+	printf("T^{cat} = ");
 	for(i=0;i<n-1;i++){
 		if(Text[i]==1) printf("$");
 		else printf("%c", Text[i]);
 	}
 	printf("#\n");
 
-/**/
 	// allocate
 	uint_t *SA = (uint_t *)malloc(n * sizeof(uint_t));
 	int_t *LCP = (int_t *)malloc(n * sizeof(int_t));
@@ -78,7 +69,6 @@ int main(int argc, char *argv[]){
 	    }
 	    printf("#\n");
 	}
-
 
 	// deallocate
 	free(SA);

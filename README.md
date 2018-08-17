@@ -1,11 +1,11 @@
 # gsa-is
 
-gSAIS and gSACA-K are suffix array construction algorithms for string collections. 
+gSAIS and gSACA-K are suffix array (SA) construction algorithms for string collections. 
 
 ## Introduction
 
 gSAIS and gSACA-K [1, 2] extend the linear-time suffix sorting algorithms SAIS
-[3] and SACA-K [4] to compute the suffix array for a string collection,
+[3] and SACA-K [4] to compute SA for string collections,
 maintaining their theoretical bounds and improving their practical performance.
 
 Moreover, gSAIS and gSACA-K can also compute the LCP-array (LCP) and the
@@ -28,7 +28,7 @@ An ANSI C Compiler (e.g. GNU GCC)
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
  *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
- *  @param SA   suffix array 
+ *  @param SA   Suffix array 
  *  @param LCP  LCP array 
  *  @param DA   Document array
  *  @param n    string length
@@ -39,8 +39,8 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_t *DA, uint_t n);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *  @param s    input concatenated string, with s[n-1]=0
- *  @param SA   suffix array 
+ *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
+ *  @param SA   Suffix array 
  *  @param LCP  LCP array 
  *  @param DA   Document array
  *  @param n    string length
@@ -151,4 +151,4 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 ## Thanks
 
-Thanks to [Giovanni Manzini](https://github.com/giovmanz) and [Giovanna Rosone](https://github.com/giovannarosone) by helpful suggestions and debugging.
+Thanks to [Giovanni Manzini](https://github.com/giovmanz), [Giovanna Rosone](https://github.com/giovannarosone) and René de R. Sacramento by helpful suggestions and debugging.

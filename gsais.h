@@ -1,3 +1,5 @@
+// vim: noai:ts=2:sw=2
+
 /* 
  * Authors: Felipe A. Louza, Simon Gog, Guilherme P. Telles
  * contact: louza@ic.unicamp.br
@@ -75,9 +77,9 @@ typedef uint_t int_da;
 /** @brief computes the suffix array of string s[0..n-1] 
  *
  *  @param s	input string with s[n-1]=0
- *  @param SA 	suffix array 
+ *  @param SA suffix array 
  *  @param n	string length
- *  @return -1 if an error occured, otherwise the depth of the recursive calls.
+ *  @return		-1 if an error occured, otherwise the depth of the recursive calls.
  */
 int sais(unsigned char *s, uint_t *SA, uint_t n);
 
@@ -91,20 +93,27 @@ int sais_int(int_text *s, uint_t *SA, uint_t n, uint_t k);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *  @param s    input concatenated string, using separators s[i]=1 and with s[n-1]=0
- *  @param SA 	suffix array 
- *  @param LCP 	LCP array 
- *  @param DA 	Document array
- *  @param n	string length
- *  
+ *  @param s		input concatenated string, using separators s[i]=1 and with s[n-1]=0
+ *  @param SA		Suffix array 
+ *  @param LCP	LCP array 
+ *  @param DA		Document array
+ *  @param n		String length
+ *  @param K		alphabet size
+ *
  *  @return depth of the recursive calls.
  */
 int gsais(unsigned char *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n);
 
 /** @brief Computes the suffix array SA (LCP, DA) of T^cat in s[0..n-1]
  *
- *  @param s    input concatenated string, with s[n-1]=0
- *  @param K	alphabet size
+ *  @param s		input concatenated string, using separators s[i]=1 and with s[n-1]=0
+ *  @param SA		Suffix array 
+ *  @param LCP	LCP array 
+ *  @param DA		Document array
+ *  @param n		String length
+ *  @param K		Alphabet size
+ *
+ *  @return depth of the recursive calls.
  */
 int gsais_int(int_text *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n, uint_t k);
 
