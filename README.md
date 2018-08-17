@@ -1,6 +1,6 @@
 # gsa-is
 
-gSAIS and gSACA-K are suffix array (SA) construction algorithms for string collections. 
+gSAIS and gSACA-K are algorithms to construct the **suffix array** (SA) for a string collection. 
 
 ## Introduction
 
@@ -8,12 +8,13 @@ gSAIS and gSACA-K [1, 2] extend the linear-time suffix sorting algorithms SAIS
 [3] and SACA-K [4] to compute SA for string collections,
 maintaining their theoretical bounds and improving their practical performance.
 
-Moreover, gSAIS and gSACA-K can also compute the LCP-array (LCP) and the
-document array (DA) as a byproduct, with the same theoretical bounds.
+Moreover, gSAIS and gSACA-K can also compute the **LCP-array** (LCP) and the
+**document array** (DA) as a byproduct, with the same theoretical bounds.
 
-Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are optimal for strings
-from constant alphabets. Experimental results have shown that our algorithms
-are fast with a very small memory footprint.
+Our algorithms, gSACA-K, gSACA-K+LCP and gSACA-K+DA are **optimal** for strings
+from constant alphabets. 
+
+Experimental results have shown that our algorithms are fast with a very small memory footprint.
 
 
 ## Build requirements
@@ -79,7 +80,6 @@ gcc test.c -o test gsacak.o malloc_count.o -ldl
 **Output:**
 
 ```c
-sizeof(int_t) = 4 bytes
 N = 18
 Text = banana$anaba$anan$#
 i	SA	DA	LCP	BWT	suffixes
