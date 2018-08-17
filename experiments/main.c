@@ -1,3 +1,5 @@
+// vim: noai:ts=2:sw=2
+
 /*
  * Induced suffix sorting, LCP and document arrays construction for string collections
  *
