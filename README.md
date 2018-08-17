@@ -151,4 +151,4 @@ Please, if you use this tool in an academic setting cite the following paper:
 
 ## Thanks
 
-Thanks to [Giovanni Manzini](https://github.com/giovmanz), [Giovanna Rosone](https://github.com/giovannarosone) and René de R. Sacramento by helpful suggestions and debugging.
+Thanks to [Giovanni Manzini](https://github.com/giovmanz), [Giovanna Rosone](https://github.com/giovannarosone) and [René de R. Sacramento](https://github.com/ReneSac) by helpful suggestions and debugging.
