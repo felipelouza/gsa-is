@@ -269,9 +269,12 @@ clock_t c_start=0, c_total=0;
 			document_array_LF_int((int_text*)str_int, SA, DA, n, 256+k, sizeof(int_text), 1, k);
 		else if(MODE==3 || MODE==4)
 			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, k);//separator=0,1,..,k-1
-		else
+		else if(MODE==6){
+			document_array_inplace((unsigned char*)str, SA, (int_t*) DA, n, 256, sizeof(char), 1, k);//separator=1
+		}
+		else{
 			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 1, k);//separator=1
-		printf("LF-algorithm (document array):\n");
+		}	
 		fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
 	}
 

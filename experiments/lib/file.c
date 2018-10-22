@@ -255,7 +255,7 @@ int file_text_write(unsigned char *str, int_t n, char* c_file, const char* ext){
 	f_out = file_open(c_out, "wb");
 	
 	int i;
-	for(i=0; i<n;i++) if(str[i]) str[i]--;
+	for(i=0; i<n;i++) if(str[i]>1) str[i]--;
 
 	fwrite(str, sizeof(unsigned char), n, f_out);
 	

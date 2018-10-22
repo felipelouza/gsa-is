@@ -69,6 +69,65 @@ return 0;
 
 /*******************************************************************/
 
+int document_array_inplace(unsigned char* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
+
+	uint_t  i, tmp;
+
+	//compute ISA in DA[1,n]
+	for (i=0; i<n; i++){
+		DA[SA[i]]=i;	
+	}
+
+	//compute LF in SA[1,n]
+	for (i=0; i<n; i++){
+		if(SA[i]==0) SA[i]=0;
+		else SA[i] = DA[SA[i]-1];
+	}
+
+	uint_t	pos = 0;
+	int_t	doc = k;
+
+	for (i=n-1; i>0; i--){
+
+		tmp = SA[pos];
+
+		SA[pos]=i;
+		DA[pos]=doc;
+
+		if(tmp<=k) doc--;
+
+		pos=tmp;
+	}
+
+	SA[pos]=0;
+	DA[pos]=0;
+
+	/*
+	for (i=0; i<n; i++){
+		tmp = DA[DA[i]];
+		DA[DA[i]]=i;
+		i=tmp;
+	}
+	*/
+
+	/*
+	int_t *TMP = DA;
+	DA = SA;
+	SA = TMP;
+	*/
+
+	#if DEBUG
+	printf("\n\n");
+	document_array_print(T, SA, (int_da*)DA, min(20,n), cs);
+	#endif
+
+	printf("ISA-algorithm (document array):\n");
+
+return 0;
+}
+
+/*******************************************************************/
+
 int document_array_LF(unsigned char* T, int_t* SA, int_da* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
 
 	uint_t  i, j, tmp;
@@ -98,6 +157,8 @@ int document_array_LF(unsigned char* T, int_t* SA, int_da* DA, uint_t n, unsigne
 	#if DEBUG
 	document_array_print(T, SA, DA, min(20,n), cs);
 	#endif
+
+	printf("LF-algorithm (document array):\n");
 
 return 0;
 }
