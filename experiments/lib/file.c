@@ -341,8 +341,9 @@ int file_bwt_write(unsigned char *str, int_t *SA, int_t n, char* c_file, const c
 	
 	int i;
 	for(i=0; i<n;i++){
-		char j = (SA[i])? str[SA[i]-1]:'#';
-		if(j==0) j = '$';
+		//char j = (SA[i])? str[SA[i]-1]:'#';
+		//if(j==0) j = '$';
+		unsigned char j = (SA[i])? str[SA[i]-1]:0;
 		fwrite(&j, sizeof(unsigned char), 1, f_out);
 	}
 	
