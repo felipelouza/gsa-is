@@ -10,8 +10,7 @@ MY_CXX=/usr/bin/c++
 LFLAGS = -lm -lrt -ldl
 
 LIBOBJ = ../malloc_count/malloc_count.o\
-	 lib/utils.o\
-	 lib/document_array.o
+	 lib/utils.o
 
 CXX_FLAGS=$(MY_CXX_FLAGS) $(MY_CXX_OPT_FLAGS) -I$(INC_DIR) -L$(LIB_DIR) $(LFLAGS)
 
@@ -37,10 +36,7 @@ all: compile
 utils: 
 	$(MY_CXX) $(CXX_FLAGS) $(DEFINES) -c lib/utils.cpp $(CCLIB) -o lib/utils.o 
 
-document_array: 
-	$(MY_CXX) $(CXX_FLAGS) $(DEFINES) -c lib/document_array.cpp $(CCLIB) -o lib/document_array.o 
-
-compile: document_array utils main.cpp ${LIBOBJ}
+compile: utils main.cpp ${LIBOBJ}
 	$(MY_CXX) $(CXX_FLAGS) $(LIBOBJ) $(DEFINES) main.cpp $(CCLIB) -o main
 
 run: 

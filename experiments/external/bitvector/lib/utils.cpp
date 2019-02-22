@@ -1,5 +1,7 @@
 #include "utils.hpp"
 
+#define chr(i) (cs==sizeof(int_t)?((int_t*)T)[i]:((unsigned char *)T)[i])
+
 /**********************************************************************/
 
 void time_start(time_t *t_time, clock_t *c_clock){
@@ -147,3 +149,93 @@ double log2(double i){
 	return log(i)/log(2);
 }
 /**********************************************************************/
+
+int document_array_check(unsigned char *T, int_t *SA, int_t *DA, uint_t n, int cs, unsigned char separator, int_t k){
+
+	uint_t i, count=k;
+	int_t* R = (int_t*) malloc(n*sizeof(int_t));
+
+	for(i=n-1; i>0;i--){
+		if(chr(i)==separator) count--;
+		R[i]=count;
+	}
+	R[0]=0;
+
+	for(i=0; i<n;i++){
+		if(DA[i]!=R[SA[i]]){
+			free(R);
+			return 0;
+		}
+	}
+
+	free(R);	
+	
+return 1;
+}
+
+/*******************************************************************/
+
+int document_array_print(unsigned char *T, int_t *SA, int_t *DA, size_t n, int cs){
+
+	uint_t i;
+        for(i=0; i<n; i++){
+
+                printf("%" PRIdN ") %" PRIdN "\t %" PRIdN "  \t", i, SA[i], DA[i]);
+
+                int_t j=SA[i];
+                for(j=SA[i]; (j<SA[i]+10); j++)
+                        printf("%" PRIdN " ", chr(j));
+                printf("\n");
+        }
+
+return 1;
+}
+
+/*******************************************************************/ 
+
+int document_array_write(int_t *DA, int_t n, char* c_file, const char* ext){
+
+        FILE *f_out;
+        char *c_out = (char*) malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+        
+        sprintf(c_out, "%s.%s", c_file, ext);
+        f_out = fopen(c_out, "wb");
+        
+	int_t i;
+	for(i=0; i<n; i++){//writes DA 
+	        fwrite(&DA[i], sizeof(int_t), 1, f_out);
+	}
+
+        fclose(f_out);
+        free(c_out);
+
+return 1;
+}
+
+
+/*******************************************************************/
+
+int_t document_array_read(int_t** DA, char* c_file, const char* ext){
+
+        FILE *f_in;
+        char *c_in = (char*) malloc((strlen(c_file)+strlen(ext))*sizeof(char));
+
+        sprintf(c_in, "%s.%s", c_file, ext);
+        f_in = fopen(c_in, "rb");
+
+	fseek(f_in, 0L, SEEK_END);
+	size_t size = ftell(f_in);
+	rewind(f_in);
+	
+	int_t n = size/sizeof(int_t);
+
+        *DA = (int_t*) malloc(n*sizeof(int_t));
+        fread(*DA, sizeof(int_t), n, f_in);
+
+        fclose(f_in);
+        free(c_in);
+
+return n;
+}
+
+/*******************************************************************/

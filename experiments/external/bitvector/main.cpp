@@ -8,7 +8,7 @@
 #include <sdsl/sd_vector.hpp>
 
 #include "lib/utils.hpp"
-#include "lib/document_array.hpp"
+//#include "lib/document_array.hpp"
 
 #ifndef DEBUG
 	#define DEBUG   0
@@ -127,7 +127,7 @@ clock_t c_start=0, c_total=0;
 	}
 
 	if(OUTPUT){
-                document_array_write(DA, n, c_file, "da_bit");
+    document_array_write(DA, n, c_file, "da_bit");
 	}
 	
 
