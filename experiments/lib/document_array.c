@@ -69,7 +69,7 @@ return 0;
 
 /*******************************************************************/
 
-int document_array_inplace(unsigned char* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
+int document_array_ISA(unsigned char* T, int_t* SA, int_t* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
 
 	uint_t  i, tmp;
 
@@ -102,26 +102,71 @@ int document_array_inplace(unsigned char* T, int_t* SA, int_t* DA, uint_t n, uns
 	SA[pos]=0;
 	DA[pos]=0;
 
-	/*
-	for (i=0; i<n; i++){
-		tmp = DA[DA[i]];
-		DA[DA[i]]=i;
-		i=tmp;
-	}
-	*/
-
-	/*
-	int_t *TMP = DA;
-	DA = SA;
-	SA = TMP;
-	*/
-
 	#if DEBUG
 	printf("\n\n");
 	document_array_print(T, SA, (int_da*)DA, min(20,n), cs);
 	#endif
 
 	printf("ISA-algorithm (document array):\n");
+
+return 0;
+}
+
+/*******************************************************************/
+int document_array_9n(unsigned char* T, int_t* SA, int_da* DA, uint_t n, unsigned int SIGMA, int cs, unsigned char separator, uint_t k){
+
+	uint_t  i, tmp;
+
+	int_t *A = SA;
+	int_da *B = DA;
+
+	int_t* C = (int_t*) malloc(SIGMA*sizeof(int_t));
+	for(i=0; i<SIGMA;i++) C[i]=0;
+
+	//compute BWT in A[1,n]
+	for (i=0; i<n; i++){
+		A[i]=(A[i]>0)?T[A[i]-1]:0;	
+		C[A[i]]++;
+	}
+
+	//compute Counter-array
+	int_t sum=0;
+	for(i=0; i<SIGMA;i++){
+		sum += C[i];
+		C[i]=sum-C[i];
+	}
+
+	//compute LF in A[1,n]
+	for(i=0; i<n;i++){
+		A[i] = C[A[i]]++;
+	}
+
+	uint_t	pos = 0;
+	int_t	doc = k;
+
+	for (i=n-1; i>0; i--){
+
+		tmp = A[pos]; //tmp = LF[i]
+		A[pos]=i; //SA[pos] = i
+		B[pos]=doc;//DA[pos] = doc
+
+		if(tmp<=k){
+			tmp=doc;
+			doc--;
+		}
+
+		pos=tmp;
+	}
+
+	A[pos]=0;
+	B[pos]=0;
+
+	#if DEBUG
+	printf("\n\n");
+	document_array_print(T, SA, (int_da*)DA, min(20,n), cs);
+	#endif
+
+	printf("BWT-algorithm (document array):\n");
 
 return 0;
 }
@@ -323,11 +368,11 @@ int_t document_array_read(int_da** DA, char* c_file, const char* ext){
         sprintf(c_in, "%s.%s", c_file, ext);
         f_in = file_open(c_in, "rb");
 
-				fseek(f_in, 0L, SEEK_END);
-				size_t size = ftell(f_in);
-				rewind(f_in);
-				
-				int_t n = size/sizeof(int_da);
+	fseek(f_in, 0L, SEEK_END);
+	size_t size = ftell(f_in);
+	rewind(f_in);
+	
+	int_t n = size/sizeof(int_da);
 
         *DA = (int_da*) malloc(n*sizeof(int_da));
         fread(*DA, sizeof(int_da), n, f_in);

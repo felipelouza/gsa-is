@@ -270,7 +270,7 @@ clock_t c_start=0, c_total=0;
 		else if(MODE==3 || MODE==4)
 			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, k);//separator=0,1,..,k-1
 		else if(MODE==6){
-			document_array_inplace((unsigned char*)str, SA, (int_t*) DA, n, 256, sizeof(char), 1, k);//separator=1
+			document_array_9n((unsigned char*)str, SA, (int_da*) DA, n, 256, sizeof(char), 1, k);//separator=1
 		}
 		else{
 			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 1, k);//separator=1

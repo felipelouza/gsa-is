@@ -20,28 +20,29 @@
 #if M64
 	typedef int64_t		int_t;
 	typedef uint64_t	uint_t;
-	#define PRIdN			PRId64
-	#define U_MAX			UINT64_MAX
-	#define I_MAX			INT64_MAX
-	#define I_MIN			INT64_MIN
+	#define PRIdN		PRId64
+	#define U_MAX		UINT64_MAX
+	#define I_MAX		INT64_MAX
+	#define I_MIN		INT64_MIN
 #else
 	typedef int32_t		int_t;
 	typedef uint32_t	uint_t;
-	#define PRIdN			PRId32
-	#define U_MAX			UINT32_MAX
-	#define I_MAX			INT32_MAX
-	#define I_MIN			INT32_MIN
+	#define PRIdN		PRId32
+	#define U_MAX		UINT32_MAX
+	#define I_MAX		INT32_MAX
+	#define I_MIN		INT32_MIN
 #endif
 
 /*! @option type of s[0,n-1] for integer alphabets 
  *	@constraint sizeof(int_t) >= sizeof(int_text) 
  */
 typedef uint32_t	int_text;	//4N bytes for s[0..n-1]
-#define PRIdT	PRIu32
+#define PRIdT		PRIu32
 
 /*! @option type for array DA
  */
-typedef uint_t int_da;
+//typedef uint_t int_da;
+typedef uint32_t int_da;
 
 /**********************************************************************/
 
