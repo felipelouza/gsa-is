@@ -2,6 +2,10 @@
 
 gSAIS and gSACA-K are algorithms to construct the **suffix array** (SA) for a string collection. 
 
+
+### Note:
+If you want a plug-and-play tool to compute SA, LCP, DA, GSA and BWT for string collections you can use this software: https://github.com/felipelouza/gsufsort
+
 ## Introduction
 
 gSAIS and gSACA-K [1, 2] extend the linear-time suffix sorting algorithms SAIS
