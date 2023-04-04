@@ -35,7 +35,7 @@
 #include <string.h>
 #include <time.h>
 
-#define max(a,b) ((a) > (b) ? (a) : (b))
+#define maxval(a,b) ((a) > (b) ? (a) : (b))
 
 #ifndef DEBUG
 	#define DEBUG 0
