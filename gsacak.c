@@ -1805,8 +1805,9 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
     int diff=false;
     uint_t pos=SA[i];
 
+    uint_t len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
     uint_t d;
-    for(d=0; d+pos<n && d+pre_pos<n; d++){
+    for(d=0; d<len && d+pos<n && d+pre_pos<n; d++){
       if(chr(pos+d)!=chr(pre_pos+d)){
         diff = true; break;
       }
@@ -1814,6 +1815,7 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
          break;
       }
     }
+    printf("%d\n",d);
     if(!diff)
       tset(i,1);
     pre_pos = pos;
