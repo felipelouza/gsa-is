@@ -38,7 +38,7 @@
 #define maxval(a,b) ((a) > (b) ? (a) : (b))
 
 #ifndef DEBUG
-	#define DEBUG 0
+	#define DEBUG 1
 #endif
 
 #ifndef M64
@@ -117,5 +117,7 @@ int gsacak(unsigned char *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n);
 int gsacak_int(int_text *s, uint_t *SA, int_t *LCP, int_da *DA, uint_t n, uint_t k);
 
 /******************************************************************************/
+
+int gsacak_sap(unsigned char *s, uint_t *SA, unsigned char *SAP, uint_t n);
 
 #endif
