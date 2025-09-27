@@ -1815,7 +1815,6 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
          break;
       }
     }
-    printf("%d\n",d);
     if(!diff)
       tset(i,1);
     pre_pos = pos;
