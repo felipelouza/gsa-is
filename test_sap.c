@@ -80,6 +80,10 @@ int main(int argc, char *argv[]){
       printf("#\t***\n");
       check=0;
     }
+    if(i>1 && (tget(i)==1 && Text[SA[i]+LCP[i]]!=1 ) ){
+      printf("#\t@@@\n");
+      check=0;
+    }
     else
       printf("#\n");
   }

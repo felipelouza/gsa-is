@@ -339,6 +339,7 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
   getBuckets_k((int_t*)s, bkt, n, K, true, cs);
   for(i=0; i<K; i++) bkt_sap[i] = U_MAX;
 
+  int changed=0;
   for(i=n-1; i>0; i--)
     if(SA[i]>0) {
       j=SA[i]-1;
@@ -352,6 +353,15 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
           }
           bkt_sap[chr(j)]=chr(j+1);
           bkt[chr(j)]--;
+
+          //Additional O(\sigma)-time
+          if(changed && tget(i)==0){
+            int k;
+            for(k=0; k<chr(SA[i]); k++) bkt_sap[k] = U_MAX;
+            changed=0;
+          }
+          else
+            changed=1;
         }
       }
     }
@@ -407,7 +417,7 @@ void induceSAl0_generalized_LCP(uint_t *SA, int_t *LCP,
   for(i=0;i<K;i++) last_occ[i]=0;
   #endif 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("inducing..\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -697,7 +707,7 @@ void induceSAl0_generalized_LCP_DA(uint_t *SA, int_t *LCP, int_da *DA,
   for(i=0;i<K;i++) last_occ[i]=0;
   #endif 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("inducing..\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -1820,7 +1830,7 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
     pre_pos = pos;
   }
 
-  #if DEBUG
+  #if DEBUG == 2
   printf("\nstage 3:\n\n");
   printf("mapping back:\n");
   printf("SA\n");
@@ -1852,7 +1862,7 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
 	c_start_phase =  clock();
   #endif
 
-  #if DEBUG
+  #if DEBUG == 2
   printf("SA (mapped)\n");
   for(i=0; i<n; i++)
     if(SA[i]==0)
@@ -1869,7 +1879,7 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
   uint_t *bkt_sap=(uint_t *)malloc(sizeof(int_t)*K);
   induceSAl0_generalized_sap(SA, SAP, s, bkt, bkt_sap, n, K, true, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 2
   printf("L-type\n");
   for(i=0; i<n; i++)
     if(SA[i]==0)
@@ -1896,7 +1906,7 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
   //induceSAs0_generalized(SA, s, bkt, n, K, true, cs, separator);
   induceSAs0_generalized_sap(SA, SAP, s, bkt, bkt_sap, n, K, true, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 2
   printf("S-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -1949,7 +1959,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
   bkt=(uint_t *)malloc(sizeof(int_t)*K);
   putSubstr0_generalized(SA, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("bucket LMS-subs\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -1958,7 +1968,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
  
   induceSAl0_generalized(SA, s, bkt, n, K, false, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("L-type\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -1968,7 +1978,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
 
   induceSAs0_generalized(SA, s, bkt, n, K, false, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -1982,7 +1992,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
     if(chr(i)==separator)
       SA[bkt[chr(i)]--]=i;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type (separators)\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2004,7 +2014,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
   uint_t *SA1=SA, *s1=SA+m-n1;
   uint_t name_ctr;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nSA\n");
   for(i=0; i<n; i++)
     printf("%" PRIdN "\t", SA[i]+1);
@@ -2017,7 +2027,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
 
   name_ctr=nameSubstr_generalized_LCP(SA,LCP,s,s1,n,m,n1,level,cs,separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("nameSubstr:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2049,7 +2059,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
     for(i=0; i<n1; i++) SA1[s1[i]]=i;
 
   // stage 3: induce SA(S) from SA(S1).
-  #if DEBUG
+  #if DEBUG == 1
   printf("recursive:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2063,7 +2073,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
 
   getSAlms(SA, (int_t*)s, s1, n, n1, level, cs);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("getSAlms:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2081,7 +2091,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
   //compute the LCP of consecutive LMS-suffixes
   compute_lcp_phi_sparse((int_t*)s, SA1, RA, LCP, PLCP, n1, cs, separator); 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nPHI-algorithm:\n");
   printf("--\nSA1\n");
   for(i=0; i<n1; i++)//SA1
@@ -2103,7 +2113,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
   for(i=n1; i<n; i++) SA[i]=U_MAX; 
   for(i=n1;i<n;i++) LCP[i]=0;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nstage 3:\n\n");
   printf("mapping back:\n");
   printf("SA\n");
@@ -2138,7 +2148,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
   #endif
 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("SA (mapped)\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2151,7 +2161,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
 
   induceSAl0_generalized_LCP(SA, LCP, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("L-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2178,7 +2188,7 @@ int_t gSACA_K_LCP(uint_t *s, uint_t *SA, int_t *LCP,
 
   induceSAs0_generalized_LCP(SA, LCP, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2233,7 +2243,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   bkt=(uint_t *)malloc(sizeof(int_t)*K);
   putSubstr0_generalized(SA, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("bucket LMS-subs\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2242,7 +2252,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
  
   induceSAl0_generalized(SA, s, bkt, n, K, false, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("L-type\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2252,7 +2262,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
 
   induceSAs0_generalized(SA, s, bkt, n, K, false, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2266,7 +2276,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
     if(chr(i)==separator)
       SA[bkt[chr(i)]--]=i;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type (separators)\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2288,7 +2298,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   uint_t *SA1=SA, *s1=SA+m-n1;
   uint_t name_ctr;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nSA\n");
   for(i=0; i<n; i++)
     printf("%" PRIdN "\t", SA[i]+1);
@@ -2297,7 +2307,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
 
   name_ctr=nameSubstr_generalized(SA,s,s1,n,m,n1,level,cs,separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("nameSubstr:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2325,7 +2335,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
     for(i=0; i<n1; i++) SA1[s1[i]]=i;
 
   // stage 3: induce SA(S) from SA(S1).
-  #if DEBUG
+  #if DEBUG == 1
   printf("recursive:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2337,7 +2347,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   
   getSAlms_DA(SA, d1, (int_t*)s, s1, n, n1, level, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("getSAlms:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2354,7 +2364,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   for(i=n1; i<n; i++) {SA[i]=0; DA[i]=0;}
 /**/
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nstage 3:\n\n");
   printf("mapping back:\n");
   printf("SA\n");
@@ -2387,7 +2397,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   #endif
 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("SA (mapped)\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2402,7 +2412,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   induceSAl0_generalized_DA(SA, DA, s, bkt, n, K, cs, separator);
 /**/
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("L-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2431,7 +2441,7 @@ int_t gSACA_K_DA(uint_t *s, uint_t *SA, int_da *DA,
   induceSAs0_generalized_DA(SA, DA, s, bkt, n, K, cs, separator);
 /**/
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2486,7 +2496,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
   bkt=(uint_t *)malloc(sizeof(int_t)*K);
   putSubstr0_generalized(SA, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("bucket LMS-subs\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2495,7 +2505,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
  
   induceSAl0_generalized(SA, s, bkt, n, K, false, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("L-type\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2505,7 +2515,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
 
   induceSAs0_generalized(SA, s, bkt, n, K, false, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2519,7 +2529,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
     if(chr(i)==separator)
       SA[bkt[chr(i)]--]=i;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type (separators)\n");
   for(i=0; i<n; i++)
 	if(SA[i]!=0)  printf("%" PRIdN "\t", SA[i]+1);
@@ -2541,7 +2551,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
   uint_t *SA1=SA, *s1=SA+m-n1;
   uint_t name_ctr;
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nSA\n");
   for(i=0; i<n; i++)
     printf("%" PRIdN "\t", SA[i]+1);
@@ -2554,7 +2564,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
 
   name_ctr=nameSubstr_generalized_LCP(SA,LCP,s,s1,n,m,n1,level,cs,separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("nameSubstr:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2586,7 +2596,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
     for(i=0; i<n1; i++) SA1[s1[i]]=i;
 
   // stage 3: induce SA(S) from SA(S1).
-  #if DEBUG
+  #if DEBUG == 1
   printf("recursive:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2605,7 +2615,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
 
 //FELIPE  getSAlms(SA, (int_t*)s, s1, n, n1, level, cs);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("getSAlms:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
@@ -2627,7 +2637,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
   //compute the LCP of consecutive LMS-suffixes
   compute_lcp_phi_sparse((int_t*)s, SA1, RA, LCP, PLCP, n1, cs, separator); 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nPHI-algorithm:\n");
   printf("--\nSA1\n");
   for(i=0; i<n1; i++)//SA1
@@ -2651,7 +2661,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
 
 //DA  for(i=n1; i<n; i++) {SA[i]=0; DA[i]=-1;}
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("\nstage 3:\n\n");
   printf("mapping back:\n");
   printf("SA\n");
@@ -2690,7 +2700,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
   #endif
 
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("SA (mapped)\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2703,7 +2713,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
 
   induceSAl0_generalized_LCP_DA(SA, LCP, DA, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("L-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
@@ -2734,7 +2744,7 @@ int_t gSACA_K_LCP_DA(uint_t *s, uint_t *SA, int_t *LCP, int_da *DA,
 
   induceSAs0_generalized_LCP_DA(SA, LCP, DA, s, bkt, n, K, cs, separator);
 
-  #if DEBUG
+  #if DEBUG == 1
   printf("S-type\n");
   for(i=0; i<n; i++)
         printf("%" PRIdN "\t", SA[i]+1);
