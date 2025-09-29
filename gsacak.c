@@ -291,6 +291,7 @@ void induceSAl0_generalized_sap(uint_t *SA, unsigned char *SAP,
   getBuckets_k((int_t*)s, bkt, n, K, false, cs);
   for(i=0; i<K; i++) bkt_sap[i] = U_MAX;
 
+  int changed=true;
   bkt[0]++; // skip the virtual sentinel.
   for(i=0; i<n; i++)
     if(SA[i]>0) {
@@ -298,8 +299,17 @@ void induceSAl0_generalized_sap(uint_t *SA, unsigned char *SAP,
       if(chr(j)>=chr(j+1) ) {
         if(chr(j)!=separator){//gsa-is
           SA[bkt[chr(j)]]=j;
+   
+          //Additional O(\sigma)-time
+          if(tget(i)==0 && changed){
+            int k;
+            for(k=chr(SA[i]); k<K; k++) bkt_sap[k] = U_MAX;
+            changed=false;
+            //printf("***SA[%d] = %d\n", i, SA[i]);
+          }
+          else if(tget(i)==1) changed=true;
 
-         if(bkt_sap[chr(j)]==chr(j+1)){
+          if(bkt_sap[chr(j)]==chr(j+1)){
             //SAP[bkt[chr(j)]]=SAP[i];
             tset(bkt[chr(j)],tget(i));
           }
@@ -339,7 +349,7 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
   getBuckets_k((int_t*)s, bkt, n, K, true, cs);
   for(i=0; i<K; i++) bkt_sap[i] = U_MAX;
 
-  int changed=0;
+  int changed=true;
   for(i=n-1; i>0; i--)
     if(SA[i]>0) {
       j=SA[i]-1;
@@ -355,13 +365,13 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
           bkt[chr(j)]--;
 
           //Additional O(\sigma)-time
-          if(changed && tget(i)==0){
+          if(tget(i)==0 && changed){
+            //printf("SA[%d] = %d\n", i, SA[i]);
             int k;
             for(k=0; k<chr(SA[i]); k++) bkt_sap[k] = U_MAX;
-            changed=0;
+            changed=false;
           }
-          else
-            changed=1;
+          else if(tget(i)==1) changed=true;
         }
       }
     }
@@ -1809,25 +1819,31 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
   for(i=n1; i<n; i++) SA[i]=0; 
 
   //SAP for LMS positions
-  uint_t pre_pos=n-1;
+  uint_t pre_pos=n-1, pre_len=0;
   for(i=1; i<n1; i++){
 
-    int diff=false;
-    uint_t pos=SA[i];
+    int diff_sap=false;
+    uint_t len, pos=SA[i];
 
-    uint_t len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
     uint_t d;
-    for(d=0; d<len && d+pos<n && d+pre_pos<n; d++){
-      if(chr(pos+d)!=chr(pre_pos+d)){
-        diff = true; break;
-      }
-      if(chr(pos+d)==separator && chr(pre_pos+d)==separator){
+    len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
+    //printf("SA[%d] = %d: \t", i, SA[i]);
+    for(d=0; d<len; d++){
+      //printf("%c (%c) ", chr(pos+d), chr(pre_pos+d));
+      if(pos+d==n-1 || pre_pos+d==n-1 ||
+         chr(pos+d)!=chr(pre_pos+d) ||
+         (chr(pos+d)==separator && chr(pre_pos+d)==separator)){
          break;
       }
     }
-    if(!diff)
+    if(chr(pos+d)==separator && chr(pre_pos+d)==separator)
+       diff_sap=false;
+    else 
+      diff_sap=true;
+    
+    if(!diff_sap)
       tset(i,1);
-    pre_pos = pos;
+    pre_pos=pos; pre_len=len;
   }
 
   #if DEBUG == 2
