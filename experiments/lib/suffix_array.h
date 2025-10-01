@@ -15,4 +15,6 @@ int_t suffix_array_read(int_t** SA, char* c_file, const char* ext);
 int_t suffix_array_print(unsigned char *T, int_t *SA, size_t len, int cs);
 int_t suffix_array_check(unsigned char *T, int_t *SA, size_t len, int cs, unsigned char sentinel);
 
+int_t sap_array_check(unsigned char *T, int_t *SA, int_t *LCP, unsigned char *SAP,  size_t n, int cs, unsigned char sentinel);
+
 #endif

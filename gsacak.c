@@ -298,9 +298,9 @@ void induceSAl0_generalized_sap(uint_t *SA, unsigned char *SAP,
 
       //Additional O(\sigma)-time
       if(tget(i)==0 ){
+        //TODO: improve this
         int k;
         for(k=chr(SA[i]); k<K; k++) bkt_sap[k] = U_MAX;
-        //printf("***SA[%d] = %d\n", i, SA[i]);
       }
 
       if(chr(j)>=chr(j+1) ) {
@@ -313,6 +313,8 @@ void induceSAl0_generalized_sap(uint_t *SA, unsigned char *SAP,
             //SAP[bkt[chr(j)]]=SAP[i];
             tset(bkt[chr(j)],tget(i));
           }
+          else tset(bkt[chr(j)],0);
+
           bkt_sap[chr(j)]=chr(j+1);
           bkt[chr(j)]++;
         }
@@ -352,8 +354,7 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
   uint_t *rmq_sap =(uint_t *)malloc(sizeof(int_t)*K);
   for(i=0; i<K; i++) rmq_sap[i] = 0;
 
-  int changed=true;
-  for(i=n-1; i>0; i--)
+  for(i=n-1; i>0; i--){
     if(SA[i]>0) {
       j=SA[i]-1;
       if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
@@ -364,17 +365,23 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
             //SAP[bkt[chr(j)]]=SAP[i];
             tset(bkt[chr(j)]+1,rmq_sap[chr(j)]);
           }
+          else tset(bkt[chr(j)]+1,0);
+
           bkt_sap[chr(j)]=chr(j+1);
           bkt[chr(j)]--;
         }
       }
       if(tget(i)==0){
+        //TODO: improve this
         int k;
-        for(k=0; k<chr(SA[i]); k++) rmq_sap[k] = 0;
+        for(k=0; k<=chr(SA[i]); k++) rmq_sap[k] = 0;
       }
       else
         rmq_sap[chr(j)]=1;
     }
+  }
+  
+  free(rmq_sap);
 }
 
 void induceSAs0_generalized(uint_t *SA,
@@ -1822,12 +1829,11 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
   uint_t pre_pos=n-1 ;
   for(i=1; i<n1; i++){
 
-    int diff_sap=false;
-    uint_t len, pos=SA[i];
+    uint_t pos=SA[i];
 
     uint_t d;
     //printf("SA[%d] = %d: \t", i, SA[i]);
-    //TODO
+    //TODO: improve this
     //len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
     //for(d=0; d<len; d++){
     for(d=0; pos+d<n; d++){
@@ -1839,12 +1845,10 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
       }
     }
     if(chr(pos+d)==separator && chr(pre_pos+d)==separator)
-       diff_sap=false;
-    else 
-      diff_sap=true;
-
-    if(!diff_sap)
       tset(i,1);
+    else 
+      tset(i,0);
+
     pre_pos=pos; 
   }
 

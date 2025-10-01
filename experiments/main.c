@@ -26,11 +26,11 @@
 #include "../gsacak.h"
 
 #ifndef STDERR
-	#define STDERR 0
+  #define STDERR 0
 #endif
 
 #ifndef DEBUG
-				#define DEBUG		0
+  #define DEBUG		0
 #endif
 
 #define WORD (size_t)(pow(256,sizeof(int_t))/2.0)
@@ -39,315 +39,338 @@
 
 int main(int argc, char** argv){
 
-int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0, DA_COMPUTE=0, BWT_COMPUTE=0;
-time_t t_start=0, t_total=0;
-clock_t c_start=0, c_total=0;
+  int VALIDATE=0, MODE=0, OUTPUT=0, LCP_COMPUTE=0, DA_COMPUTE=0, BWT_COMPUTE=0, SAP_COMPUTE=0;
+  time_t t_start=0, t_total=0;
+  clock_t c_start=0, c_total=0;
 
-	if(argc!=10){
-		dies(__func__,"argc!=9");
-	}
+  if(argc!=10){
+    dies(__func__,"argc!=9");
+  }
 
-	unsigned char **R;
-	int_t i, n=0;
-	int_t	k;
+  unsigned char **R;
+  int_t i, n=0;
+  int_t	k;
 
-	char* c_dir = argv[1];
-	char* c_file = argv[2];
+  char* c_dir = argv[1];
+  char* c_file = argv[2];
 
-	sscanf(argv[3], "%"PRIdN"", &k);
-	sscanf(argv[4], "%u", &MODE);
-	sscanf(argv[5], "%u", &LCP_COMPUTE);
-	sscanf(argv[6], "%u", &DA_COMPUTE);
-	sscanf(argv[7], "%u", &BWT_COMPUTE);
-	sscanf(argv[8], "%u", &VALIDATE);
-	sscanf(argv[9], "%u", &OUTPUT);
+  sscanf(argv[3], "%"PRIdN"", &k);
+  sscanf(argv[4], "%u", &MODE);
+  sscanf(argv[5], "%u", &LCP_COMPUTE);
+  sscanf(argv[6], "%u", &DA_COMPUTE);
+  sscanf(argv[7], "%u", &BWT_COMPUTE);
+  sscanf(argv[8], "%u", &VALIDATE);
+  sscanf(argv[9], "%u", &OUTPUT);
 
-	if(MODE==7 || MODE==8  || MODE==11 || MODE==12) LCP_COMPUTE=1;
-	if(MODE==9 || MODE==10 || MODE==11 || MODE==12) DA_COMPUTE=1;
-	if(MODE>12) return 1;
+  if(MODE==7 || MODE==8  || MODE==11 || MODE==12) LCP_COMPUTE=1;
+  if(MODE==9 || MODE==10 || MODE==11 || MODE==12) DA_COMPUTE=1;
+  if(MODE==13) SAP_COMPUTE=1;
+  if(MODE>13) return 1;
 
-	file_chdir(c_dir);
+  file_chdir(c_dir);
 
-	size_t size=0;
-	//disk access
-	R = (unsigned char**) file_load_multiple(c_file, k, &size);
-	if(!R){
-		fprintf(stderr, "Error: less than %" PRIdN " strings in %s\n", k, c_file);
-		return 1;
-	}
+  size_t size=0;
+  //disk access
+  R = (unsigned char**) file_load_multiple(c_file, k, &size);
+  if(!R){
+    fprintf(stderr, "Error: less than %" PRIdN " strings in %s\n", k, c_file);
+    return 1;
+  }
 
-	if(size>WORD){
+  if(size>WORD){
     fprintf(stderr, "ERROR: N larger than %.1lf GB (%.1lf GB)\n", WORD/pow(2,30), (double)n/pow(2,30));
     if(sizeof(int_t)<8) fprintf(stderr, "Please, compile with -DM64=1\n");
-		return 0;
-	}
+    return 0;
+  }
 
-	n = (int_t) size;
-	unsigned char *str = NULL;
-	int_text  *str_int = NULL;
-	
-	//concatenate strings
-	if(MODE==1 || MODE==2){//sais or saca-k (int)	
-		str_int = cat_int(R, k, &n);
-		
-		#if DEBUG
-		int_t i;
-		for(i=0;i<min(10,n); i++)
-			 printf("%" PRIdN ") %" PRIdT "\n", i, str_int[i]);
-		printf("\n");
-		#endif
-	}
-	else{ // sais, saca-k, gsais, gsaca-k (char)
-		str = cat_char(R, k, &n);
-		#if DEBUG
-		int_t i;
-		for(i=0;i<min(10,n); i++)
-			 printf("%" PRIdN ") %d\n", i, str[i]);
-		printf("\n");
-		#endif
-	}
+  n = (int_t) size;
+  unsigned char *str = NULL;
+  int_text  *str_int = NULL;
 
-	printf("K = %" PRIdN "\n", k);
-	printf("N = %" PRIdN "\n", n+1);
-	printf("sizeof(int) = %zu bytes\n", sizeof(int_t));
+  //concatenate strings
+  if(MODE==1 || MODE==2){//sais or saca-k (int)	
+    str_int = cat_int(R, k, &n);
 
-	if(MODE==1 || MODE==2){//sais or saca-k (int)	
-		printf("sizeof(int_text) = %zu byte(s)\n", sizeof(int_text));
-	}
+    #if DEBUG
+    int_t i;
+    for(i=0;i<min(10,n); i++)
+      printf("%" PRIdN ") %" PRIdT "\n", i, str_int[i]);
+    printf("\n");
+    #endif
+  }
+  else{ // sais, saca-k, gsais, gsaca-k (char)
+    str = cat_char(R, k, &n);
+    #if DEBUG
+    int_t i;
+    for(i=0;i<min(10,n); i++)
+      printf("%" PRIdN ") %d\n", i, str[i]);
+    printf("\n");
+    #endif
+  }
 
-	if(DA_COMPUTE){
-		printf("sizeof(int_da) = %zu byte(s)\n", sizeof(int_da));
+  printf("K = %" PRIdN "\n", k);
+  printf("N = %" PRIdN "\n", n+1);
+  printf("sizeof(int) = %zu bytes\n", sizeof(int_t));
 
-		if(k>=(size_t)(pow(256,sizeof(int_da)))){
-			int word=0;
-			if(k<pow(256,sizeof(2))) word = 2; //bytes
-			else if (k<pow(256,sizeof(4))) word = 4; 
-			else word = 8; 
-			fprintf(stderr, "ERROR: typeof(int_da) must be at least %d bytes\n", word);
-			return 0;
-		}
-	}
+  if(MODE==1 || MODE==2){//sais or saca-k (int)	
+    printf("sizeof(int_text) = %zu byte(s)\n", sizeof(int_text));
+  }
 
-	#if DEBUG
-		printf("R:\n");
-		for(i=0; i<min(5,k); i++)
-			printf("%" PRIdN ") %s (%zu)\n", i, R[i], strlen((char*)R[i]));
-	#endif
+  if(DA_COMPUTE){
+    printf("sizeof(int_da) = %zu byte(s)\n", sizeof(int_da));
 
-	//free memory
-	for(i=0; i<k; i++)
-		free(R[i]);
-	free(R);
+    if(k>=(size_t)(pow(256,sizeof(int_da)))){
+      int word=0;
+      if(k<pow(256,sizeof(2))) word = 2; //bytes
+      else if (k<pow(256,sizeof(4))) word = 4; 
+      else word = 8; 
+      fprintf(stderr, "ERROR: typeof(int_da) must be at least %d bytes\n", word);
+      return 0;
+    }
+  }
 
-	int_t *SA = (int_t*) malloc(n*sizeof(int_t));
-	assert(SA);
-	for(i=0; i<n; i++) SA[i]=0;
-	int_t depth=0;
+  #if DEBUG
+  printf("R:\n");
+  for(i=0; i<min(5,k); i++)
+    printf("%" PRIdN ") %s (%zu)\n", i, R[i], strlen((char*)R[i]));
+  #endif
 
-	int_t *LCP = NULL;	
-	if(LCP_COMPUTE){
-		LCP = (int_t*) malloc(n*sizeof(int_t));
-		assert(LCP);
-		for(i=0; i<n; i++) LCP[i]=0;
-	}
+  //free memory
+  for(i=0; i<k; i++)
+    free(R[i]);
+  free(R);
 
-	int_da *DA = NULL;	
-	if(DA_COMPUTE){
-		DA = (int_da*) malloc(n*sizeof(int_da));
-		assert(DA);
-		for(i=0; i<n; i++) DA[i]=-1;
-	}
+  int_t *SA = (int_t*) malloc(n*sizeof(int_t));
+  assert(SA);
+  for(i=0; i<n; i++) SA[i]=0;
+  int_t depth=0;
 
-	time_start(&t_total, &c_total);
-	time_start(&t_start, &c_start);
+  int_t *LCP = NULL;	
+  if(LCP_COMPUTE){
+    LCP = (int_t*) malloc(n*sizeof(int_t));
+    assert(LCP);
+    for(i=0; i<n; i++) LCP[i]=0;
+  }
 
-	switch(MODE){
-		case 1:	printf("## SAIS (int) ##\n");
-		#if STDERR
-			fprintf(stderr, "## SAIS (int) ##\n");
-		#endif
-		depth = sais_int((int_text*)str_int, (uint_t*)SA, n, 256+k);
-		break;
-	
-		case 2:	printf("## SACA_K (int) ##\n"); 
-		#if STDERR
-			fprintf(stderr, "## SACA_K (int) ##\n"); 
-		#endif
-		depth = sacak_int((int_text*)str_int, (uint_t*)SA, n, 256+k);
-		break;
-	 
-		case 3:	printf("## SAIS (char) ##\n");
-		#if STDERR
-			fprintf(stderr, "## SAIS (char) ##\n");
-		#endif
-		depth = sais(str, (uint_t*)SA, n);
-		break;
-	
-		case 4:	printf("## SACA_K (char) ##\n"); 
-		#if STDERR
-		fprintf(stderr, "## SACA_K (char) ##\n"); 
-		#endif
-		depth = sacak(str, (uint_t*)SA, n);
-		break;
-		 
-	 case 5:	printf("## gSAIS ##\n"); 
-		#if STDERR
-		fprintf(stderr, "## gSAIS ##\n"); 
-		#endif
-		depth = gsais((unsigned char*)str, (uint_t*)SA, NULL, NULL, n);
-		break;
-	
-	 case 6:	printf("## gSACA_K ##\n"); 
-		#if STDERR
-		fprintf(stderr, "## gSACA_K ##\n"); 
-		#endif
-		depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, NULL, n);
-		break;
-	
-	 case 7:	printf("## gSAIS+LCP ##\n"); 
-		#if STDERR
-		fprintf(stderr, "## gSAIS+LCP ##\n"); 
-		#endif
-		depth = gsais((unsigned char*)str, (uint_t*)SA, LCP, NULL, n);
-		break;
-	
-	 case 8:	printf("## gSACA_K+LCP ##\n"); 
-		#if STDERR
-				fprintf(stderr, "## gSACA_K+LCP ##\n"); 
-		#endif
-		depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, NULL, n);
-		break;
-	
-	 case 9:	printf("## gSAIS+DA ##\n"); 
-		#if STDERR
-				fprintf(stderr, "## gSAIS+DA ##\n"); 
-		#endif
-		depth = gsais((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
-		break;
-	
-	 case 10: printf("## gSACA_K+DA ##\n"); 
-		#if STDERR
-			fprintf(stderr, "## gSACA_K+DA ##\n"); 
-		#endif
-		depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
-		break;
-					 
-	 case 11: printf("## gSAIS+LCP+DA ##\n"); 
-		#if STDERR
-				fprintf(stderr, "## gSAIS+LCP+DA ##\n"); 
-		#endif
-		depth = gsais((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
-		break;
-					 
-	 case 12: printf("## gSACA_K+LCP+DA ##\n"); 
-		#if STDERR
-				fprintf(stderr, "## gSACA_K+LCP+DA ##\n"); 
-		#endif
-		depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
-		break;
-	
-	default: break;
-	}
+  int_da *DA = NULL;	
+  if(DA_COMPUTE){
+    DA = (int_da*) malloc(n*sizeof(int_da));
+    assert(DA);
+    for(i=0; i<n; i++) DA[i]=-1;
+  }
+  unsigned char *SAP = NULL;
+  if(SAP_COMPUTE){
+    SAP = (unsigned char *)malloc(n/8+1);
+    assert(SAP);
+  }
 
-	fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+  time_start(&t_total, &c_total);
+  time_start(&t_start, &c_start);
 
-	//LCP array
-	if(LCP_COMPUTE && (MODE!=7 && MODE!=8 && MODE!=11 && MODE!=12)){
-		time_start(&t_start, &c_start);
-		if(MODE==1 || MODE==2)
-			lcp_PHI_int((int_text*)str_int, SA, LCP, n, sizeof(int_text));
-		else
-			lcp_PHI((unsigned char*)str, SA, LCP, n, sizeof(char), 1);//separator=1
-		printf("PHI-algorithm (LCP array):\n");
-		fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
-	}
-	
-	//Document array
-	if(DA_COMPUTE && (MODE!=9 && MODE!=10 && MODE!=11 && MODE!=12)){
-		time_start(&t_start, &c_start);
-		if(MODE==1 || MODE==2)
-			document_array_LF_int((int_text*)str_int, SA, DA, n, 256+k, sizeof(int_text), 1, k);
-		else if(MODE==3 || MODE==4)
-			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, k);//separator=0,1,..,k-1
-		else if(MODE==6){
-			document_array_9n((unsigned char*)str, SA, (int_da*) DA, n, 256, sizeof(char), 1, k);//separator=1
-		}
-		else{
-			document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 1, k);//separator=1
-		}	
-		fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
-	}
+  switch(MODE){
+    case 1:	printf("## SAIS (int) ##\n");
+            #if STDERR
+            fprintf(stderr, "## SAIS (int) ##\n");
+            #endif
+            depth = sais_int((int_text*)str_int, (uint_t*)SA, n, 256+k);
+            break;
+
+    case 2:	printf("## SACA_K (int) ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## SACA_K (int) ##\n"); 
+            #endif
+            depth = sacak_int((int_text*)str_int, (uint_t*)SA, n, 256+k);
+            break;
+
+    case 3:	printf("## SAIS (char) ##\n");
+            #if STDERR
+            fprintf(stderr, "## SAIS (char) ##\n");
+            #endif
+            depth = sais(str, (uint_t*)SA, n);
+            break;
+
+    case 4:	printf("## SACA_K (char) ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## SACA_K (char) ##\n"); 
+            #endif
+            depth = sacak(str, (uint_t*)SA, n);
+            break;
+
+    case 5:	printf("## gSAIS ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSAIS ##\n"); 
+            #endif
+            depth = gsais((unsigned char*)str, (uint_t*)SA, NULL, NULL, n);
+            break;
+
+    case 6:	printf("## gSACA_K ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSACA_K ##\n"); 
+            #endif
+            depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, NULL, n);
+            break;
+
+    case 7:	printf("## gSAIS+LCP ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSAIS+LCP ##\n"); 
+            #endif
+            depth = gsais((unsigned char*)str, (uint_t*)SA, LCP, NULL, n);
+            break;
+
+    case 8:	printf("## gSACA_K+LCP ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSACA_K+LCP ##\n"); 
+            #endif
+            depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, NULL, n);
+            break;
+
+    case 9:	printf("## gSAIS+DA ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSAIS+DA ##\n"); 
+            #endif
+            depth = gsais((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
+            break;
+
+    case 10: printf("## gSACA_K+DA ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSACA_K+DA ##\n"); 
+            #endif
+            depth = gsacak((unsigned char*)str, (uint_t*)SA, NULL, DA, n);
+            break;
+
+    case 11: printf("## gSAIS+LCP+DA ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSAIS+LCP+DA ##\n"); 
+            #endif
+            depth = gsais((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
+            break;
+
+    case 12: printf("## gSACA_K+LCP+DA ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSACA_K+LCP+DA ##\n"); 
+            #endif
+            depth = gsacak((unsigned char*)str, (uint_t*)SA, LCP, DA, n);
+            break;
+
+    case 13: printf("## gSACA_K+SAP ##\n"); 
+            #if STDERR
+            fprintf(stderr, "## gSACA_K+SAP ##\n"); 
+            #endif
+            depth = gsacak_sap((unsigned char*)str, (uint_t*)SA, SAP, n);
+            break;
 
 
-	printf("total:\n");
-	fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
+    default: break;
+  }
+
+  fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+
+  //LCP array
+  if(LCP_COMPUTE && (MODE!=7 && MODE!=8 && MODE!=11 && MODE!=12)){
+    time_start(&t_start, &c_start);
+    if(MODE==1 || MODE==2)
+      lcp_PHI_int((int_text*)str_int, SA, LCP, n, sizeof(int_text));
+    else
+      lcp_PHI((unsigned char*)str, SA, LCP, n, sizeof(char), 1);//separator=1
+    printf("PHI-algorithm (LCP array):\n");
+    fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+  }
+
+  //Document array
+  if(DA_COMPUTE && (MODE!=9 && MODE!=10 && MODE!=11 && MODE!=12)){
+    time_start(&t_start, &c_start);
+    if(MODE==1 || MODE==2)
+      document_array_LF_int((int_text*)str_int, SA, DA, n, 256+k, sizeof(int_text), 1, k);
+    else if(MODE==3 || MODE==4)
+      document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 0, k);//separator=0,1,..,k-1
+    else if(MODE==6){
+      document_array_9n((unsigned char*)str, SA, (int_da*) DA, n, 256, sizeof(char), 1, k);//separator=1
+    }
+    else{
+      document_array_LF((unsigned char*)str, SA, DA, n, 256, sizeof(char), 1, k);//separator=1
+    }	
+    fprintf(stderr,"%.6lf\n", time_stop(t_start, c_start));
+  }
 
 
-	#if DEBUG
-	if(MODE==1 || MODE==2)//sais or saca-k	
-		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str_int, SA, LCP, min(20,n), sizeof(int_text));	
-		else suffix_array_print((unsigned char*)str_int, SA, min(10,n), sizeof(int_text));	
-	else
-		if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str, SA, LCP, min(20,n), sizeof(char));	
-		else suffix_array_print((unsigned char*)str, SA, min(10,n), sizeof(char));
-	#endif
+  printf("total:\n");
+  fprintf(stderr,"%.6lf\n", time_stop(t_total, c_total));
 
-	// validate	
-	if(VALIDATE){
 
-		fprintf(stderr, "## CHECK ##\n"); 
-		if(MODE==1 || MODE==2){//sais or saca-k	
-			if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_text), 0)) fprintf(stderr,"isNotSorted!!\n");
-			else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
-		}
-		else if(MODE==3 || MODE==4){
-			if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) fprintf(stderr,"isNotSorted!!\n");//compares until the sentinel=0
-			else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
-		}
-		else if(MODE>=5){
-			if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) fprintf(stderr,"isNotSorted!!\n");//compares until the separator=1
-			else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
-		}
+  #if DEBUG
+  if(MODE==1 || MODE==2)//sais or saca-k	
+    if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str_int, SA, LCP, min(20,n), sizeof(int_text));	
+    else suffix_array_print((unsigned char*)str_int, SA, min(10,n), sizeof(int_text));	
+  else
+    if(LCP_COMPUTE)	lcp_array_print((unsigned char*)str, SA, LCP, min(20,n), sizeof(char));	
+    else suffix_array_print((unsigned char*)str, SA, min(10,n), sizeof(char));
+  #endif
 
-		if(LCP_COMPUTE){
-			if(MODE==1 || MODE==2)//sais or saca-k	
-				if(!lcp_array_check_lcp((unsigned char*)str_int, SA, LCP, n, sizeof(int_text), 1)) fprintf(stderr,"isNotLCP!!\n");
-				else printf("isLCP!!\n");
-				else if(!lcp_array_check_lcp((unsigned char*)str, SA, LCP, n, sizeof(char), 1)) fprintf(stderr,"isNotLCP!!\n");
-				else printf("isLCP!!\n");
-		}
+  // validate	
+  if(VALIDATE){
 
-		if(DA_COMPUTE){
-			if(MODE==1 || MODE==2)//sais or saca-k	
-			if(!document_array_check_int(str_int, SA, DA, n, sizeof(int_text), k)) fprintf(stderr, "isNotDA!!\n");
-			else printf("isDA!!\n");
-			else
-			if(!document_array_check(str, SA, DA, n, sizeof(char), 1, k)) fprintf(stderr, "isNotDA!!\n");
-			else printf("isDA!!\n");
-		}
-	}
-	else printf("depth = %" PRIdN "\n", depth);
+    fprintf(stderr, "## CHECK ##\n"); 
+    if(MODE==1 || MODE==2){//sais or saca-k	
+      if(!suffix_array_check((unsigned char*)str_int, SA, n, sizeof(int_text), 0)) fprintf(stderr,"isNotSorted!!\n");
+      else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
+    }
+    else if(MODE==3 || MODE==4){
+      if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 0)) fprintf(stderr,"isNotSorted!!\n");//compares until the sentinel=0
+      else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
+    }
+    else if(MODE>=5){
+      if(!suffix_array_check((unsigned char*)str, SA, n, sizeof(char), 1)) fprintf(stderr,"isNotSorted!!\n");//compares until the separator=1
+      else printf("isSorted!!\ndepth = %" PRIdN "\n", depth);
+    }
 
-	// output
-	if(OUTPUT){
-		if(MODE==1||MODE==2) file_text_int_write(str_int, n, c_file, "str_int");
-		else file_text_write(str, n, c_file, "str");
+    if(LCP_COMPUTE){
+      if(MODE==1 || MODE==2)//sais or saca-k	
+        if(!lcp_array_check_lcp((unsigned char*)str_int, SA, LCP, n, sizeof(int_text), 1)) fprintf(stderr,"isNotLCP!!\n");
+        else printf("isLCP!!\n");
+      else if(!lcp_array_check_lcp((unsigned char*)str, SA, LCP, n, sizeof(char), 1)) fprintf(stderr,"isNotLCP!!\n");
+      else printf("isLCP!!\n");
+    }
 
-		if(BWT_COMPUTE){ 
-			if(MODE==1||MODE==2) file_bwt_int_write(str_int, SA, n, c_file, "bwt");
-			else file_bwt_write(str, SA, n, c_file, "bwt");
-		}
+    if(DA_COMPUTE){
+      if(MODE==1 || MODE==2)//sais or saca-k	
+        if(!document_array_check_int(str_int, SA, DA, n, sizeof(int_text), k)) fprintf(stderr, "isNotDA!!\n");
+        else printf("isDA!!\n");
+      else
+        if(!document_array_check(str, SA, DA, n, sizeof(char), 1, k)) fprintf(stderr, "isNotDA!!\n");
+        else printf("isDA!!\n");
+    }
 
-		suffix_array_write(SA, n, c_file, "sa");
-		if(LCP_COMPUTE) lcp_array_write(LCP, n, c_file, "lcp");
-		if(DA_COMPUTE) document_array_write(DA, n, c_file, "da");
-	}
+    if(SAP_COMPUTE){
+        LCP_COMPUTE=1;
+        LCP = (int_t*) malloc(n*sizeof(int_t));
+        lcp_PHI((unsigned char*)str, SA, LCP, n, sizeof(char), 1);//separator=1
+        if(!sap_array_check(str, SA, LCP, SAP, n, sizeof(char), 1)) fprintf(stderr, "isNotSAP!!\n");
+        else printf("isSAP!!\n");
+    }
+  }
+  else printf("depth = %" PRIdN "\n", depth);
 
-	free(SA);
-	if(LCP_COMPUTE) free(LCP);
-	if(DA_COMPUTE) free(DA);
-	if(MODE==1 || MODE==2) free(str_int);
-	else free(str);
+  // output
+  if(OUTPUT){
+    if(MODE==1||MODE==2) file_text_int_write(str_int, n, c_file, "str_int");
+    else file_text_write(str, n, c_file, "str");
 
-return 0;
+    if(BWT_COMPUTE){ 
+      if(MODE==1||MODE==2) file_bwt_int_write(str_int, SA, n, c_file, "bwt");
+      else file_bwt_write(str, SA, n, c_file, "bwt");
+    }
+
+    suffix_array_write(SA, n, c_file, "sa");
+    if(LCP_COMPUTE) lcp_array_write(LCP, n, c_file, "lcp");
+    if(DA_COMPUTE) document_array_write(DA, n, c_file, "da");
+  }
+
+  free(SA);
+  if(LCP_COMPUTE) free(LCP);
+  if(DA_COMPUTE) free(DA);
+  if(SAP_COMPUTE) free(SAP);
+  if(MODE==1 || MODE==2) free(str_int);
+  else free(str);
+
+  return 0;
 }
