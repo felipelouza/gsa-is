@@ -61,35 +61,37 @@ int main(int argc, char *argv[]){
 
   // checking
   uint_t *SA2 = (uint_t *)malloc(n * sizeof(uint_t));
-	int_t *LCP = (int_t *)malloc(n * sizeof(int_t));
-	gsacak((unsigned char *)Text, (uint_t*)SA2, LCP, NULL, n);
+  int_t *LCP = (int_t *)malloc(n * sizeof(int_t));
 
   int check=1;
 
-  // output
-  printf("i\tSA\tSAP\tBWT\tLCP\tsuffixes\n");
-  for(i = 0; i < n; ++i) {
-    char j = (SA[i])? Text[SA[i]-1]:'#';
-    if(j==1) j = '$';
-    printf("%d\t%d\t%d\t%c\t%d\t",i, SA[i], tget(i), j, LCP[i]);
-    int k;
-    for(k = SA[i]; k < n; k++) {
-      if(Text[k]==1) printf("$");
-      else printf("%c", Text[k]);
+  if(check){
+    gsacak((unsigned char *)Text, (uint_t*)SA2, LCP, NULL, n);
+    // output
+    printf("i\tSA\tSAP\tBWT\tLCP\tsuffixes\n");
+    for(i = 0; i < n; ++i) {
+      char j = (SA[i])? Text[SA[i]-1]:'#';
+      if(j==1) j = '$';
+      printf("%d\t%d\t%d\t%c\t%d\t",i, SA[i], tget(i), j, LCP[i]);
+      int k;
+      for(k = SA[i]; k < n; k++) {
+        if(Text[k]==1) printf("$");
+        else printf("%c", Text[k]);
+      }
+      if(i>1 && (Text[SA[i]+LCP[i]]==1 && tget(i)!=1) ){
+        printf("#\t***\n");
+        check=0;
+      }
+      if(i>1 && (tget(i)==1 && Text[SA[i]+LCP[i]]!=1 ) ){
+        printf("#\t@@@\n");
+        check=0;
+      }
+      else
+        printf("#\n");
     }
-    if(i>1 && (Text[SA[i]+LCP[i]]==1 && tget(i)!=1) ){
-      printf("#\t***\n");
-      check=0;
-    }
-    if(i>1 && (tget(i)==1 && Text[SA[i]+LCP[i]]!=1 ) ){
-      printf("#\t@@@\n");
-      check=0;
-    }
-    else
-      printf("#\n");
-  }
 
-  if(!check) printf("## ERROR ##\n");
+    if(!check) printf("## ERROR ##\n");
+  }
 
 
   // deallocate

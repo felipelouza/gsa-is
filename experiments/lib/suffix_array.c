@@ -142,23 +142,32 @@ int_t sap_array_check(unsigned char *T, int_t *SA, int_t *LCP, unsigned char *SA
   for(i = 0; i < n; ++i) {
     char j = (SA[i])? T[SA[i]-1]-1:'#';
     if(j==1) j = '$';
-    if(i>1 && (T[SA[i]+LCP[i]]==1 && tget(i)!=1) ){
-      //printf("#\t***\n");
-      check=0;
-      break;
-    }
-    if(i>1 && (tget(i)==1 && T[SA[i]+LCP[i]]!=1 ) ){
-      /*
-      printf("%d\t%d\t%d\t%c\t%d\t",i, SA[i], tget(i), j, LCP[i]);
+    if(i>1 && (T[SA[i]+LCP[i]]==1 && T[SA[i-1]+LCP[i]]==1 && tget(i)!=1) ){
+
+      printf("#\t***\n");
       int j;
+      printf("%d\t%d\t%d\t%c\t%d\t",i, SA[i], tget(i), j, LCP[i]);
       for(j = SA[i]; j < n; ++j) {
         if(T[j]==1){printf("$"); break;}
+        if(T[j]==0){printf("#"); break;}
         else printf("%c", T[j]-1);
       }
-      printf("#\t@@@\n");
-      */
+      printf("\t@@@\n\n");
       check=0;
-      break;
+      //break;
+    }
+    if(i>1 && (tget(i)==1 && (T[SA[i]+LCP[i]]!=1 && T[SA[i-1]+LCP[i]]!=1)) ){
+      
+      printf("%d\t%d\t%d\t%c\t%d\t",i, SA[i], tget(i), j, LCP[i]);
+      for(j = SA[i]; j < n; ++j) {
+        if(T[j]==1){printf("$"); break;}
+        if(T[j]==0){printf("#"); break;}
+        else printf("%c", T[j]-1);
+      }
+      printf("\t@@@\n\n");
+     
+      check=0;
+    //  break;
     }
   }
 

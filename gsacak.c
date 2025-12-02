@@ -1800,6 +1800,14 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
 
   name_ctr=nameSubstr_generalized(SA,s,s1,n,m,n1,level,cs,separator);
 
+  #if DEBUG == 2
+  printf("nameSubstr:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n\n");
+  #endif
+
   #if PHASES
 	printf("phase 1:\n");
 	time_stop(t_start_phase, c_start_phase);
@@ -1820,47 +1828,71 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
     for(i=0; i<n1; i++) SA1[s1[i]]=i;
 
   // stage 3: induce SA(S) from SA(S1).
+  #if DEBUG == 2
+
+  printf("recursive:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n\n");
+  #endif
+
   getSAlms(SA, (int_t*)s, s1, n, n1, level, cs);
 
-  for(i=0; i<n1; i++) SA[i]=s1[SA[i]];
-  for(i=n1; i<n; i++) SA[i]=0; 
+  #if DEBUG == 2
+  printf("getSAlms:\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", SA[i]+1);
+  printf("\n");
+  #endif
 
-  //SAP for LMS positions
-  uint_t pre_pos=n-1 ;
-  for(i=1; i<n1; i++){
-
-    uint_t pos=SA[i];
-
-    uint_t d;
-    //printf("SA[%d] = %d: \t", i, SA[i]);
-    //TODO: improve this
-    //len=getLengthOfLMS((int_t*)s, n, level, pos, cs);
-    //for(d=0; d<len; d++){
-    for(d=0; pos+d<n; d++){
-      //printf("%c (%c) ", chr(pos+d), chr(pre_pos+d));
-      if(pos+d==n-1 || pre_pos+d==n-1 ||
-         chr(pos+d)!=chr(pre_pos+d) ||
-         (chr(pos+d)==separator && chr(pre_pos+d)==separator)){
-         break;
-      }
-    }
-    if(chr(pos+d)==separator && chr(pre_pos+d)==separator)
-      tset(i,1);
-    else 
-      tset(i,0);
-
-    pre_pos=pos; 
+  for(i=0; i<n1; i++){
+    uint_t tmp = SA[i];
+    //compute the ISA
+    SA[i]=s1[SA[i]];
+    s1[tmp] = i;
   }
+  for(i=n1; i<n-n1; i++) SA[i]=0; 
+
+  uint_t *ISA = s1;
+  //
+  #if DEBUG == 2
+  printf("mapping back (with ISA):\n");
+  printf("SA\n");
+  for(i=0; i<n; i++)
+    printf("%" PRIdN "\t", (SA[i]==0)?-1:(SA[i]+1));
+  printf("\n");
+
+  printf("ISA\n");
+  for(i=0; i<n1; i++)
+    printf("%" PRIdN "\t", (ISA[i]==0)?0:(ISA[i]));
+  printf("\n\n");
+  #endif
+
+  int_t l=0;
+  for(i=0; i<n1-1; i++){
+    int bit = 0;
+    uint_t j = ISA[i];
+    uint_t pos = SA[j];
+    uint_t pre_pos = SA[j-1];
+
+    while((chr(pos+l)==chr(pre_pos+l)) && !(chr(pos+l)==separator && chr(pre_pos+l)==separator)) l++;
+
+    if(chr(pos+l)==separator) bit = 1;
+    tset(j, bit);
+
+    l = maxval(0, l - (int_t)(SA[ISA[i+1]]-pos));
+  }
+
+  for(i=n1; i<n; i++) SA[i]=0; 
 
   #if DEBUG == 2
   printf("\nstage 3:\n\n");
-  printf("mapping back:\n");
+  printf("#mapping back:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
-    if(SA[i]==0)
-        printf("%" PRIdN "\t", -1);
-    else
-    printf("%" PRIdN "\t", SA[i]+1);
+    printf("%" PRIdN "\t", (SA[i]==0)?-1:(SA[i]+1));
   printf("\n");
   printf("SAP\n");
   for(i=0; i<n; i++)
