@@ -8,9 +8,9 @@ unsigned char M[]={0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
 #include "gsacak.h"
 #include "experiments/external/malloc_count/malloc_count.h" //memory counter
 
-#ifndef DEBUG
-#define DEBUG 0
-#endif
+//#ifndef DEBUG
+//#define DEBUG 0
+//#endif
 
 int main(int argc, char *argv[]){
 
@@ -70,19 +70,19 @@ int main(int argc, char *argv[]){
     // output
     printf("i\tSA\tSAP\tBWT\tLCP\tsuffixes\n");
     for(i = 0; i < n; ++i) {
-      char j = (SA[i])? Text[SA[i]-1]:'#';
+      char j = (SA2[i])? Text[SA2[i]-1]:'#';
       if(j==1) j = '$';
-      printf("%d\t%d\t%d\t%c\t%d\t",i, SA[i], tget(i), j, LCP[i]);
+      printf("%d\t%d\t%d\t%c\t%d\t",i, SA2[i], tget(i), j, LCP[i]);
       int k;
-      for(k = SA[i]; k < n; k++) {
+      for(k = SA2[i]; k < n; k++) {
         if(Text[k]==1) printf("$");
         else printf("%c", Text[k]);
       }
-      if(i>1 && (Text[SA[i]+LCP[i]]==1 && tget(i)!=1) ){
+      if(i>1 && (Text[SA2[i]+LCP[i]]==1 && tget(i)!=1) ){
         printf("#\t***\n");
         check=0;
       }
-      if(i>1 && (tget(i)==1 && Text[SA[i]+LCP[i]]!=1 ) ){
+      if(i>1 && (tget(i)==1 && Text[SA2[i]+LCP[i]]!=1 ) ){
         printf("#\t@@@\n");
         check=0;
       }

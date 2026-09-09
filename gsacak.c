@@ -289,37 +289,57 @@ void induceSAl0_generalized_sap(uint_t *SA, unsigned char *SAP,
 
   // find the head of each bucket.
   getBuckets_k((int_t*)s, bkt, n, K, false, cs);
-  for(i=0; i<K; i++) bkt_sap[i] = U_MAX;
+  for(i=0; i<K; i++) bkt_sap[i] = 0;
+
+  uint_t last_zero = 0;//last zero pos seen in SAP
 
   bkt[0]++; // skip the virtual sentinel.
-  for(i=0; i<n; i++)
+  for(i=0; i<n; i++){
+
+    if(tget(i)==0) last_zero=i;
+    #if DEBUG==2
+    printf("i = %d:", i+1);
+    #endif
     if(SA[i]>0) {
       j=SA[i]-1;
 
-      //Additional O(\sigma)-time
-      if(tget(i)==0 ){
-        //TODO: improve this
-        int k;
-        for(k=chr(SA[i]); k<K; k++) bkt_sap[k] = U_MAX;
-      }
+      ////Additional O(\sigma)-time
+      //if(tget(i)==0 ){
+      //  //TODO: improve this
+      //  int k;
+      //  for(k=chr(SA[i]); k<K; k++) bkt_sap[k] = U_MAX;
+      //}
 
       if(chr(j)>=chr(j+1) ) {
         if(chr(j)!=separator){//gsa-is
           SA[bkt[chr(j)]]=j;
-   
-          //?? here ?? (additional step?)
-
+          #if DEBUG==2
+          printf("j = %d\t bkt[%d]=%d\t, last_zero=%d", j+1, chr(j), bkt_sap[chr(j)]+1, last_zero+1);
+          #endif
+          /*
           if(bkt_sap[chr(j)]==chr(j+1)){
             //SAP[bkt[chr(j)]]=SAP[i];
             tset(bkt[chr(j)],tget(i));
           }
           else tset(bkt[chr(j)],0);
+          */
+          if(bkt_sap[chr(j)]==last_zero)
+            tset(bkt[chr(j)],tget(i));
+          else tset(bkt[chr(j)],0);
 
-          bkt_sap[chr(j)]=chr(j+1);
+
+          //bkt_sap[chr(j)]=chr(j+1);
+          bkt_sap[chr(j)]=last_zero;
           bkt[chr(j)]++;
         }
       }
     }
+
+    if(tget(i)==0) last_zero=i;
+    #if DEBUG==2
+    printf("\n");
+    #endif
+  }
 }
 
 void induceSAl0_generalized(uint_t *SA,
@@ -349,39 +369,63 @@ void induceSAs0_generalized_sap(uint_t *SA, unsigned char *SAP,
 
   // find the end of each bucket.
   getBuckets_k((int_t*)s, bkt, n, K, true, cs);
-  for(i=0; i<K; i++) bkt_sap[i] = U_MAX;
+  for(i=0; i<K; i++) bkt_sap[i] = n;
 
-  uint_t *rmq_sap =(uint_t *)malloc(sizeof(int_t)*K);
-  for(i=0; i<K; i++) rmq_sap[i] = 0;
+  uint_t last_zero = n;//last zero pos seen in SAP
+
+  //uint_t *rmq_sap =(uint_t *)malloc(sizeof(int_t)*K);
+  //for(i=0; i<K; i++) rmq_sap[i] = 0;
 
   for(i=n-1; i>0; i--){
+    #if DEBUG==2
+    printf("i = %d:", i+1);
+    #endif
     if(SA[i]>0) {
       j=SA[i]-1;
       if(chr(j)<=chr(j+1) && bkt[chr(j)]<i) {
         if(chr(j)!=separator){
           SA[bkt[chr(j)]]=j;
-        
+          /*
           if(bkt_sap[chr(j)]==chr(j+1)){
             //SAP[bkt[chr(j)]]=SAP[i];
             tset(bkt[chr(j)]+1,rmq_sap[chr(j)]);
           }
           else tset(bkt[chr(j)]+1,0);
+          */
+          int last = chr(j)!=chr(SA[bkt[chr(j)]+1]);
+          #if DEBUG==2
+          printf("j = %d\t bkt[%d]=%d\t, last_zero=%d (%d -> %d)", j+1, chr(j), bkt_sap[chr(j)]+1, last_zero+1, last, SA[bkt[chr(j)]+1]+1);
+          #endif
+          if(bkt_sap[chr(j)]==last_zero && !last){
+            tset(bkt[chr(j)]+1,tget(i+1));
+            #if DEBUG==2
+            printf("\ttset(%d)=%d\t", bkt[chr(j)]+1, tget(i+1));
+            #endif
+          }
+          else tset(bkt[chr(j)]+1,0);
 
-          bkt_sap[chr(j)]=chr(j+1);
+          //bkt_sap[chr(j)]=chr(j+1);
+          bkt_sap[chr(j)]=last_zero;
           bkt[chr(j)]--;
         }
       }
-      if(tget(i)==0){
-        //TODO: improve this
-        int k;
-        for(k=0; k<=chr(SA[i]); k++) rmq_sap[k] = 0;
-      }
-      else
-        rmq_sap[chr(j)]=1;
+
+      //if(tget(i)==0){
+      //  //TODO: improve this
+      //  int k;
+      //  for(k=0; k<=chr(SA[i]); k++) rmq_sap[k] = 0;
+      //}
+      //else
+      //  rmq_sap[chr(j)]=1;
     }
+    if(tget(i)==0) last_zero=i;
+
+    #if DEBUG==2
+    printf("\n");
+    #endif
   }
   
-  free(rmq_sap);
+  //free(rmq_sap);
 }
 
 void induceSAs0_generalized(uint_t *SA,
@@ -1877,12 +1921,17 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
     uint_t pos = SA[j];
     uint_t pre_pos = SA[j-1];
 
-    while((chr(pos+l)==chr(pre_pos+l)) && !(chr(pos+l)==separator && chr(pre_pos+l)==separator)) l++;
 
+    while((chr(pos+l)==chr(pre_pos+l)) && !(chr(pos+l)==separator && chr(pre_pos+l)==separator)) l++;
     if(chr(pos+l)==separator) bit = 1;
     tset(j, bit);
 
-    l = maxval(0, l - (int_t)(SA[ISA[i+1]]-pos));
+    #if DEBUG==2
+    printf("%d <> %d (lcp = %d)\n",pre_pos+1, pos+1, l);
+    #endif
+
+    l = maxval(0, l - (int_t)(SA[ISA[i+1]]-pos+1));
+    //l = 0;
   }
 
   for(i=n1; i<n; i++) SA[i]=0; 
@@ -1892,7 +1941,10 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
   printf("#mapping back:\n");
   printf("SA\n");
   for(i=0; i<n; i++)
-    printf("%" PRIdN "\t", (SA[i]==0)?-1:(SA[i]+1));
+    if(SA[i]==0)
+        printf("%" PRIdN "\t", -1);
+    else
+        printf("%" PRIdN "\t", SA[i]+1);
   printf("\n");
   printf("SAP\n");
   for(i=0; i<n; i++)
@@ -1963,6 +2015,9 @@ int_t gSACA_K_SAP(uint_t *s, uint_t *SA, unsigned char *SAP,
   #if DEBUG == 2
   printf("S-type\n");
   for(i=0; i<n; i++)
+    if(SA[i]==0)
+        printf("%" PRIdN "\t", -1);
+    else
         printf("%" PRIdN "\t", SA[i]+1);
   printf("\n");
   printf("SAP\n");
